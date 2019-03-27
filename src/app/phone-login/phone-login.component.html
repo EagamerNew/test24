@@ -1,0 +1,41 @@
+<div [hidden]="user">
+  <mat-form-field class="example-full-width">
+    <input type="phone" placeholder="Номер телефона(П-р: 87475556677)"  matInput
+           [(ngModel)]="phoneString">
+  </mat-form-field>
+  <mat-form-field class="example-full-width " *ngIf="windowRef.confirmationResult">
+    <input type="password" placeholder="Введите код" matInput [(ngModel)]="verificationCode">
+  </mat-form-field>
+  <div id="recaptcha-container" width="80%"></div>
+
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <button (click)="sendLoginCode()"
+            *ngIf="!windowRef.confirmationResult"
+            [disabled]="disableButton"
+            mat-flat-button class="mat-primary">
+      Получить код
+    </button>
+    <button (click)="verifyLoginCode()"
+            [disabled]="disableButton"
+            *ngIf="windowRef.confirmationResult"
+            mat-flat-button class="mat-primary">
+      Войти
+    </button>
+  </div>
+
+  <!--<div *ngIf="windowRef.confirmationResult">-->
+  <!--<hr>-->
+  <!--<label for="code">Enter your Verification Code Here</label><br>-->
+  <!--<input type="text" id="code" [(ngModel)]="verificationCode">-->
+
+  <!--<button (click)="verifyLoginCode()">Verify</button>-->
+  <!--</div>-->
+
+</div>
+
+<!--<div *ngIf="user">-->
+  <!--You have successfully logged in with your phone number!-->
+
+  <!--UserId: {{ user?.uid }}-->
+
+<!--</div>-->

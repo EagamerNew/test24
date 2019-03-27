@@ -1,0 +1,42 @@
+
+<mat-form-field class="example-full-width">
+  <input matInput placeholder="ИИН"[(ngModel)]="user.idn" >
+</mat-form-field>
+
+<mat-form-field class="example-full-width">
+  <input matInput placeholder="Фамилия"[(ngModel)]="user.lastname" >
+</mat-form-field>
+
+
+<mat-form-field class="example-full-width">
+  <input matInput placeholder="Имя"[(ngModel)]="user.firstname" >
+</mat-form-field>
+
+<mat-form-field class="example-full-width">
+  <mat-select placeholder="Пол" [(ngModel)]="user.gender">
+    <mat-option  *ngFor="let gen of gender" [value]="gen.code">
+      {{gen.name}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<mat-form-field class="example-full-width">
+  <mat-select placeholder="Город" [(ngModel)]="user.city">
+    <mat-option  *ngFor="let city of cities" [value]="city.code">
+      {{city.name}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<mat-form-field class="example-full-width">
+  <input type="date" matInput placeholder="Дата рождения"[(ngModel)]="user.birthdate" >
+</mat-form-field>
+
+<mat-form-field class="example-full-width">
+  <input matInput placeholder="Номер телефона" [(ngModel)]="user.phoneNumber" >
+</mat-form-field>
+<hr>
+<mat-grid-list cols="2" rowHeight="2:1">
+  <mat-grid-tile><button mat-button >Отменить</button></mat-grid-tile>
+  <mat-grid-tile><button mat-button (click)="save()">Сохранить</button></mat-grid-tile>
+</mat-grid-list>

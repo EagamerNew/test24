@@ -1,0 +1,16 @@
+p small {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.mat-form-field-infix {
+  width:300px !important;
+}
+.mat-card{
+  border-style: solid;
+  border-color: coral;
+}
+.right{
+  color: lawngreen;
+  font-weight: bold;
+}

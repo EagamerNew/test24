@@ -1,0 +1,10 @@
+mat-form-field {
+    width: 300px;
+}
+.mat-form-field.ng-dirty.ng-invalid .mat-form-field-underline{
+  background-color: blue;
+}
+
+.mat-form-field.ng-dirty.ng-invalid.mat-form-field-label{
+  color:red;
+}

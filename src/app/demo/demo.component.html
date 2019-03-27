@@ -1,0 +1,31 @@
+<section>
+  <mat-form-field>
+    <mat-select placeholder="Категория" required
+                (selectionChange)="getSectionsByCategory($event)">
+      <mat-option *ngFor="let category of categories" [value]="category.id">
+        {{category.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-select placeholder="Раздел" required [disabled]="sectionSelectDisable"
+                (selectionChange)="getQuestionIdListBySectionId($event)">
+      <mat-option *ngFor="let section of sections" [value]="section.id">
+        {{section.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+
+  <mat-form-field>
+    <input type="text" matInput [(ngModel)]="templateName" required placeholder="Название шаблона теста">
+  </mat-form-field>
+  <span *ngIf="countAvailable >= 0">
+
+    <p>Доступно вопросов: <b>{{countAvailable}}</b></p>
+  </span>
+  <mat-form-field>
+    <input type="number" matInput [(ngModel)]="countQuestion" required placeholder="Сколько вопросов внутри теста">
+  </mat-form-field>
+  <button mat-button (click)="createTemplate()">Создать шаблон теста</button>
+</section>

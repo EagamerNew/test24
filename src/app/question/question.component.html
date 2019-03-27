@@ -1,0 +1,72 @@
+<section>
+  <form fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" [formGroup]="questionForm" (ngSubmit)="onSave()">
+    <mat-form-field>
+      <mat-select placeholder="Автор">
+        <mat-option value="">
+          Нет
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Компания">
+        <mat-option value="">
+          Нет
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Категория" formControlName="category" required (selectionChange)="getSectionsByCategory($event)">
+        <mat-option  *ngFor="let category of categories" [value]="category.id">
+            {{category.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Раздел" formControlName="section" required [disabled]="sectionSelectDisable">
+        <mat-option *ngFor="let section of sections" [value]="section.id">
+            {{section.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Выберите тип ответа" formControlName="questionType" required (selectionChange)="doShowAnswersInput($event)">
+        <mat-option *ngFor="let key of questionTypeKeys" [value]="key">
+          {{key}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Специальность">
+        <mat-option value="">
+          Нет
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <textarea type="text" maxlength="200" rows="3" matInput placeholder="Текст вопроса" formControlName="description"
+        required>
+        </textarea>
+    </mat-form-field>
+
+    <!-- 4 ответа -->
+    <span  *ngIf="isQuestionTypeSelected" formArrayName="answers"  >
+      <span *ngFor="let ans of answersForm.controls; let i = index">
+        <mat-form-field [formGroupName]="i"  *ngIf="isQuestionTypeSelected" >
+          <input type="text" [readonly]="isYesNoQuestion" matInput placeholder="{{i+1}}. Текст ответа" formControlName="answer" required >
+        </mat-form-field>
+      </span>
+  </span>
+
+    <mat-form-field>
+      <mat-select placeholder="Выберите правильный ответ" formControlName="correctAnswer">
+        <mat-option *ngFor="let answer of answers" [value]="answer - 1" required>
+          {{ answer }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <input type="number" matInput placeholder="Вес ответа" formControlName="point" required>
+    </mat-form-field>
+    <button mat-raised-button color="primary" [disabled]="questionForm.invalid">Добавить</button>
+  </form>
+</section>

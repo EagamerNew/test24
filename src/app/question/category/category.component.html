@@ -1,0 +1,22 @@
+<section>
+  <form fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" [formGroup]="questionCategoryForm"
+    (ngSubmit)="onSave()">
+    <mat-form-field>
+      <input type="text" matInput placeholder="Название категорий" formControlName="name">
+    </mat-form-field>
+    <button mat-raised-button color="primary" [disabled]="questionCategoryForm.invalid">{{btnTitle}}</button>
+  </form>
+  <br>
+  <mat-list>
+    <mat-list-item *ngFor="let category of categories">
+      <h3 matLine> {{category.name}} </h3>
+      <button mat-icon-button color="primary" (click)="edit(category)">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button color="accent" (click)="delete(category)">
+        <mat-icon>delete</mat-icon>
+      </button>
+      <mat-divider></mat-divider>
+    </mat-list-item>
+  </mat-list>
+</section>

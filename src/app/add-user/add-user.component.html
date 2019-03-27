@@ -1,0 +1,43 @@
+
+<mat-form-field class="example-full-width">
+  <input matInput placeholder="idn"[(ngModel)]="user.idn" >
+</mat-form-field>
+
+<mat-form-field class="example-full-width">
+  <input matInput placeholder="lastname"[(ngModel)]="user.lastname" >
+</mat-form-field>
+
+
+<mat-form-field class="example-full-width">
+  <input matInput placeholder="firstname"[(ngModel)]="user.firstname" >
+</mat-form-field>
+
+<mat-form-field class="example-full-width">
+  <mat-select placeholder="gender" [(ngModel)]="user.gender">
+    <mat-option  *ngFor="let gen of gender" [value]="gen.code">
+      {{gen.name}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<mat-form-field class="example-full-width">
+  <mat-select placeholder="city" [(ngModel)]="user.city">
+    <mat-option  *ngFor="let city of cities" [value]="city.code">
+      {{city.name}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<mat-form-field class="example-full-width">
+  <input type="date" matInput placeholder="birthdate "[(ngModel)]="user.birthdate" >
+</mat-form-field>
+
+<mat-form-field class="example-full-width">
+
+  <input matInput placeholder="phoneNumber"[(ngModel)]="user.phoneNumber" >
+</mat-form-field>
+<hr>
+<mat-grid-list cols="2" rowHeight="2:1">
+  <mat-grid-tile><button mat-button >Отменить</button></mat-grid-tile>
+  <mat-grid-tile><button mat-button >Сохранить</button></mat-grid-tile>
+</mat-grid-list>

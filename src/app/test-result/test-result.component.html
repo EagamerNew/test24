@@ -1,0 +1,24 @@
+<mat-card class="example-card"
+          [style.color]="data.isTest? 'blue': 'green'"
+          [style.border]="data.isTest ? '1px solid blue' : '1px solid green'">
+  <div>
+    <span style="float: left">{{data.title}}</span>
+    <span style="float: right" *ngIf="data.isTest">Тест</span>
+    <span style="float: right" *ngIf="!data.isTest">Экзамен</span>
+  </div>
+  <br>
+  <mat-card-content style="text-align: center; padding: 30px 0;">
+    <h2>
+      Ваш результат
+    </h2>
+    <p class="mat-caption">{{data.category}}</p>
+    <p class="mat-caption">{{data.section}}</p>
+  </mat-card-content>
+  <div style="margin-bottom:36px;">
+    <span style="float: left">
+      <span>{{data.correct}}</span> -
+      <span style="color:red">{{data.mistake}}</span>
+    </span>
+    <span style="float: right">{{data.score}}</span>
+  </div>
+</mat-card>
