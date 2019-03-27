@@ -26,4 +26,13 @@
   <button mat-button [routerLink]="['registration']">
        Добавить пользователя
   </button>
+  <button mat-button *ngIf="this.cookie.get('userId')" [routerLink]="['/profile']">
+    Мой профиль
+  </button>
+  <button mat-button *ngIf="!this.cookie.get('userId')" [routerLink]="['/login-phone']">
+    Вход
+  </button>
+  <button mat-button *ngIf="this.cookie.get('userId')" (click)="logout()">
+    Выход
+  </button>
 </div>

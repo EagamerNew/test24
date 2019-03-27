@@ -45,6 +45,14 @@ export class CommonService {
     });
   }
 
+  getUserByDocId(docId: string) {
+    return this.fireSQL.query(`SELECT __name__ as id, idn, lastname,firstname, birthdate, 
+          gender, city,phoneNumber, status
+        FROM user WHERE __name__ = '` + docId + `'`).then(res => {
+      return res;
+    });
+  }
+
   checkUserByPhone(phone: string) {
     return this.fireSQL.query(`SELECT __name__ 
         FROM user WHERE phoneNumber= '` + phone + `'`).then(res => {

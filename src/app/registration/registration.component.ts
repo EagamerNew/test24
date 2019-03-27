@@ -11,8 +11,8 @@ import {CommonService} from "../shared/common.service";
 })
 export class RegistrationComponent implements OnInit {
 
-  private userId: string;
-  private user: any = {
+  userId: string;
+  user: any = {
     idn: "",
     lastname: "",
     firstname: "",

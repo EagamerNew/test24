@@ -6,6 +6,7 @@ import {FormBuilder} from "@angular/forms";
 import {MatSnackBar} from "@angular/material";
 import {CommonService} from "../shared/common.service";
 import {Router} from "@angular/router";
+import {CookieService} from "ngx-cookie-service";
 
 @Component({
   selector: 'app-phone-login',
@@ -29,7 +30,8 @@ export class PhoneLoginComponent implements OnInit {
   constructor(private win: WindowService,
               public snackBar: MatSnackBar,
               private commonService: CommonService,
-              private router: Router) {
+              private router: Router,
+              private cookieService: CookieService) {
   }
 
   ngOnInit() {
@@ -89,15 +91,21 @@ export class PhoneLoginComponent implements OnInit {
 
         this.commonService.getUserByPhone(this.phoneString).then(res=>{
           if(res && res[0]){
+            let expiredDate = new Date();
+            expiredDate.setHours(expiredDate.getHours() + 1);
+            console.log("EXPIRES: ", expiredDate);
+
             let reUser:any  = res[0];
             this.user = result.user;
             console.log("res: ", res[0], " this.user.uid: " + this.user.uid);
             if(reUser.status === 'created'){
               this.commonService.updateUserId(reUser, this.user.uid).then(res=>{
+                this.cookieService.set('userId', reUser.id, expiredDate);
                 this.openSnackBar('Вы успешно авторизовались', '');
                 this.router.navigateByUrl('');
               });
             }else{
+              this.cookieService.set('userId', reUser.id, expiredDate);
               this.openSnackBar('Вы успешно авторизовались', '');
               this.router.navigateByUrl('');
             }

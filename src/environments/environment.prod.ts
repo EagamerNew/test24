@@ -6,7 +6,7 @@ export const environment = {
   production: true,
   firebaseConfig: {
     apiKey: "AIzaSyBaW-N22KZ1sqWBmX1HdCPAj-vOiJNCNf0",
-    authDomain: "test24teamvictus.firebaseapp.com",
+    authDomain: "test24.kz",
     databaseURL: "https://test24teamvictus.firebaseio.com",
     projectId: "test24teamvictus",
     storageBucket: "test24teamvictus.appspot.com",

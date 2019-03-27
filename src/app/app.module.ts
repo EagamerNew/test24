@@ -24,7 +24,7 @@ import { ListQuestionsComponent } from './list-questions/list-questions.componen
 import { TestComponent } from './test/test.component';
 import {PhoneLoginComponent} from "./phone-login/phone-login.component";
 import * as firebase from 'firebase';
-import { AddUserComponent } from './add-user/add-user.component';
+import { ProfileComponent } from './profile/profile.component';
 import {QuestionModerationComponent} from "./question-moderation/question-moderation.component";
 import {TestResult} from "tslint/lib/test";
 import {TestResultComponent} from "./test-result/test-result.component";
@@ -33,6 +33,7 @@ import {ListComponent} from "./demo/list/list.component";
 import { FirestoreSettingsToken } from '@angular/fire/firestore';
 import {CommonService} from "./shared/common.service";
 import {RegistrationComponent} from "./registration/registration.component";
+import {CookieService} from "ngx-cookie-service";
 
 @NgModule({
   declarations: [
@@ -45,7 +46,7 @@ import {RegistrationComponent} from "./registration/registration.component";
     ListQuestionsComponent,
     TestComponent,
     PhoneLoginComponent,
-    AddUserComponent,
+    ProfileComponent,
     QuestionModerationComponent,
     TestResultComponent,
     DemoComponent,
@@ -64,7 +65,10 @@ import {RegistrationComponent} from "./registration/registration.component";
     AngularFireModule.initializeApp(environment.firebaseConfig),
 
   ],
-  providers: [QuestionService, SectionService, CategoryService,{ provide: FirestoreSettingsToken, useValue: {} },CommonService
+  providers: [QuestionService,
+    CookieService,
+    SectionService,
+    CategoryService,{ provide: FirestoreSettingsToken, useValue: {} },CommonService
   ],
   bootstrap: [AppComponent]
 })
