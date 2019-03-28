@@ -1,0 +1,74 @@
+<mat-expansion-panel *ngFor="let user of userList">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      {{user.lastname}} {{user.firstname}}
+    </mat-panel-title>
+    <!--This will be user role-->
+    <!--<mat-panel-description>-->
+    <!--{{user.description}}-->
+    <!--</mat-panel-description>-->
+  </mat-expansion-panel-header>
+
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="ИИН" [(ngModel)]="user.idn">
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="Имя" [(ngModel)]="user.firstname">
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="Фамилия" [(ngModel)]="user.lastname">
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <mat-select placeholder="Пол" [(ngModel)]="user.gender">
+      <mat-option *ngFor="let genderList of genderList" [value]="genderList.code">
+        {{genderList.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <mat-select placeholder="Город" [(ngModel)]="user.city">
+      <mat-option *ngFor="let city of cityList" [value]="city.code">
+        {{city.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <input type="date" matInput placeholder="Дата рождения" [(ngModel)]="user.birthdate">
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="Номер телефона" [(ngModel)]="user.phoneNumber" >
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <mat-select placeholder="Статус" [(ngModel)]="user.status" disabled>
+      <mat-option *ngFor="let status of statusList" [value]="status.code">
+        {{status.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <mat-select placeholder="Роль" [(ngModel)]="user.role">
+      <mat-option *ngFor="let role of roleList" [value]="role.code">
+        {{role.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <mat-label>Привилегии</mat-label>
+    <mat-select  multiple [(ngModel)]="user.privilegeList">
+      <mat-option *ngFor="let privelege of privilegeList" [value]="privelege.code" matTooltip="{{privelege.description}}">{{privelege.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <button mat-button (click)="updateUserByUserDocId(user)" class="mat-primary">Сохранить</button>
+
+  <button mat-button (click)="deleteUserByUserDocId(user.id)" class="mat-warn">Удалить</button>
+</mat-expansion-panel>

@@ -3,6 +3,7 @@ import {ActivatedRoute} from "@angular/router";
 import {MatSnackBar} from "@angular/material";
 import {User} from "../shared/model/user";
 import {CommonService} from "../shared/common.service";
+import {CITIES, GENDER, USER_STATUS} from "../shared/default-constant";
 
 @Component({
   selector: 'app-registration',
@@ -21,13 +22,13 @@ export class RegistrationComponent implements OnInit {
     phoneNumber: "",
     city: "",
     userId: "",
-    status:"created"
+    status: "created",
+    role: "user",
+    privilegeList:[]
   };
-  gender = [{code: 'male', name: "мужской"},
-    {code: 'female', name: "женский"}];
-
-  cities = [{code: 'almaty', name: "Алматы"},
-    {code: 'taraz', name: "Тараз"}];
+  gender = GENDER;
+  statusList = USER_STATUS;
+  cities = CITIES;
 
   constructor(private router: ActivatedRoute,
               public snackBar: MatSnackBar,
@@ -47,7 +48,9 @@ export class RegistrationComponent implements OnInit {
   save() {
     this.commonService.checkUserByPhone(this.user.phoneNumber).then(res => {
       console.log(res);
-      if (!res) {
+      console.log('phoneNumber: ', this.user.phoneNumber);
+      console.log('length: ', res.length);
+      if (res.length === 0) {
         this.commonService.saveUser(this.user).then(res => {
           this.user = {
             idn: "",
@@ -58,7 +61,9 @@ export class RegistrationComponent implements OnInit {
             phoneNumber: "",
             city: "",
             userId: "",
-            status:"created"
+            status: "created",
+            role: "user",
+            privilegeList:[]
           };
           this.openSnackBar('Пользователь создан', '');
         });

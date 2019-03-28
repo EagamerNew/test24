@@ -34,6 +34,7 @@ import { FirestoreSettingsToken } from '@angular/fire/firestore';
 import {CommonService} from "./shared/common.service";
 import {RegistrationComponent} from "./registration/registration.component";
 import {CookieService} from "ngx-cookie-service";
+import {UserComponent} from "./user/user.component";
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import {CookieService} from "ngx-cookie-service";
     TestResultComponent,
     DemoComponent,
     ListComponent, // For template list
-    RegistrationComponent
+    RegistrationComponent,
+    UserComponent
   ],
   imports: [
     BrowserModule,

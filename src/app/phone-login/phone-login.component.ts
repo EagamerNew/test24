@@ -101,6 +101,7 @@ export class PhoneLoginComponent implements OnInit {
             if(reUser.status === 'created'){
               this.commonService.updateUserId(reUser, this.user.uid).then(res=>{
                 this.cookieService.set('userId', reUser.id, expiredDate);
+                this.cookieService.set('role', reUser.role, expiredDate);
                 this.openSnackBar('Вы успешно авторизовались', '');
                 this.router.navigateByUrl('');
               });

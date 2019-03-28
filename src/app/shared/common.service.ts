@@ -33,12 +33,39 @@ export class CommonService {
       gender: user.gender,
       status: 'active',
       city: user.city,
-      phoneNumber: user.phoneNumber
+      phoneNumber: user.phoneNumber,
+      role: user.role,
+      privilegeList: user.privilegeList
     });
   }
 
+  updateUserByDocId(userDocId: string, user){
+    return this.firestore.collection('user').doc(userDocId).set({
+      idn: user.idn,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      birthdate: user.birthdate,
+      gender: user.gender,
+      status: user.status,
+      city: user.city,
+      phoneNumber: user.phoneNumber,
+      role: user.role,
+      privilegeList: user.privilegeList
+    });
+  }
+
+  deleteUserByUserDocId(userDocId){
+    return this.firestore.collection('user').doc(userDocId).delete();
+  }
+
+  getUserList(){
+    return this.fireSQL.query(`SELECT __name__ as id, idn,role ,privilegeList,lastname,firstname, birthdate, 
+          gender, city, phoneNumber, status
+        FROM user`);
+  }
+
   getUserByPhone(phone: string) {
-    return this.fireSQL.query(`SELECT __name__ as id, idn, lastname,firstname, birthdate, 
+    return this.fireSQL.query(`SELECT __name__ as id,role, idn,privilegeList, lastname,firstname, birthdate, 
           gender, city,phoneNumber, status
         FROM user WHERE phoneNumber= '` + phone + `'`).then(res => {
       return res;
@@ -46,7 +73,7 @@ export class CommonService {
   }
 
   getUserByDocId(docId: string) {
-    return this.fireSQL.query(`SELECT __name__ as id, idn, lastname,firstname, birthdate, 
+    return this.fireSQL.query(`SELECT __name__ as id, idn,role,privilegeList, lastname,firstname, birthdate, 
           gender, city,phoneNumber, status
         FROM user WHERE __name__ = '` + docId + `'`).then(res => {
       return res;
