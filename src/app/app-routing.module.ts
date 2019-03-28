@@ -14,6 +14,7 @@ import {ListComponent} from "./demo/list/list.component";
 import {RegistrationComponent} from "./registration/registration.component";
 import {UserComponent} from "./user/user.component";
 import {CityComponent} from './city/city.component';
+import {PositionComponent} from './position/position.component';
 
 const routes: Routes = [
   {path: '', component: MenuComponent},
@@ -30,6 +31,7 @@ const routes: Routes = [
   {path: 'demo-list', component: ListComponent},
   {path: 'registration', component: RegistrationComponent},
   {path: 'city', component: CityComponent},
+  {path: 'position', component: PositionComponent},
   {path: 'users', component: UserComponent}
 ];
 

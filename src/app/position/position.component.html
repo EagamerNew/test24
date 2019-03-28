@@ -1,0 +1,15 @@
+<mat-form-field class="example-full-width">
+  <input matInput placeholder="Код" [(ngModel)]="position.code">
+</mat-form-field>
+<mat-form-field class="example-full-width">
+  <input matInput placeholder="Имя" [(ngModel)]="position.name" >
+</mat-form-field>
+<button class="example-full-width" (click)="setposition()" color="primary" mat-button >Сохранить</button>
+<hr>
+<div *ngFor="let posi of positions"  fxLayout="row" fxLayoutAlign="center center">
+  <div fxFlex= "35">{{posi.code}} </div>
+  <div fxFlex = "35">{{posi.name}} </div>
+  <div ><button mat-icon-button color="warn" (click)="deletePosition(posi)">
+    <mat-icon>clear</mat-icon>
+  </button></div>
+</div>

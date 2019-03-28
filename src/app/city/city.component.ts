@@ -65,6 +65,7 @@ setCity(): void {
     };
     console.log(city)
     this._service.deleteCity(city).then(res => {
+      this.getCityList()
       this.openSnackBar('Город успешно удален', '');
     });
 }

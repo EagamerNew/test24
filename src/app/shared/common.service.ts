@@ -67,6 +67,15 @@ export class CommonService {
   getCityList(){
     return this.fireSQL.query(`SELECT __name__ as id, code, name FROM city`);
   }
+  addPostion(position){
+    return this.firestore.collection('position').add(position);
+  }
+  deletePostion(position){
+    return this.firestore.collection('position').doc(position.id).delete();
+  }
+  getPostionList(){
+    return this.fireSQL.query(`SELECT __name__ as id, code, name FROM position`);
+  }
 
   getUserList(){
     return this.fireSQL.query(`SELECT __name__ as id, idn,role ,privilegeList,lastname,firstname, birthdate, 

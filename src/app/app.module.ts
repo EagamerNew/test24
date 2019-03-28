@@ -36,6 +36,7 @@ import {RegistrationComponent} from "./registration/registration.component";
 import {CookieService} from "ngx-cookie-service";
 import {UserComponent} from "./user/user.component";
 import {CityComponent} from './city/city.component';
+import {PositionComponent} from './position/position.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import {CityComponent} from './city/city.component';
     ListComponent, // For template list
     RegistrationComponent,
     UserComponent,
-    CityComponent
+    CityComponent,
+    PositionComponent
   ],
   imports: [
     BrowserModule,
