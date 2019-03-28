@@ -1,0 +1,15 @@
+<mat-form-field class="example-full-width">
+  <input matInput placeholder="Код" [(ngModel)]="city.code">
+</mat-form-field>
+<mat-form-field class="example-full-width">
+  <input matInput placeholder="Имя" [(ngModel)]="city.name" >
+</mat-form-field>
+<button class="example-full-width" (click)="setCity()" color="primary" mat-button >Сохранить</button>
+<hr>
+<div *ngFor="let city of cities"  fxLayout="row" fxLayoutAlign="center center">
+  <div fxFlex= "35">{{city.code}} </div>
+  <div fxFlex = "35">{{city.name}} </div>
+  <div ><button mat-icon-button color="warn" (click)="deleteCity(city)">
+    <mat-icon>clear</mat-icon>
+  </button></div>
+</div>

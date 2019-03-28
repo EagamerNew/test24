@@ -58,6 +58,16 @@ export class CommonService {
     return this.firestore.collection('user').doc(userDocId).delete();
   }
 
+  addCity(city){
+    return this.firestore.collection('city').add(city);
+  }
+  deleteCity(city){
+    return this.firestore.collection('city').doc(city.id).delete();
+  }
+  getCityList(){
+    return this.fireSQL.query(`SELECT __name__ as id, code, name FROM city`);
+  }
+
   getUserList(){
     return this.fireSQL.query(`SELECT __name__ as id, idn,role ,privilegeList,lastname,firstname, birthdate, 
           gender, city, phoneNumber, status
