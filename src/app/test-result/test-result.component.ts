@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {CommonService} from "../shared/common.service";
 
 @Component({
   selector: 'app-test-result',
@@ -22,9 +23,11 @@ export class TestResultComponent implements OnInit {
         score: 8.0,
         category: 'Юрфак',
         section: 'Менеджмент',
-        title: ''
+        title: '',
+        userDocId: ''
       }
     }
   }
+
 
 }

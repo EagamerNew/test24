@@ -3,6 +3,7 @@ import {QuestionService} from "../shared/question.service";
 import {QuestionList} from "../list-questions/question-list";
 import {ActivatedRoute} from "@angular/router";
 import {MatSnackBar} from "@angular/material";
+import {CommonService} from "../shared/common.service";
 
 @Component({
   selector: 'app-test',
@@ -29,7 +30,8 @@ export class TestComponent implements OnInit {
 
   constructor(private questionService: QuestionService,
               private route: ActivatedRoute,
-              public snackBar: MatSnackBar) {
+              public snackBar: MatSnackBar,
+              private commonService: CommonService) {
   }
 
   templateId: string;
@@ -100,19 +102,27 @@ export class TestComponent implements OnInit {
     this.questionService.getCategoryNameById(this.template.categoryId).subscribe(res => {
       let result: any = res.payload.data();
       this.dataForResult.category = 'Категория не найдена';
-      if(result){
+      if (result) {
         this.dataForResult.category = result.name + '';
       }
-
+      this.questionService.getSectionNameById(this.template.sectionId).subscribe(res => {
+        let result: any = res.payload.data();
+        this.dataForResult.section = 'Раздел не найден';
+        if (result) {
+          this.dataForResult.section = result.name + '';
+        }
+        this.saveResult(this.dataForResult);
+      });
     });
-    this.questionService.getSectionNameById(this.template.sectionId).subscribe(res => {
-      let result: any = res.payload.data();
-      this.dataForResult.section = 'Раздел не найден';
-      if(result){
-        this.dataForResult.section = result.name + '';
-      }
-    })
 
+
+  }
+
+
+  saveResult(data): void {
+    this.commonService.saveResult(data).then(res => {
+      console.log('saveResult is success: ', res);
+    })
   }
 
   openSnackBar(message: string, action: string) {

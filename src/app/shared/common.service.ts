@@ -19,6 +19,10 @@ export class CommonService {
     this.fireSQL = new FireSQL(this.fireDB);
   }
 
+  saveResult(result){
+    return this.firestore.collection('result').add(result);
+  }
+
   saveUser(user: any) {
     return this.firestore.collection('user').add(user);
   }
