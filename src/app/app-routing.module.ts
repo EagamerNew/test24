@@ -15,6 +15,9 @@ import {RegistrationComponent} from "./registration/registration.component";
 import {UserComponent} from "./user/user.component";
 import {CityComponent} from './city/city.component';
 import {PositionComponent} from './position/position.component';
+import {NewCompanyComponent} from './new-company/new-company.component';
+import {CompanyListComponent} from './company-list/company-list.component';
+import {CompanyEditComponent} from './company-list/company-edit/company-edit.component';
 
 const routes: Routes = [
   {path: '', component: MenuComponent},
@@ -32,6 +35,9 @@ const routes: Routes = [
   {path: 'registration', component: RegistrationComponent},
   {path: 'city', component: CityComponent},
   {path: 'position', component: PositionComponent},
+  {path: 'new-company', component: NewCompanyComponent},
+  {path: 'company-list', component: CompanyListComponent},
+  {path: 'company-list/:id', component: CompanyEditComponent},
   {path: 'users', component: UserComponent}
 ];
 

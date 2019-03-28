@@ -37,6 +37,9 @@ import {CookieService} from "ngx-cookie-service";
 import {UserComponent} from "./user/user.component";
 import {CityComponent} from './city/city.component';
 import {PositionComponent} from './position/position.component';
+import {NewCompanyComponent} from './new-company/new-company.component';
+import {CompanyListComponent} from './company-list/company-list.component';
+import {CompanyEditComponent} from './company-list/company-edit/company-edit.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +60,10 @@ import {PositionComponent} from './position/position.component';
     RegistrationComponent,
     UserComponent,
     CityComponent,
-    PositionComponent
+    PositionComponent,
+    NewCompanyComponent,
+    CompanyListComponent,
+    CompanyEditComponent
   ],
   imports: [
     BrowserModule,

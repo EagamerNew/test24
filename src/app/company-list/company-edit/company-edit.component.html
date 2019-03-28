@@ -1,0 +1,14 @@
+<mat-form-field class="example-full-width">
+  <input matInput placeholder="БИН" [(ngModel)]="company.bin">
+</mat-form-field>
+<mat-form-field class="example-full-width">
+  <input matInput placeholder="Название" [(ngModel)]="company.name">
+</mat-form-field>
+<mat-form-field class="example-full-width">
+  <input matInput placeholder="+7 Номер мобильного" [(ngModel)]="company.phoneNumber">
+</mat-form-field>
+<div  fxLayout="row" fxLayoutAlign="center center">
+  <div fxFlex= "35"><button mat-icon-button (click)="setCompany()" color="primary" mat-button >Сохранить</button></div>
+  <div fxFlex = "10"></div>
+  <div ><button mat-icon-button (click)="deleteCompany()" color="warn" mat-button >Удалить</button></div>
+</div>
