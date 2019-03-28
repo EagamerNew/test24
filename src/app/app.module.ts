@@ -35,6 +35,8 @@ import {CommonService} from "./shared/common.service";
 import {RegistrationComponent} from "./registration/registration.component";
 import {CookieService} from "ngx-cookie-service";
 import {UserComponent} from "./user/user.component";
+import {CityComponent} from './city/city.component';
+import {PositionComponent} from './position/position.component';
 
 @NgModule({
   declarations: [
@@ -53,14 +55,16 @@ import {UserComponent} from "./user/user.component";
     DemoComponent,
     ListComponent, // For template list
     RegistrationComponent,
-    UserComponent
+    UserComponent,
+    CityComponent,
+    PositionComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MaterialModule,
-    FlexLayoutModule,  
+    FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule,
     AngularFirestoreModule,
