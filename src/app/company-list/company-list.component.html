@@ -1,0 +1,6 @@
+
+<div *ngFor="let company of companyList" [routerLink]="'/company-list/' + company.id"  fxLayout="row" fxLayoutAlign="center center">
+  <div fxFlex= "45">{{company.bin}} </div>
+  <div fxFlex= "10"></div>
+  <div fxFlex = "45">{{company.name}} </div>
+</div>

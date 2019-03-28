@@ -78,7 +78,26 @@ export class CommonService {
     return this.firestore.collection('position').doc(position.id).delete();
   }
   getPostionList(){
-    return this.fireSQL.query(`SELECT __name__ as id, code, name FROM position`);
+    return this.fireSQL.query(`SELECT __name__ as id, bin, name,phoneNumber FROM company`);
+  }
+  addCompany(company){
+    return this.firestore.collection('company').add(company);
+  }
+  updateCompany( company){
+    return this.firestore.collection('company').doc(company.id).set({
+      bin: company.bin,
+      name: company.name,
+      phoneNumber: company.phoneNumber,
+    });
+  }
+  getCompanyById(id){
+    return this.fireSQL.query(`SELECT __name__ as id, bin, name,phoneNumber FROM company where __name__ ='` + id + `'`);
+  }
+  deleteCompany(id){
+    return this.firestore.collection('company').doc(id).delete();
+  }
+  getCompanyList(){
+    return this.fireSQL.query(`SELECT __name__ as id, bin, name,phoneNumber FROM company`);
   }
 
   getUserList(){
