@@ -122,4 +122,12 @@ export class CommonService {
   deleteTemplateById(id: string) {
     return this.firestore.collection("template").doc(id).delete();
   }
+
+  getUserPrivilegeListByDocId(userDocId: string){
+    return this.fireSQL.query(`SELECT __name__ as id, privilegeList
+      FROM user WHERE __name__ ='`+ userDocId +`'`)
+      .then(res => {
+        return res;
+      });
+  }
 }

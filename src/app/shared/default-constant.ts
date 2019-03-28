@@ -1,7 +1,8 @@
 export const GENDER = [{code: 'male', name: "мужской"},
   {code: 'female', name: "женский"}];
 export const CITIES = [{code: 'almaty', name: "Алматы"},
-  {code: 'taraz', name: "Тараз"}];
+  {code: '' +
+      '', name: "Тараз"}];
 export const USER_STATUS = [{code: 'created', name: 'Новый'},
   {code: 'active', name: 'Активен'}, {code: 'disabled', name: 'Заблокирован'}];
 export const USER_ROLE_LIST = [

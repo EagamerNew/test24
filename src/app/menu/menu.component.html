@@ -1,34 +1,36 @@
-<div fxLayout="column">
-  <button mat-button *ngIf="this.cookie.get('userId') && (this.cookie.get('role') === 'admin')" [routerLink]="['/question']">
-    Создать вопрос
-  </button>
-  <button mat-button *ngIf="this.cookie.get('userId') && (this.cookie.get('role') === 'admin')" [routerLink]="['/question-category']">
-    Добавить категорию
-  </button>
-  <button mat-button *ngIf="this.cookie.get('userId') && (this.cookie.get('role') === 'admin')" [routerLink]="['question-section']">
-    Добавить раздел
-  </button>
-  <button mat-button *ngIf="this.cookie.get('userId') && (this.cookie.get('role') === 'admin')" [routerLink]="['question-moderation']">
-    Модерация вопросов
-  </button>
-  <button mat-button *ngIf="this.cookie.get('userId') && (this.cookie.get('role') === 'admin')" [routerLink]="['questions-list-section']">
-       Список вопросов
-  </button>
-  <button mat-button *ngIf="this.cookie.get('userId') && (this.cookie.get('role') === 'admin')" [routerLink]="['demo']">
-        Создать шаблон теста
-  </button>
-  <button mat-button *ngIf="this.cookie.get('userId') && (this.cookie.get('role') === 'admin')" [routerLink]="['demo-list']">
-    Список шаблон теста
-  </button>
-  <!--<button mat-button [routerLink]="['test']">-->
-       <!--Сдать тест-->
-  <!--</button>-->
-  <button mat-button *ngIf="this.cookie.get('userId') && (this.cookie.get('role') === 'admin')" [routerLink]="['registration']">
-       Добавить пользователя
-  </button>
-  <button mat-button *ngIf="this.cookie.get('userId') && (this.cookie.get('role') === 'admin')" [routerLink]="['users']">
-    Список пользователей
-  </button>
+<div fxLayout="column" >
+  <div *ngIf="userPrivilegeList" fxLayout="column">
+    <button mat-button *ngIf="this.cookie.get('userId') && checkToAccess('question')" [routerLink]="['/question']"> <!--questionPR, staffRL, authorRL -->
+      Создать вопрос
+    </button>
+    <button mat-button *ngIf="this.cookie.get('userId') && checkToAccess('question-category')" [routerLink]="['/question-category']"> <!--categoryPR -->
+      Добавить категорию
+    </button>
+    <button mat-button *ngIf="this.cookie.get('userId') && checkToAccess('question-section')" [routerLink]="['question-section']"><!--sectionPR -->
+      Добавить раздел
+    </button>
+    <button mat-button *ngIf="this.cookie.get('userId') && checkToAccess('question-moderation')" [routerLink]="['question-moderation']"><!--staffRL, question-moderationPL -->
+      Модерация вопросов
+    </button>
+    <button mat-button *ngIf="this.cookie.get('userId') && checkToAccess('questions-list-section')" [routerLink]="['questions-list-section']"> <!--questionPR, staffRL, authorRL -->
+      Список вопросов
+    </button>
+    <button mat-button *ngIf="this.cookie.get('userId') && checkToAccess('demo')" [routerLink]="['demo']"><!--staffRL, question-templatePL -->
+      Создать шаблон теста
+    </button>
+    <button mat-button *ngIf="this.cookie.get('userId') && checkToAccess('demo-list')" [routerLink]="['demo-list']"><!--staffRL, question-templatePL -->
+      Список шаблон теста
+    </button>
+    <!--<button mat-button [routerLink]="['test']">-->
+    <!--Сдать тест-->
+    <!--</button>-->
+    <button mat-button *ngIf="this.cookie.get('userId') && checkToAccess('registration')" [routerLink]="['registration']"><!--staffRL, usersPL-->
+      Добавить пользователя
+    </button>
+    <button mat-button *ngIf="this.cookie.get('userId') && checkToAccess('users')" [routerLink]="['users']"><!-- usersPL-->
+      Список пользователей
+    </button>
+  </div>
   <button mat-button *ngIf="this.cookie.get('userId')" [routerLink]="['/profile']">
     Мой профиль
   </button>
