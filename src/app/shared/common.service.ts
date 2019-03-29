@@ -71,6 +71,22 @@ export class CommonService {
   getCityList(){
     return this.fireSQL.query(`SELECT __name__ as id, code, name FROM city`);
   }
+  addSubsidiary(subsidiary){
+    return this.firestore.collection('subsidiary').add(subsidiary);
+  }
+  getSubsidiaryList(){
+    return this.fireSQL.query(`SELECT __name__ as id, cityCode, name,address FROM subsidiary`);
+  }
+  updateSubsidiary( subsidiary){
+    return this.firestore.collection('subsidiary').doc(subsidiary.id).set({
+      cityCode: subsidiary.cityCode,
+      name: subsidiary.name,
+      address: subsidiary.address,
+    });
+  }
+  deleteSubsidiary(subsidiary){
+    return this.firestore.collection('subsidiary').doc(subsidiary.id).delete();
+  }
   addPostion(position){
     return this.firestore.collection('position').add(position);
   }

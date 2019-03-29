@@ -40,6 +40,7 @@ import {PositionComponent} from './position/position.component';
 import {NewCompanyComponent} from './new-company/new-company.component';
 import {CompanyListComponent} from './company-list/company-list.component';
 import {CompanyEditComponent} from './company-list/company-edit/company-edit.component';
+import {SubsidiaryComponent} from './subsidiary/subsidiary.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import {CompanyEditComponent} from './company-list/company-edit/company-edit.com
     PositionComponent,
     NewCompanyComponent,
     CompanyListComponent,
-    CompanyEditComponent
+    CompanyEditComponent,
+    SubsidiaryComponent
   ],
   imports: [
     BrowserModule,

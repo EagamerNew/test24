@@ -1,0 +1,40 @@
+<mat-form-field class="example-full-width">
+  <mat-select matInput placeholder="Город" [(ngModel)]="subsidiary.cityCode">
+    <mat-option *ngFor="let city of cities" [value]="city.code">
+      {{city.name}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+<mat-form-field class="example-full-width">
+  <input matInput placeholder="Название" [(ngModel)]="subsidiary.name" >
+</mat-form-field>
+<mat-form-field class="example-full-width">
+  <input matInput placeholder="Адрес" [(ngModel)]="subsidiary.address" >
+</mat-form-field>
+<button class="example-full-width" (click)="setSubsidiary()" color="primary" mat-button >Сохранить</button>
+<mat-expansion-panel *ngFor="let subsidiaries of subsidiaryList">
+
+  <mat-expansion-panel-header >
+    <mat-panel-title>{{subsidiaries.name}}
+    </mat-panel-title>
+    <mat-panel-description>{{subsidiaries.address}}
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+  <mat-form-field class="example-full-width">
+    <mat-select matInput placeholder="Город" [(ngModel)]="subsidiaries.cityCode">
+      <mat-option *ngFor="let city of cities" [value]="city.code">
+        {{city.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="Название" [(ngModel)]="subsidiaries.name" >
+  </mat-form-field>
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="Адрес" [(ngModel)]="subsidiaries.address" >
+  </mat-form-field>
+
+  <button mat-button (click)="updateSubsidiary(subsidiaries)" >Сохранить</button>
+
+  <button mat-button (click)="delete(subsidiaries)" >Удалить</button>
+</mat-expansion-panel>

@@ -18,6 +18,7 @@ import {PositionComponent} from './position/position.component';
 import {NewCompanyComponent} from './new-company/new-company.component';
 import {CompanyListComponent} from './company-list/company-list.component';
 import {CompanyEditComponent} from './company-list/company-edit/company-edit.component';
+import {SubsidiaryComponent} from "./subsidiary/subsidiary.component";
 
 const routes: Routes = [
   {path: '', component: MenuComponent},
@@ -38,6 +39,7 @@ const routes: Routes = [
   {path: 'new-company', component: NewCompanyComponent},
   {path: 'company-list', component: CompanyListComponent},
   {path: 'company-list/:id', component: CompanyEditComponent},
+  {path: 'subsidiary', component: SubsidiaryComponent},
   {path: 'users', component: UserComponent}
 ];
 
