@@ -33,9 +33,14 @@
   </mat-form-field>
 
   <mat-form-field class="example-full-width">
-
     <input matInput placeholder="Номер телефона" disabled [(ngModel)]="user.phoneNumber">
   </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="Пароль" [(ngModel)]="newPassword">
+  </mat-form-field>
+    <button mat-flat-button class="example-full-width" (click)="setNewPassword()">Сохранить новый пароль</button>
+
   <!--<hr>-->
   <!--<mat-grid-list cols="2" rowHeight="2:1">-->
   <!--<mat-grid-tile><button mat-button >Отменить</button></mat-grid-tile>-->

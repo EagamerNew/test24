@@ -84,6 +84,19 @@ export class CommonService {
       address: subsidiary.address,
     });
   }
+
+  updateUserPassword(docId: string, password: string){
+    return this.firestore.doc('user/' + docId).update({ 'password': password });
+  }
+
+  checkPhoneAndPassword(phone,password){
+    return this.fireSQL.query(`SELECT __name__ as id, idn,role ,privilegeList,lastname,firstname, birthdate, 
+          gender, city, phoneNumber, status
+          FROM user  
+          WHERE phoneNumber = '`+ phone +`' 
+          AND password = '`+password+`'`);
+  }
+
   deleteSubsidiary(subsidiary){
     return this.firestore.collection('subsidiary').doc(subsidiary.id).delete();
   }

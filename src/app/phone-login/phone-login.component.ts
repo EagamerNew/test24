@@ -24,6 +24,7 @@ export class PhoneLoginComponent implements OnInit {
 
   phoneString: string = "";
   phoneCode: string = "";
+  password: string;
 
   disableButton = false;
 
@@ -71,7 +72,7 @@ export class PhoneLoginComponent implements OnInit {
         this.disableButton = false;
       })
       .catch(error => {
-        this.openSnackBar('Аккаунт с таким номером не найден','');
+        this.openSnackBar('Аккаунт с таким номером не найден', '');
         console.log(error);
       });
 
@@ -89,44 +90,61 @@ export class PhoneLoginComponent implements OnInit {
       .confirm(this.verificationCode)
       .then(result => {
 
-        this.commonService.getUserByPhone(this.phoneString).then(res=>{
-          if(res && res[0]){
+        this.commonService.getUserByPhone(this.phoneString).then(res => {
+          if (res && res[0]) {
             let expiredDate = new Date();
             expiredDate.setHours(expiredDate.getHours() + 1);
             console.log("EXPIRES: ", expiredDate);
 
-            let reUser:any  = res[0];
+            let reUser: any = res[0];
             this.user = result.user;
             console.log("res: ", res[0], " this.user.uid: " + this.user.uid);
-            if(reUser.status === 'created'){
-              this.commonService.updateUserId(reUser, this.user.uid).then(res=>{
+            if (reUser.status === 'created') {
+              this.commonService.updateUserId(reUser, this.user.uid).then(res => {
                 this.cookieService.set('userId', reUser.id, expiredDate);
                 this.cookieService.set('role', reUser.role, expiredDate);
                 this.openSnackBar('Вы успешно авторизовались', '');
                 this.router.navigateByUrl('');
               });
-            }else{
+            } else {
               this.cookieService.set('userId', reUser.id, expiredDate);
               this.cookieService.set('role', reUser.role, expiredDate);
               this.openSnackBar('Вы успешно авторизовались', '');
               this.router.navigateByUrl('');
             }
-          }else{
-            this.openSnackBar("Аккаунт не найден. Свяжитесь с администратором.","");
+          } else {
+            this.openSnackBar("Аккаунт не найден. Свяжитесь с администратором.", "");
             console.log("error kind of 1");
           }
-        }, err=>{
-          this.openSnackBar("Аккаунт не найден. Свяжитесь с администратором.","");
+        }, err => {
+          this.openSnackBar("Аккаунт не найден. Свяжитесь с администратором.", "");
           console.log("error kind of 2: ", err);
         });
 
       })
       .catch(error => {
         this.disableButton = false;
-        this.openSnackBar("Введенный код не правильный","");
-        console.log(error, "Incorrect code entered?")});
+        this.openSnackBar("Введенный код не правильный", "");
+        console.log(error, "Incorrect code entered?")
+      });
   }
 
 
+  checkPhoneAndPassword() {
+    this.commonService.checkPhoneAndPassword(this.phoneString, this.password).then(res => {
+      let tempUser: any = res[0];
+      let expiredDate = new Date();
+      expiredDate.setHours(expiredDate.getHours() + 1);
+      if (res && res.length > 0) {
+        console.log(tempUser);
+        this.cookieService.set('userId', tempUser.id, expiredDate);
+        this.cookieService.set('role', tempUser.role, expiredDate);
+        this.openSnackBar('Вы успешно авторизовались', '');
+        this.router.navigateByUrl('');
+      } else {
+        this.openSnackBar('Номер или пароль не правильный', '');
+      }
+    });
+  }
 }
 

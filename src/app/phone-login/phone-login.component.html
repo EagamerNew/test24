@@ -3,16 +3,28 @@
     <input type="phone" placeholder="Номер телефона(П-р: 87475556677)"  matInput
            [(ngModel)]="phoneString">
   </mat-form-field>
+  <mat-form-field class="example-full-width"
+                  *ngIf="!windowRef.confirmationResult">
+    <input type="password" placeholder="Пароль"
+           matInput
+           [(ngModel)]="password">
+  </mat-form-field>
+
   <mat-form-field class="example-full-width " *ngIf="windowRef.confirmationResult">
     <input type="password" placeholder="Введите код" matInput [(ngModel)]="verificationCode">
   </mat-form-field>
   <div id="recaptcha-container" width="80%"></div>
 
   <div fxLayout="row" fxLayoutAlign="center center">
+    <button (click)="checkPhoneAndPassword()"
+            *ngIf="!windowRef.confirmationResult"
+            mat-flat-button class="mat-primary">
+      Войти
+    </button>
     <button (click)="sendLoginCode()"
             *ngIf="!windowRef.confirmationResult"
             [disabled]="disableButton"
-            mat-flat-button class="mat-primary">
+            mat-flat-button class="mat-accent">
       Получить код
     </button>
     <button (click)="verifyLoginCode()"
