@@ -4,6 +4,7 @@ import {Template} from "../../shared/model/template";
 import {QuestionCategory} from "../../question/category/question-category.model";
 import {CommonService} from "../../shared/common.service";
 import {MatSnackBar} from "@angular/material";
+import {CookieService} from "ngx-cookie-service";
 
 @Component({
   selector: 'app-list',
@@ -13,7 +14,8 @@ import {MatSnackBar} from "@angular/material";
 export class ListComponent implements OnInit {
 
   constructor(private service: CommonService,
-              public snackBar: MatSnackBar,) {
+              public snackBar: MatSnackBar,
+              public cookieService: CookieService) {
 
   }
 

@@ -20,19 +20,23 @@ export class CommonService {
     this.fireSQL = new FireSQL(this.fireDB);
   }
 
-  saveResult(result){
+  saveResult(result) {
     return this.firestore.collection('result').add(result);
+  }
+
+  getResultList() {
+    return this.fireSQL.query(`SELECT __name__ as id, isTest,correct,mistake,score,category,section,title,userId FROM result`);
   }
 
   saveUser(user: any) {
     return this.firestore.collection('user').add(user);
   }
 
-  saveExam(exam: any){
+  saveExam(exam: any) {
     return this.firestore.collection('examination').add(exam);
   }
 
-  updateUserId(user, userId: string){
+  updateUserId(user, userId: string) {
     return this.firestore.collection('user').doc(user.id).set({
       userId: userId,
       idn: user.idn,
@@ -48,7 +52,7 @@ export class CommonService {
     });
   }
 
-  updateUserByDocId(userDocId: string, user){
+  updateUserByDocId(userDocId: string, user) {
     return this.firestore.collection('user').doc(userDocId).set({
       idn: user.idn,
       firstname: user.firstname,
@@ -63,26 +67,31 @@ export class CommonService {
     });
   }
 
-  deleteUserByUserDocId(userDocId){
+  deleteUserByUserDocId(userDocId) {
     return this.firestore.collection('user').doc(userDocId).delete();
   }
 
-  addCity(city){
+  addCity(city) {
     return this.firestore.collection('city').add(city);
   }
-  deleteCity(city){
+
+  deleteCity(city) {
     return this.firestore.collection('city').doc(city.id).delete();
   }
-  getCityList(){
+
+  getCityList() {
     return this.fireSQL.query(`SELECT __name__ as id, code, name FROM city`);
   }
-  addSubsidiary(subsidiary){
+
+  addSubsidiary(subsidiary) {
     return this.firestore.collection('subsidiary').add(subsidiary);
   }
-  getSubsidiaryList(){
+
+  getSubsidiaryList() {
     return this.fireSQL.query(`SELECT __name__ as id, cityCode, name,address FROM subsidiary`);
   }
-  updateSubsidiary( subsidiary){
+
+  updateSubsidiary(subsidiary) {
     return this.firestore.collection('subsidiary').doc(subsidiary.id).set({
       cityCode: subsidiary.cityCode,
       name: subsidiary.name,
@@ -90,55 +99,63 @@ export class CommonService {
     });
   }
 
-  updateUserPassword(docId: string, password: string){
-    return this.firestore.doc('user/' + docId).update({ 'password': password });
+  updateUserPassword(docId: string, password: string) {
+    return this.firestore.doc('user/' + docId).update({'password': password});
   }
 
-  checkPhoneAndPassword(phone,password){
+  checkPhoneAndPassword(phone, password) {
     return this.fireSQL.query(`SELECT __name__ as id, idn,role ,privilegeList,lastname,firstname, birthdate, 
           gender, city, phoneNumber, status
           FROM user  
-          WHERE phoneNumber = '`+ phone +`' 
-          AND password = '`+password+`'`);
+          WHERE phoneNumber = '` + phone + `' 
+          AND password = '` + password + `'`);
   }
 
-  getExaminatorList(){
+  getExaminatorList() {
     return this.fireSQL.query(`SELECT __name__ as id, firstname, lastname FROM user WHERE role = 'staff'`);
   }
 
-  deleteSubsidiary(subsidiary){
+  deleteSubsidiary(subsidiary) {
     return this.firestore.collection('subsidiary').doc(subsidiary.id).delete();
   }
-  addPostion(position){
+
+  addPostion(position) {
     return this.firestore.collection('position').add(position);
   }
-  deletePostion(position){
+
+  deletePostion(position) {
     return this.firestore.collection('position').doc(position.id).delete();
   }
-  getPostionList(){
+
+  getPostionList() {
     return this.fireSQL.query(`SELECT __name__ as id, bin, name,phoneNumber FROM company`);
   }
-  addCompany(company){
+
+  addCompany(company) {
     return this.firestore.collection('company').add(company);
   }
-  updateCompany( company){
+
+  updateCompany(company) {
     return this.firestore.collection('company').doc(company.id).set({
       bin: company.bin,
       name: company.name,
       phoneNumber: company.phoneNumber,
     });
   }
-  getCompanyById(id){
+
+  getCompanyById(id) {
     return this.fireSQL.query(`SELECT __name__ as id, bin, name,phoneNumber FROM company where __name__ ='` + id + `'`);
   }
-  deleteCompany(id){
+
+  deleteCompany(id) {
     return this.firestore.collection('company').doc(id).delete();
   }
-  getCompanyList(){
+
+  getCompanyList() {
     return this.fireSQL.query(`SELECT __name__ as id, bin, name,phoneNumber FROM company`);
   }
 
-  getUserList(){
+  getUserList() {
     return this.fireSQL.query(`SELECT __name__ as id, idn,role ,privilegeList,lastname,firstname, birthdate, 
           gender, city, phoneNumber, status
         FROM user`);
@@ -203,9 +220,9 @@ export class CommonService {
     return this.firestore.collection("template").doc(id).delete();
   }
 
-  getUserPrivilegeListByDocId(userDocId: string){
+  getUserPrivilegeListByDocId(userDocId: string) {
     return this.fireSQL.query(`SELECT __name__ as id, privilegeList
-      FROM user WHERE __name__ ='`+ userDocId +`'`)
+      FROM user WHERE __name__ ='` + userDocId + `'`)
       .then(res => {
         return res;
       });

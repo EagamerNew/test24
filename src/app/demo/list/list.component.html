@@ -19,7 +19,7 @@
       <!--<span>{{data.correct}}</span> - -->
       <!--<span style="color:red">{{data.mistake}}</span>-->
     <!--</span>-->
-      <span style="float: left"><button (click)="deleteTemplateById(template.id)" mat-button>Удалить шаблон</button></span>
+      <span style="float: left"><button  *ngIf="cookieService.get('role') === 'admin'" (click)="deleteTemplateById(template.id)" mat-button>Удалить шаблон</button></span>
       <span style="float: right"><button [routerLink]="'/test/' + template.id" mat-button>Сдать тест</button></span>
 
     </div>

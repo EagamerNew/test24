@@ -42,6 +42,7 @@ import {CompanyListComponent} from './company-list/company-list.component';
 import {CompanyEditComponent} from './company-list/company-edit/company-edit.component';
 import {SubsidiaryComponent} from './subsidiary/subsidiary.component';
 import {ExaminationComponent} from "./examination/examination.component";
+import {RaitingsComponent} from "./ratings/raitings.component";
 
 @NgModule({
   declarations: [
@@ -67,7 +68,8 @@ import {ExaminationComponent} from "./examination/examination.component";
     CompanyListComponent,
     CompanyEditComponent,
     SubsidiaryComponent,
-    ExaminationComponent
+    ExaminationComponent,
+    RaitingsComponent
   ],
   imports: [
     BrowserModule,

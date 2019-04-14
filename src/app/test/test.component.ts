@@ -4,6 +4,7 @@ import {QuestionList} from "../list-questions/question-list";
 import {ActivatedRoute} from "@angular/router";
 import {MatSnackBar} from "@angular/material";
 import {CommonService} from "../shared/common.service";
+import {CookieService} from "ngx-cookie-service";
 
 @Component({
   selector: 'app-test',
@@ -25,13 +26,15 @@ export class TestComponent implements OnInit {
     score: '',
     category: "",
     section: "",
-    title: ""
+    title: "",
+    userId: ""
   }
 
   constructor(private questionService: QuestionService,
               private route: ActivatedRoute,
               public snackBar: MatSnackBar,
-              private commonService: CommonService) {
+              private commonService: CommonService,
+              private cookieService: CookieService) {
   }
 
   templateId: string;
@@ -99,6 +102,10 @@ export class TestComponent implements OnInit {
     this.dataForResult.correct = correctCount + '';
     this.dataForResult.isTest = true;
     this.dataForResult.title = this.template.name;
+    this.dataForResult.userId = 'anonymous';
+    if(this.cookieService.get("userId")){
+      this.dataForResult.userId = this.cookieService.get("userId");
+    }
     this.questionService.getCategoryNameById(this.template.categoryId).subscribe(res => {
       let result: any = res.payload.data();
       this.dataForResult.category = 'Категория не найдена';
@@ -111,6 +118,7 @@ export class TestComponent implements OnInit {
         if (result) {
           this.dataForResult.section = result.name + '';
         }
+        console.log('data for result ',this.dataForResult);
         this.saveResult(this.dataForResult);
       });
     });

@@ -42,6 +42,7 @@ export class ExaminationComponent implements OnInit {
     this.getCompanyList();
     this.getCategories();
     this.getCityList();
+    this.getExaminatorList();
   }
 
   getCategories() {
@@ -55,6 +56,11 @@ export class ExaminationComponent implements OnInit {
   getCompanyList(){
     this.commonService.getCompanyList().then(res=>{
       this.companyList = res;
+    });
+  }
+  getExaminatorList(){
+    this.commonService.getExaminatorList().then(res=>{
+      this.examinatorList = res;
     });
   }
 
