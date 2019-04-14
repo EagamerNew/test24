@@ -45,7 +45,8 @@ export class QuestionComponent implements OnInit {
       answers: this.fb.array([]),
       correctAnswer: new FormControl(''),
       point: new FormControl(''),
-      sectionId: new FormControl('')
+      sectionId: new FormControl(''),
+      isExamQuestion: new FormControl(false)
     });
 
     this.getCategories();

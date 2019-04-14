@@ -5,6 +5,7 @@ import {FireSQL} from "firesql";
 import {Observable} from "rxjs";
 import {Template} from './model/template';
 import {User} from "./model/user";
+import {USER_ROLE_LIST} from "./default-constant";
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +26,10 @@ export class CommonService {
 
   saveUser(user: any) {
     return this.firestore.collection('user').add(user);
+  }
+
+  saveExam(exam: any){
+    return this.firestore.collection('examination').add(exam);
   }
 
   updateUserId(user, userId: string){
@@ -95,6 +100,10 @@ export class CommonService {
           FROM user  
           WHERE phoneNumber = '`+ phone +`' 
           AND password = '`+password+`'`);
+  }
+
+  getExaminatorList(){
+    return this.fireSQL.query(`SELECT __name__ as id, firstname, lastname FROM user WHERE role = 'staff'`);
   }
 
   deleteSubsidiary(subsidiary){

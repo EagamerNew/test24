@@ -1,0 +1,46 @@
+<mat-form-field>
+  <mat-select placeholder="Компания" required [(ngModel)]="exam.companyId">
+    <mat-option *ngFor="let company of companyList" [value]="company.id">
+      {{company.name}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+<mat-form-field>
+  <mat-select placeholder="Экзаменатор" required [(ngModel)]="exam.examinatorUserId">
+    <mat-option *ngFor="let examinator of examinatorList" [value]="examinator.id">
+      {{examinator.lastname}} {{examinator.firstname}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+<mat-form-field>
+  <mat-select placeholder="Город" required [(ngModel)]="exam.cityId">
+    <mat-option *ngFor="let city of cityList" [value]="city.id">
+      {{city.name}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+<mat-form-field>
+  <mat-select placeholder="Категория" required
+              (selectionChange)="getSectionsByCategory($event)">
+    <mat-option *ngFor="let category of categories" [value]="category.id">
+      {{category.name}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+<mat-form-field>
+  <mat-select placeholder="Раздел" required [disabled]="sectionSelectDisable"
+              [(ngModel)]="exam.sectionId">
+    <mat-option *ngFor="let section of sections" [value]="section.id">
+      {{section.name}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+<mat-form-field class="example-full-width">
+  <input matInput placeholder="Адрес" [(ngModel)]="exam.address">
+</mat-form-field>
+<mat-form-field class="example-full-width">
+  <input matInput type="date" placeholder="Дата" [(ngModel)]="exam.date">
+</mat-form-field>
+<mat-grid-list cols="2" rowHeight="2:1">
+  <mat-grid-tile><button mat-button (click)="save()">Сохранить</button></mat-grid-tile>
+</mat-grid-list>

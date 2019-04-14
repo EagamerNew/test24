@@ -25,15 +25,15 @@ export class DemoComponent implements OnInit {
 
   fireSQL;
 
-  categories: QuestionCategory[] = [];
   categoryId: string;
   sections: QuestionSection[] = [];
+  categories: QuestionCategory[] = [];
   sectionId: string;
   sectionSelectDisable = true;
   countQuestion: number = 0;
   countAvailable: number = -1;
   templateName: string = "";
-
+  isExamTemplate: boolean = false;
   questionIdList: string[] = [];
 
   ngOnInit() {
@@ -67,7 +67,12 @@ export class DemoComponent implements OnInit {
   getQuestionIdListBySectionId(event) {
     this.sectionId = event.value;
     console.log('sectionId: ', event.value);
-    this.fireSQL.query(`SELECT __name__ as docId FROM question WHERE section = "` + event.value + `" AND status='accepted'`).then(result => {
+    let query = `SELECT __name__ as docId FROM question WHERE section = "` + event.value + `" AND status='accepted'`;
+    if(this.isExamTemplate){
+      query = `SELECT __name__ as docId FROM question WHERE section = "` + event.value + `" AND status='accepted' 
+      AND isExamQuestion = `+ this.isExamTemplate + ``;
+    }
+    this.fireSQL.query(query).then(result => {
       this.countAvailable = result.length;
       console.log('questionIdList: ', result);
       console.log('available: ', this.countAvailable);
@@ -103,6 +108,7 @@ export class DemoComponent implements OnInit {
       template.categoryId = this.categoryId;
       template.sectionId = this.sectionId;
       template.name = this.templateName;
+      template.isExamTemplate = this.isExamTemplate;
       template.status = "0";
 
       console.log('template to create: ', template);
@@ -110,10 +116,11 @@ export class DemoComponent implements OnInit {
       var db = firebase.firestore();
       db.collection('template').add(template).then(res=>{
         this.openSnackBar('Шаблон успешно создан', '');
-        setTimeout(new function(){
-          // TODO navigate to demo - list
-          // this.router.navigateByUrl('/demo-list');
-        },300);
+        this.setDefault();
+        // setTimeout(new function(){
+        //   // TODO navigate to demo - list
+        //   this.router.navigateByUrl('/demo-list');
+        // },300);
 
       });
     } else {
@@ -137,5 +144,15 @@ export class DemoComponent implements OnInit {
     this.snackBar.open(message, action, {
       duration: 2000,
     });
+  }
+
+  setDefault() {
+    this.categoryId = "";
+    this.sectionId = "";
+    this.categories = [];
+    this.sections = [];
+    this.countAvailable = 0;
+    this.countQuestion = 0;
+    this.getCategories();
   }
 }

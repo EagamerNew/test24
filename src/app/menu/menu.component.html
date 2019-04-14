@@ -1,5 +1,5 @@
 <div fxLayout="column" >
-  <div *ngIf="userPrivilegeList" fxLayout="column">
+  <div fxLayout="column">
     <button mat-button *ngIf="this.cookie.get('userId') && checkToAccess('question')" [routerLink]="['/question']"> <!--questionPR, staffRL, authorRL -->
       Создать вопрос
     </button>
@@ -18,19 +18,36 @@
     <button mat-button *ngIf="this.cookie.get('userId') && checkToAccess('demo')" [routerLink]="['demo']"><!--staffRL, question-templatePL -->
       Создать шаблон теста
     </button>
-    <button mat-button *ngIf="this.cookie.get('userId') && checkToAccess('demo-list')" [routerLink]="['demo-list']"><!--staffRL, question-templatePL -->
+    <button mat-button *ngIf=" checkToAccess('demo-list')" [routerLink]="['demo-list']"><!--staffRL, question-templatePL -->
       Список шаблон теста
     </button>
     <!--<button mat-button [routerLink]="['test']">-->
     <!--Сдать тест-->
     <!--</button>-->
+    <button mat-button *ngIf=" checkToAccess('city')" [routerLink]="['city']"><!--staffRL, question-templatePL -->
+      Список городов
+    </button>
+    <button mat-button *ngIf=" checkToAccess('new-company')" [routerLink]="['new-company']"><!--staffRL, question-templatePL -->
+      Добавить компанию
+    </button>
+    <button mat-button *ngIf=" checkToAccess('company-list')" [routerLink]="['company-list']"><!--staffRL, question-templatePL -->
+      Список компаний
+    </button>
+    <button mat-button *ngIf=" checkToAccess('new-company')" [routerLink]="['new-company']"><!--staffRL, question-templatePL -->
+      Список филиалов
+    </button>
     <button mat-button *ngIf="this.cookie.get('userId') && checkToAccess('registration')" [routerLink]="['registration']"><!--staffRL, usersPL-->
       Добавить пользователя
     </button>
     <button mat-button *ngIf="this.cookie.get('userId') && checkToAccess('users')" [routerLink]="['users']"><!-- usersPL-->
       Список пользователей
     </button>
+    <button mat-button *ngIf="this.cookie.get('userId') && checkToAccess('exam')" [routerLink]="['exam']">
+      Создать экзамен
+    </button>
+
   </div>
+
   <button mat-button *ngIf="this.cookie.get('userId')" [routerLink]="['/profile']">
     Мой профиль
   </button>

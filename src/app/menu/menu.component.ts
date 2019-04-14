@@ -14,6 +14,7 @@ export class MenuComponent implements OnInit {
   userRole: string;
   userDocId: string;
   userPrivilegeList: any = [];
+  privilegeLoaded = false;
 
   constructor(public cookie: CookieService,
               private router: Router,
@@ -23,7 +24,13 @@ export class MenuComponent implements OnInit {
   ngOnInit() {
     this.userDocId = this.cookie.get('userId');
     this.userRole = this.cookie.get('role');
-    this.getUserPrivilegeList();
+    if (this.userDocId) {
+      this.getUserPrivilegeList();
+    } else {
+      let userRole = "anonymous";
+      this.cookie.set('role', userRole);
+      this.userRole = userRole;
+    }
   }
 
   getUserPrivilegeList() {
@@ -89,7 +96,7 @@ export class MenuComponent implements OnInit {
           }
           break;
         case 'demo-list':
-          if (this.userRole === 'staff' || this.userPrivilegeList.includes('question-template')) {
+          if (this.userRole === 'staff' || this.userRole === 'anonymous' || this.userPrivilegeList.includes('question-template') ) {
             result = true;
           }
           break;

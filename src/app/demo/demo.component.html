@@ -1,4 +1,12 @@
 <section>
+
+  <mat-form-field>
+    <input type="text" matInput [(ngModel)]="templateName" required placeholder="Название шаблона теста">
+  </mat-form-field>
+  <mat-form-field>
+    <input type="text" matInput [hidden]="true">
+    <mat-checkbox [(ngModel)]="isExamTemplate" (change)="setDefault()">Этот шаблон для экзамена</mat-checkbox>
+  </mat-form-field>
   <mat-form-field>
     <mat-select placeholder="Категория" required
                 (selectionChange)="getSectionsByCategory($event)">
@@ -17,9 +25,6 @@
   </mat-form-field>
 
 
-  <mat-form-field>
-    <input type="text" matInput [(ngModel)]="templateName" required placeholder="Название шаблона теста">
-  </mat-form-field>
   <span *ngIf="countAvailable >= 0">
 
     <p>Доступно вопросов: <b>{{countAvailable}}</b></p>
