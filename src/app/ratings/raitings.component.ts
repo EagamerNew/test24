@@ -91,6 +91,17 @@ export class RaitingsComponent implements OnInit {
       this.ratingResults.push(this.ratingResult);
 
     }
+    for (let j = 0; j < this.ratingResults.length; j++) {
+      for (let k = j; k < this.ratingResults.length; k++) {
+        if (this.ratingResults[j].scoreTotal / this.ratingResults[j].count <
+          this.ratingResults[k].scoreTotal / this.ratingResults[k].count) {
+          this.ratingResult = new Rating();
+          this.ratingResult = this.ratingResults[k];
+          this.ratingResults[k] = this.ratingResults[j];
+          this.ratingResults[j] = this.ratingResult;
+        }
+      }
+    }
     console.log('-----------------------');
     console.log(JSON.stringify(this.ratingResults));
   }
