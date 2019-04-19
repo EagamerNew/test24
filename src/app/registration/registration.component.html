@@ -1,15 +1,18 @@
 
 <mat-form-field class="example-full-width">
-  <input matInput placeholder="ИИН"[(ngModel)]="user.idn" >
+  <input matInput placeholder="ИИН"[(ngModel)]="user.idn" maxlength="12">
+  <mat-hint align="end">{{user.idn.length}} / 12</mat-hint>
 </mat-form-field>
 
 <mat-form-field class="example-full-width">
-  <input matInput placeholder="Фамилия"[(ngModel)]="user.lastname" >
+  <input matInput placeholder="Фамилия"[(ngModel)]="user.lastname" maxlength="20">
+    <mat-hint align="end">{{user.lastname.length}} / 20</mat-hint>
 </mat-form-field>
 
 
 <mat-form-field class="example-full-width">
-  <input matInput placeholder="Имя"[(ngModel)]="user.firstname" >
+  <input matInput placeholder="Имя"[(ngModel)]="user.firstname" maxlength="20">  
+  <mat-hint align="end">{{user.firstname.length}} / 20</mat-hint>
 </mat-form-field>
 
 <mat-form-field class="example-full-width">
@@ -40,3 +43,4 @@
   <mat-grid-tile><button mat-button >Отменить</button></mat-grid-tile>
   <mat-grid-tile><button mat-button (click)="save()">Сохранить</button></mat-grid-tile>
 </mat-grid-list>
+

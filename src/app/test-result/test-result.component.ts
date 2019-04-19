@@ -10,6 +10,8 @@ export class TestResultComponent implements OnInit {
 
   @Input() data: any;
 
+  percent: string = '';
+
   constructor() {
   }
 
@@ -27,6 +29,14 @@ export class TestResultComponent implements OnInit {
         userDocId: ''
       }
     }
+    // all - 100
+    // correct - x
+    // x = correct*100/ all
+    console.log(this.data.correct)
+    console.log(this.data.mistake)
+    const all: number = parseInt(this.data.correct) + parseInt(this.data.mistake);
+    console.log(all)
+    this.percent = ((this.data.correct*100)/(all)).toFixed();
   }
 
 

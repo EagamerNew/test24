@@ -99,6 +99,7 @@ export class PhoneLoginComponent implements OnInit {
             let reUser: any = res[0];
             this.user = result.user;
             console.log("res: ", res[0], " this.user.uid: " + this.user.uid);
+            this.windowRef.confirmationResult = null;
             if (reUser.status === 'created') {
               this.commonService.updateUserId(reUser, this.user.uid).then(res => {
                 this.cookieService.set('userId', reUser.id, expiredDate);

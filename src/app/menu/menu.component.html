@@ -18,22 +18,22 @@
     <button mat-button *ngIf="this.cookie.get('userId') && checkToAccess('demo')" [routerLink]="['demo']"><!--staffRL, question-templatePL -->
       Создать шаблон теста
     </button>
-    <button mat-button *ngIf=" checkToAccess('demo-list')" [routerLink]="['demo-list']"><!--staffRL, question-templatePL -->
+    <button mat-button *ngIf="checkToAccess('demo-list')" [routerLink]="['demo-list']"><!--staffRL, question-templatePL -->
       Список шаблон теста
     </button>
     <!--<button mat-button [routerLink]="['test']">-->
     <!--Сдать тест-->
     <!--</button>-->
-    <button mat-button *ngIf=" checkToAccess('city')" [routerLink]="['city']"><!--staffRL, question-templatePL -->
+    <button mat-button *ngIf="this.cookie.get('userId') &&  checkToAccess('city')" [routerLink]="['city']"><!--staffRL, question-templatePL -->
       Список городов
     </button>
-    <button mat-button *ngIf=" checkToAccess('new-company')" [routerLink]="['new-company']"><!--staffRL, question-templatePL -->
+    <button mat-button *ngIf="this.cookie.get('userId') &&  checkToAccess('new-company')" [routerLink]="['new-company']"><!--staffRL, question-templatePL -->
       Добавить компанию
     </button>
-    <button mat-button *ngIf=" checkToAccess('company-list')" [routerLink]="['company-list']"><!--staffRL, question-templatePL -->
+    <button mat-button *ngIf="this.cookie.get('userId') &&  checkToAccess('company-list')" [routerLink]="['company-list']"><!--staffRL, question-templatePL -->
       Список компаний
     </button>
-    <button mat-button *ngIf=" checkToAccess('new-company')" [routerLink]="['new-company']"><!--staffRL, question-templatePL -->
+    <button mat-button *ngIf="this.cookie.get('userId') &&  checkToAccess('subsidiary')" [routerLink]="['subsidiary']"><!--staffRL, question-templatePL -->
       Список филиалов
     </button>
     <button mat-button *ngIf="this.cookie.get('userId') && checkToAccess('registration')" [routerLink]="['registration']"><!--staffRL, usersPL-->
