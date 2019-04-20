@@ -1,0 +1,15 @@
+<div>
+  {{exam.date}}
+  <br>
+  <a >Заявки </a>
+  <br>
+  <a >Участники</a>
+  <br>
+  <a>Результаты</a>
+  <br>
+  <div *ngFor="let participant of participantList">
+    {{participant.lastname}} {{participant.firstname}}
+    status: {{participant.data.status}}
+    <br>
+  </div>
+</div>

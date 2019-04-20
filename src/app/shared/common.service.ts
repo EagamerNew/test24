@@ -20,6 +20,34 @@ export class CommonService {
     this.fireSQL = new FireSQL(this.fireDB);
   }
 
+  updateExamParticipantList(examId:string,participantList:any){
+    return this.firestore.collection('examination').doc(examId).update({
+      'participantList': participantList
+    })
+  }
+
+  getUserNameAndIdn(userId:string){
+    return this.fireSQL.query(`SELECT __name__ as id, lastname, firstname, idn 
+    FROM user WHERE __name__ = '`+userId+`'`);
+  }
+
+  getExamTemplateList(){
+    return this.fireSQL.query(`SELECT __name__ as id, name FROM template WHERE status = 'active' 
+      AND isExamTemplate = TRUE`);
+  }
+
+  getExamList(){
+    return this.fireSQL.query(`SELECT __name__ as id, categoryId, address, cityId, sectionId, startTime,
+          date, examinatorUserId, companyId, templateId, participantList
+      FROM examination`);
+  }
+
+  getExamById(id:string){
+    return this.fireSQL.query(`SELECT __name__ as id, categoryId, address, cityId, sectionId, startTime,
+          date, examinatorUserId, companyId, templateId, participantList
+          FROM examination WHERE __name__ ='`+id+`'`);
+  }
+
   saveResult(result) {
     return this.firestore.collection('result').add(result);
   }

@@ -22,7 +22,7 @@ export class ExaminationComponent implements OnInit {
     categoryId: "",
     sectionId: "",
     date:new Date(),
-
+    status: 'active'
   };
   fireSQL;
   sections: QuestionSection[] = [];
@@ -31,7 +31,7 @@ export class ExaminationComponent implements OnInit {
   companyList: any[];
   cityList: any[];
   examinatorList: any[];
-
+  examTemplateList: any[];
 
   constructor(public snackBar: MatSnackBar,
               private router: Router,
@@ -43,6 +43,7 @@ export class ExaminationComponent implements OnInit {
     this.getCategories();
     this.getCityList();
     this.getExaminatorList();
+    this.getExamTemplateList();
   }
 
   getCategories() {
@@ -56,6 +57,11 @@ export class ExaminationComponent implements OnInit {
   getCompanyList(){
     this.commonService.getCompanyList().then(res=>{
       this.companyList = res;
+    });
+  }
+  getExamTemplateList(){
+    this.commonService.getExamTemplateList().then(res=>{
+      this.examTemplateList = res;
     });
   }
   getExaminatorList(){

@@ -5,6 +5,7 @@ import {ActivatedRoute} from "@angular/router";
 import {MatSnackBar} from "@angular/material";
 import {CommonService} from "../shared/common.service";
 import {CookieService} from "ngx-cookie-service";
+import {RESULT_CODE_LIST} from "../shared/default-constant";
 
 @Component({
   selector: 'app-test',
@@ -27,8 +28,10 @@ export class TestComponent implements OnInit {
     category: "",
     section: "",
     title: "",
-    userId: ""
-  }
+    userId: "",
+    templateId: "",
+    status: ''
+  };
 
   constructor(private questionService: QuestionService,
               private route: ActivatedRoute,
@@ -82,7 +85,6 @@ export class TestComponent implements OnInit {
   }
 
   save() {
-    this.finish = true;
     let correctCount = 0;
     let misCount = 0;
     for (let i = 0; i < this.answers.length; i++) {
@@ -100,12 +102,12 @@ export class TestComponent implements OnInit {
     this.dataForResult.score = this.pointTotal + '';
     this.dataForResult.mistake = misCount + '';
     this.dataForResult.correct = correctCount + '';
-    this.dataForResult.isTest = true;
+    this.dataForResult.isTest = !this.template.isExamTemplate;
     this.dataForResult.title = this.template.name;
     this.dataForResult.userId = 'anonymous';
-    if(this.cookieService.get("userId")){
-      this.dataForResult.userId = this.cookieService.get("userId");
-    }
+    this.dataForResult.templateId = this.templateId;
+    this.dataForResult.status = RESULT_CODE_LIST.DONE.toString().toLowerCase();
+
     this.questionService.getCategoryNameById(this.template.categoryId).subscribe(res => {
       let result: any = res.payload.data();
       this.dataForResult.category = 'Категория не найдена';
@@ -118,8 +120,13 @@ export class TestComponent implements OnInit {
         if (result) {
           this.dataForResult.section = result.name + '';
         }
-        console.log('data for result ',this.dataForResult);
-        this.saveResult(this.dataForResult);
+        console.log('data for result ', this.dataForResult);
+
+        if (this.cookieService.get("userId")) {
+          this.dataForResult.userId = this.cookieService.get("userId");
+          this.saveResult(this.dataForResult);
+        }
+        this.finish = true;
       });
     });
 

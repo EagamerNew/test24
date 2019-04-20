@@ -43,6 +43,9 @@ import {CompanyEditComponent} from './company-list/company-edit/company-edit.com
 import {SubsidiaryComponent} from './subsidiary/subsidiary.component';
 import {ExaminationComponent} from "./examination/examination.component";
 import {RaitingsComponent} from "./ratings/raitings.component";
+import {ExamListComponent} from "./examination/exam-list/exam-list.component";
+import {NgxMaterialTimepickerModule} from "ngx-material-timepicker";
+import {ExamSettingComponent} from "./examination/exam-setting/exam-setting.component";
 
 @NgModule({
   declarations: [
@@ -69,7 +72,9 @@ import {RaitingsComponent} from "./ratings/raitings.component";
     CompanyEditComponent,
     SubsidiaryComponent,
     ExaminationComponent,
-    RaitingsComponent
+    RaitingsComponent,
+    ExamListComponent,
+    ExamSettingComponent
   ],
   imports: [
     BrowserModule,
@@ -81,7 +86,7 @@ import {RaitingsComponent} from "./ratings/raitings.component";
     ReactiveFormsModule,
     AngularFirestoreModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
-
+    NgxMaterialTimepickerModule
   ],
   providers: [QuestionService,
     CookieService,

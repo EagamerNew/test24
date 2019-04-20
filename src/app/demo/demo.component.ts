@@ -109,7 +109,7 @@ export class DemoComponent implements OnInit {
       template.sectionId = this.sectionId;
       template.name = this.templateName;
       template.isExamTemplate = this.isExamTemplate;
-      template.status = "0";
+      template.status = "active";
 
       console.log('template to create: ', template);
 

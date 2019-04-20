@@ -26,16 +26,12 @@ export class TestResultComponent implements OnInit {
         category: 'Юрфак',
         section: 'Менеджмент',
         title: '',
-        userDocId: ''
+        userDocId: '',
+        templateId: ''
       }
     }
-    // all - 100
-    // correct - x
-    // x = correct*100/ all
-    console.log(this.data.correct)
-    console.log(this.data.mistake)
+    // For find percent of correct answer
     const all: number = parseInt(this.data.correct) + parseInt(this.data.mistake);
-    console.log(all)
     this.percent = ((this.data.correct*100)/(all)).toFixed();
   }
 

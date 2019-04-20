@@ -21,6 +21,8 @@ import {CompanyEditComponent} from './company-list/company-edit/company-edit.com
 import {SubsidiaryComponent} from "./subsidiary/subsidiary.component";
 import {ExaminationComponent} from "./examination/examination.component";
 import {RaitingsComponent} from "./ratings/raitings.component";
+import {ExamListComponent} from "./examination/exam-list/exam-list.component";
+import {ExamSettingComponent} from "./examination/exam-setting/exam-setting.component";
 
 const routes: Routes = [
   {path: '', component: MenuComponent},
@@ -44,7 +46,9 @@ const routes: Routes = [
   {path: 'subsidiary', component: SubsidiaryComponent},
   {path: 'users', component: UserComponent},
   {path: 'ratings', component: RaitingsComponent},
-  {path: 'exam', component: ExaminationComponent}
+  {path: 'exam', component: ExaminationComponent},
+  {path: 'exam-list', component: ExamListComponent},
+  {path: 'exam-setting/:id', component: ExamSettingComponent},
 ];
 
 @NgModule({

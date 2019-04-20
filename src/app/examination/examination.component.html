@@ -35,12 +35,28 @@
     </mat-option>
   </mat-select>
 </mat-form-field>
+<mat-form-field>
+  <mat-select placeholder="Шаблон экзамена" required
+              [(ngModel)]="exam.templateId">
+    <mat-option *ngFor="let examTemplate of examTemplateList" [value]="examTemplate.id">
+      {{examTemplate.name}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
 <mat-form-field class="example-full-width">
   <input matInput placeholder="Адрес" [(ngModel)]="exam.address">
 </mat-form-field>
 <mat-form-field class="example-full-width">
   <input matInput type="date" placeholder="Дата" [(ngModel)]="exam.date">
 </mat-form-field>
+<mat-form-field class="example-full-width">
+  <input matInput [ngxTimepicker]="picker"
+         placeholder="Время"
+         [(ngModel)]="exam.startTime" [format]="24">
+  <ngx-material-timepicker #picker></ngx-material-timepicker>
+</mat-form-field>
 <mat-grid-list cols="2" rowHeight="2:1">
-  <mat-grid-tile><button mat-button (click)="save()">Сохранить</button></mat-grid-tile>
+  <mat-grid-tile>
+    <button mat-button (click)="save()">Сохранить</button>
+  </mat-grid-tile>
 </mat-grid-list>
