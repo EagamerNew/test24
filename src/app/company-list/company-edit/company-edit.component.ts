@@ -3,6 +3,7 @@ import {CommonService} from '../../shared/common.service';
 import {MatSnackBar} from '@angular/material';
 import {Company} from '../../new-company/new-company.component';
 import {ActivatedRoute, Router} from '@angular/router';
+import {Subsidiary} from "../../subsidiary/subsidiary.component";
 
 @Component({
   selector: 'app-company-edit',
@@ -12,6 +13,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 export class CompanyEditComponent implements OnInit {
   company: Company = new Company();
   id:any;
+  subsidiaryList:Subsidiary [] =[];
+
   constructor(private _service: CommonService,
               public snackBar: MatSnackBar,
               private route: ActivatedRoute,
@@ -22,7 +25,22 @@ export class CompanyEditComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getSubsidiaryList();
     this.getpositionList()
+  }
+  getSubsidiaryList(){
+    console.log('-------------')
+    this._service.getSubsidiaryList().then(res => {
+      console.log(res)
+      this.subsidiaryList = res.map(result =>{
+        return {
+          id:result.id,
+          cityCode: result.cityCode,
+          address: result.address,
+          name: result.name
+        }
+      });
+    });
   }
   deleteCompany(): void {
     this._service.deleteCompany(this.id).then(res => {
@@ -39,6 +57,7 @@ export class CompanyEditComponent implements OnInit {
           id:res[0].id,
           bin:res[0].bin,
           name:res[0].name,
+          subsidiary:res[0].subsidiary,
           phoneNumber:res[0].phoneNumber,
         };
 
@@ -52,7 +71,8 @@ export class CompanyEditComponent implements OnInit {
       id: this.company.id,
       bin: this.company.bin,
       phoneNumber: this.company.phoneNumber,
-      name: this.company.name
+      name: this.company.name,
+      subsidiary: this.company.subsidiary
     };
     this._service.updateCompany(temp).then(res => {
       this.router.navigateByUrl('/company-list')

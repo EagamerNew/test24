@@ -20,32 +20,50 @@ export class CommonService {
     this.fireSQL = new FireSQL(this.fireDB);
   }
 
-  updateExamParticipantList(examId:string,participantList:any){
+  getShortTemplateById(id:string){
+    return this.fireSQL.query(`SELECT DISTINCT __name__ as id, name FROM template WHERE __name__ = '${id}'`)
+  }
+
+  getShortTemplateList(idList: string[]) {
+    let temp = "";
+    for (let str of idList) {
+      temp = temp + '"' + str + '",';
+    }
+    temp = temp.substring(0, temp.length - 1);
+    console.log('temp to search: ', temp)
+    return this.fireSQL.query(`SELECT DISTINCT __name__ as id, name FROM template WHERE __name__ IN (${temp})`)
+  }
+
+  getResultById(id: string) {
+    return this.fireSQL.query(`SELECT * FROM result WHERE __name__ = '${id}'`);
+  }
+
+  updateExamParticipantList(examId: string, participantList: any) {
     return this.firestore.collection('examination').doc(examId).update({
       'participantList': participantList
     })
   }
 
-  getUserNameAndIdn(userId:string){
+  getUserNameAndIdn(userId: string) {
     return this.fireSQL.query(`SELECT __name__ as id, lastname, firstname, idn 
-    FROM user WHERE __name__ = '`+userId+`'`);
+    FROM user WHERE __name__ = '` + userId + `'`);
   }
 
-  getExamTemplateList(){
+  getExamTemplateList() {
     return this.fireSQL.query(`SELECT __name__ as id, name FROM template WHERE status = 'active' 
       AND isExamTemplate = TRUE`);
   }
 
-  getExamList(){
+  getExamList() {
     return this.fireSQL.query(`SELECT __name__ as id, categoryId, address, cityId, sectionId, startTime,
           date, examinatorUserId, companyId, templateId, participantList
       FROM examination`);
   }
 
-  getExamById(id:string){
+  getExamById(id: string) {
     return this.fireSQL.query(`SELECT __name__ as id, categoryId, address, cityId, sectionId, startTime,
           date, examinatorUserId, companyId, templateId, participantList
-          FROM examination WHERE __name__ ='`+id+`'`);
+          FROM examination WHERE __name__ ='` + id + `'`);
   }
 
   saveResult(result) {

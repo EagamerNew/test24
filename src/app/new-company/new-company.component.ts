@@ -20,12 +20,14 @@ setCompany(): void{
   let temp: any = {
     bin: this.company.bin,
     phoneNumber: this.company.phoneNumber,
-    name: this.company.name
+    name: this.company.name,
+    subsidiary: this.company.subsidiary
   };
   this._service.addCompany(temp).then(res => {
     this.company.name = '';
     this.company.phoneNumber = '';
     this.company.bin = '';
+    this.company.subsidiary = '';
     this.openSnackBar('Компания создан', '');
   });
 }
@@ -40,4 +42,5 @@ export class Company {
   bin: string;
   name: string;
   phoneNumber: string;
+  subsidiary:string;
 }

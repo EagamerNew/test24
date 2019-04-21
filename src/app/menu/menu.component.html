@@ -45,7 +45,9 @@
     <button mat-button *ngIf="this.cookie.get('userId') && checkToAccess('exam')" [routerLink]="['exam']">
       Создать экзамен
     </button>
-
+    <button mat-button  [routerLink]="['exam-list']">
+      Список экзаменов
+    </button>
   </div>
 
   <button mat-button *ngIf="this.cookie.get('userId')" [routerLink]="['/profile']">

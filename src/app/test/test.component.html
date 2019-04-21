@@ -1,25 +1,32 @@
 <!--<div *ngFor="let question of questions;let i = index">-->
-  <!--<p>{{question.description}}</p>-->
-  <!--<mat-radio-group [disabled]="finish" name="{{question.docId}}" *ngFor="let answer of question.answers;let j = index">-->
-    <!--<mat-radio-button (change)="answerSave(question.docId,i,j)" value="{{j}}">{{answer.answer}}</mat-radio-button><br>-->
-  <!--</mat-radio-group>-->
-  <!--<hr>-->
+<!--<p>{{question.description}}</p>-->
+<!--<mat-radio-group [disabled]="finish" name="{{question.docId}}" *ngFor="let answer of question.answers;let j = index">-->
+<!--<mat-radio-button (change)="answerSave(question.docId,i,j)" value="{{j}}">{{answer.answer}}</mat-radio-button><br>-->
+<!--</mat-radio-group>-->
+<!--<hr>-->
 <!--</div>-->
-
-<mat-horizontal-stepper labelPosition="bottom" #stepper>
-  <mat-step *ngFor="let question of questions;let i = index;">
-    <p >{{question.description}}</p>
-    <mat-form-field *ngIf="false"><input matInput></mat-form-field>
-    <mat-radio-group [disabled]="finish" name="{{question.docId}}" *ngFor="let answer of question.answers;let j = index">
-      <mat-radio-button (change)="answerSave(question.docId,i,j)" value="{{j}}">{{answer.answer}}</mat-radio-button><br>
-    </mat-radio-group>
-    <div *ngIf="i === (questions.length - 1)">
-      <div *ngIf="finish">
-        Вы набрали {{pointTotal}} баллов из {{pointMust}}.
+<div *ngIf="template">
+  <div *ngIf="template.isExamTemplate" layout="row" style="text-align: center">
+    <b>00:{{time}}</b>
+  </div>
+  <mat-horizontal-stepper *ngIf="questions" (selectionChange)="newTme($event)" labelPosition="bottom"
+                          [selectedIndex]="currentStep" #stepper>
+    <mat-step [editable]="false" *ngFor="let question of questions;let i = index;">
+      <p>{{question.description}}</p>
+      <mat-form-field *ngIf="false"><input matInput></mat-form-field>
+      <mat-radio-group [disabled]="finish" name="{{question.docId}}"
+                       *ngFor="let answer of question.answers;let j = index">
+        <mat-radio-button (change)="answerSave(question.docId,i,j)" value="{{j}}">{{answer.answer}}</mat-radio-button>
+        <br>
+      </mat-radio-group>
+      <div *ngIf="i === (questions.length - 1)">
+        <div *ngIf="finish">
+          Вы набрали {{pointTotal}} баллов из {{pointMust}}.
+        </div>
+        <button mat-button [disabled]="saveAns || finish" (click)="save()" style="float:right;">Сохранить</button>
       </div>
-      <button mat-button [disabled]="saveAns || finish" (click)="save()"  style="float:right;">Сохранить</button>
-    </div>
-  </mat-step>
-</mat-horizontal-stepper>
+    </mat-step>
+  </mat-horizontal-stepper>
 
-<app-test-result [data]="dataForResult" *ngIf="finish"></app-test-result>
+  <app-test-result [data]="dataForResult" *ngIf="finish"></app-test-result>
+</div>

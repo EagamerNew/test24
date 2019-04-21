@@ -66,9 +66,10 @@ export const USER_PRIVILEGES = [
   }
 
 ];
-export enum RESULT_CODE_LIST{
-  PENDING,
-  ACTIVE,
-  DISABLED,
-  DONE
+
+export enum RESULT_CODE_LIST {
+  PENDING = 'pending',
+  ACTIVE = 'active',
+  DISABLED = 'disabled',
+  DONE = 'done'
 }

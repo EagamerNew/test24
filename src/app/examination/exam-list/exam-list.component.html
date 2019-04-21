@@ -6,12 +6,12 @@
     </div>
     <br>
     <mat-card-content style="text-align: center; padding: 30px 0;">
-      <h2>
-        {{getNameFromSection(exam.sectionId)}}
+      <h2 *ngIf="shortTemplateList.length > 0">
+        {{getTemplateNameById(exam.templateId)}}
       </h2>
-      <p class="mat-caption">{{exam.date}},{{exam.startTime}}</p>
-      <p class="mat-caption"></p>
-      <!--<p class="mat-caption">{{data.section}}</p>-->
+      <p class="mat-caption">{{getNameFromSection(exam.sectionId)}}</p>
+      <p class="mat-caption">{{exam.date.toDate()| date: 'dd/MM/yyyy'}}</p>
+      <p class="mat-caption">{{exam.startTime}}</p>
     </mat-card-content>
     <mat-card-actions>
       <div fxFlex="100" fxLayoutAlign="center center">
@@ -26,7 +26,9 @@
                   (click)="participate(exam.id,exam.participantList)">
             Записаться
           </button>
-          <span *ngIf="existInExam(exam) && getStatus(exam) === 'pending'">Заявка на рассмотрении</span>
+          <span *ngIf="existInExam(exam)
+                      && userRole !== 'admin'
+                      && getStatus(exam) === 'pending'">Заявка на рассмотрении</span>
           <button mat-raised-button class="mat-warn"
                   *ngIf="existInExam(exam) && getStatus(exam) === 'active'">
             Начать

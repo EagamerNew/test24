@@ -17,6 +17,9 @@ export class ExamListComponent implements OnInit {
   categoryList: any[] = [];
   sectionList: any[] = [];
 
+  templateIdList: string[] = [];
+  shortTemplateList: any[] = [];
+
   constructor(public cookieService: CookieService,
               private commonService: CommonService) {
   }
@@ -51,6 +54,28 @@ export class ExamListComponent implements OnInit {
     }
   }
 
+  getShortTemplateList(){
+    this.commonService.getShortTemplateList(this.templateIdList).then(res=>{
+      this.shortTemplateList = res;
+      console.log('shortTemplateList:', res);
+    });
+  }
+
+  getTemplateNameById(id:string):string{
+    let name ="";
+    for (let i = 0; i < this.templateIdList.length; i++) {
+      if(this.shortTemplateList[i].id === id){
+        name = this.shortTemplateList[i].name;
+        break;
+      }
+    }
+    return name;
+  }
+
+  timestampToDate(date): Date{
+    return new Date(date);
+  }
+
   getStatus(exam){
     if(exam.participantList){
       return exam.participantList[this.userId].status;
@@ -60,6 +85,11 @@ export class ExamListComponent implements OnInit {
   getExamTemplateList() {
     this.commonService.getExamList().then(res => {
       this.examList = res;
+      this.templateIdList = this.examList.map(res=>{
+        return res.templateId;
+      });
+      console.log('templateIdlist:', this.templateIdList);
+      this.getShortTemplateList();
     })
   }
 

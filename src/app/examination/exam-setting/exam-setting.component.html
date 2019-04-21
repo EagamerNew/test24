@@ -1,15 +1,50 @@
-<div>
-  {{exam.date}}
+<div *ngIf="exam">
+  <b *ngIf="exam.date">{{exam.date.toDate()| date: 'dd/MM/yyyy'}}</b>
   <br>
-  <a >Заявки </a>
+  <b *ngIf="shortTemplate">{{shortTemplate.name}}</b>
   <br>
-  <a >Участники</a>
+  <a (click)="changeSelectedRequest('pending')" [ngClass]="{active: code === 'pending'}">Заявки {{pendingCount}}</a>
   <br>
-  <a>Результаты</a>
+  <a (click)="changeSelectedRequest('active')" [ngClass]="{active: code === 'active'}">Участники {{activeCount}}</a>
   <br>
-  <div *ngFor="let participant of participantList">
-    {{participant.lastname}} {{participant.firstname}}
-    status: {{participant.data.status}}
-    <br>
+  <a (click)="changeSelectedRequest('done')" [ngClass]="{active: code === 'done'}">Результаты {{doneCount}}</a>
+  <br>
+  <div *ngFor="let participant of participantList" style="margin-top: 20px;">
+    <div *ngIf="participant.data.status === 'pending' && code ==='pending'">
+      <div style="border: 1px solid black; border-radius:7px;">
+        <div style="margin:7px;">
+          {{participant.lastname}} {{participant.firstname}}
+          <br>
+          {{participant.idn}}
+        </div>
+      </div>
+      <div fxFlexAlign="row" fxLayoutAlign="space-evenly center" style="margin: 5px 0px;">
+        <button mat-raised-button class="mat-warn" (click)="disableUser(participant.userId)">
+          Удалить
+        </button>
+        <button mat-raised-button class="mat-primary" (click)="activateUser(participant.userId)">
+          Допуск
+        </button>
+      </div>
+    </div>
+    <div *ngIf="participant.data.status === 'active' && code === 'active'">
+      <div style="border: 1px solid black; border-radius:7px;">
+        <div style="margin:7px;">
+          {{participant.lastname}} {{participant.firstname}}
+          <br>
+          {{participant.idn}}
+        </div>
+      </div>
+    </div>
+    <div *ngIf="participant.data.status === 'done' && code === 'done'">
+      <div style="border: 1px solid black; border-radius:7px;">
+        <div style="margin:7px;">
+          {{participant.lastname}} {{participant.firstname}}
+          <br>
+          <span style="text-align: right;float:right">{{participant.data.result}}</span>
+          {{participant.idn}}
+        </div>
+      </div>
+    </div>
   </div>
 </div>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {CommonService} from '../shared/common.service';
 import {Company} from '../new-company/new-company.component';
+import {Subsidiary} from "../subsidiary/subsidiary.component";
 
 @Component({
   selector: 'app-company-list',
@@ -10,10 +11,10 @@ import {Company} from '../new-company/new-company.component';
 export class CompanyListComponent implements OnInit {
   companyList:Company[] = [];
   constructor(private _service: CommonService,) { }
-
   ngOnInit() {
     this.getpositionList()
   }
+
   getpositionList(): void {
     this._service.getCompanyList().then(res => {
       console.log(res)
@@ -22,10 +23,10 @@ export class CompanyListComponent implements OnInit {
           id:result.id,
           bin: result.bin,
           phoneNumber: result.phoneNumber,
+          subsidiary: result.subsidiary,
           name: result.name
         }
       });
     });
-
   }
 }

@@ -7,6 +7,13 @@
 <mat-form-field class="example-full-width">
   <input matInput placeholder="+7 Номер мобильного" [(ngModel)]="company.phoneNumber">
 </mat-form-field>
+<mat-form-field class="example-full-width">
+  <mat-select matInput placeholder="Филиал" [(ngModel)]="company.subsidiary">
+    <mat-option *ngFor="let subsidiary of subsidiaryList" [value]="subsidiary.id">
+      {{subsidiary.name}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
 <div  fxLayout="row" fxLayoutAlign="center center">
   <div fxFlex= "35"><button mat-icon-button (click)="setCompany()" color="primary" mat-button >Сохранить</button></div>
   <div fxFlex = "10"></div>

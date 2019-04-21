@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {QuestionService} from "../shared/question.service";
 import {QuestionList} from "../list-questions/question-list";
 import {ActivatedRoute} from "@angular/router";
-import {MatSnackBar} from "@angular/material";
+import {MatSnackBar, MatStepper} from "@angular/material";
 import {CommonService} from "../shared/common.service";
 import {CookieService} from "ngx-cookie-service";
 import {RESULT_CODE_LIST} from "../shared/default-constant";
@@ -40,8 +40,12 @@ export class TestComponent implements OnInit {
               private cookieService: CookieService) {
   }
 
+  @ViewChild('stepper') stepper: MatStepper;
   templateId: string;
   template: any;
+  currentStep = 0;
+  time = 20;
+  fiinishNew = false;
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -52,6 +56,9 @@ export class TestComponent implements OnInit {
           console.log('template:', this.template.questionIdList);
           this.questionService.getQuestionListByIdIn(this.template.questionIdList).then(res => {
             this.questions = res;
+            if (this.template.isExamTemplate) {
+              this.nextQuestion();
+            }
             console.log('questionList: ', this.questions);
             if (this.questions.length === 0 || !this.questions) {
               this.openSnackBar('Вопросы не найдены!', '');
@@ -60,10 +67,90 @@ export class TestComponent implements OnInit {
         });
       }
     });
+
+  }
+
+  nextQuestion() {
+    setTimeout(s => {
+      if (this.fiinishNew) {
+        return null;
+      }
+      this.time -= 1;
+      if (this.time < 0) {
+        this.time = 0;
+        return null;
+      }
+      console.log(this.currentStep, "   ", this.time)
+      if (this.time == 0) {
+        this.next('new');
+      } else {
+        this.nextQuestion()
+      }
+    }, 1000)
+  }
+
+  next(type) {
+    console.log(JSON.stringify(this.questions[this.currentStep]))
+    this.answerSave(this.questions[this.currentStep].docId, this.currentStep, -1);
+    this.currentStep += 1;
+    if (this.questions.length - 1 !== this.currentStep && this.currentStep < this.questions.length) {
+      if (type === 'new') {
+        console.log('nextQuestion')
+        this.time = 20;
+        this.nextQuestion();
+      }
+      console.log(type === 'new', '=--=-=---==--=-=-=-=-=--=-=-=-')
+    } else {
+      console.log('finis---------------------')
+      this.fiinishNew = true;
+      this.time = 20;
+      this.end();
+    }
+  }
+
+  end() {
+    console.log('finis========================--------------------')
+
+    setTimeout(s => {
+      this.time -= 1;
+      if (this.time < 0) {
+        this.time = 0;
+        return null;
+      }
+      if (this.time <= 0) {
+        console.log(JSON.stringify(this.questions[this.currentStep]))
+        this.answerSave(this.questions[this.currentStep].docId, this.currentStep, -1);
+        console.log('finish')
+        // this.save()
+      } else {
+        this.end()
+
+      }
+    }, 1000)
+
+  }
+
+  newTme(event) {
+    // console.log(event)
+    let s = event.selectedIndex - this.currentStep;
+    this.fiinishNew = true;
+
+    for (let i = 0; i < s - 1; i++) {
+      this.time = 0;
+      console.log('new TIME')
+      this.next("check")
+    }
+    // console.log(this.currentStep)
+    setTimeout(s => {
+      this.fiinishNew = false;
+      this.next("new")
+    },1000);
+    // this.currentStep = event.selectedIndex;
   }
 
   answerSave(docId, i, answer) {
     let check = true;
+    this.currentStep = i;
     for (let j = 0; j < this.answers.length; j++) {
       if (this.answers[j].docId == docId) {
         this.answers[j].answer = answer;
@@ -82,14 +169,15 @@ export class TestComponent implements OnInit {
     if (this.answers.length == this.questions.length) {
       this.saveAns = false;
     }
+
   }
+
 
   save() {
     let correctCount = 0;
     let misCount = 0;
     for (let i = 0; i < this.answers.length; i++) {
       if (parseInt(this.answers[i].correctAnswer) === parseInt(this.answers[i].answer)) {
-        // console.log("correct",i+1);
         correctCount += 1;
         this.pointTotal += parseInt(this.answers[i].point);
         this.pointMust += parseInt(this.answers[i].point);

@@ -14,6 +14,14 @@ export class ExamSettingComponent implements OnInit {
   exam: any = {};
 
   participantList:any[] = [];
+  code = "pending";
+
+  sectionList: any[]= [];
+  shortTemplate: any = {};
+
+  pendingCount = 0;
+  activeCount = 0;
+  doneCount = 0;
 
   constructor(private route: ActivatedRoute,
               private commonService: CommonService) {
@@ -23,12 +31,39 @@ export class ExamSettingComponent implements OnInit {
     this.route.params.subscribe(res=>{
       this.examId = res['id'];
       this.getExamById();
+      this.getSectionList();
+    });
+  }
+
+  changeSelectedRequest(code:string){
+    this.code = code;
+  }
+
+  getSectionList(){
+    this.commonService.getSectionList().then(res => {
+      this.sectionList = res;
+    });
+  }
+
+  getNameFromSection(id): string {
+    let res;
+    if (res = this.sectionList.find(value => value.id === id)) {
+      return res.name;
+    } else {
+      return "Раздел не найден";
+    }
+  }
+
+  getShortTemplateById(){
+    this.commonService.getShortTemplateById(this.exam.templateId).then(res=>{
+      this.shortTemplate = res[0];
     });
   }
 
   getExamById(){
     this.commonService.getExamById(this.examId).then(res=>{
       this.exam = res[0];
+      this.getShortTemplateById();
       if(this.exam.participantList){
         let map: Map<string,any> = new Map(Object.entries(this.exam.participantList));
         console.log('map:' , map)
@@ -37,12 +72,27 @@ export class ExamSettingComponent implements OnInit {
           this.commonService.getUserNameAndIdn(key).then(
             res=>{
               const obj = {
+                userId: key,
                 firstname: res[0].firstname,
                 lastname: res[0].lastname,
                 idn: res[0].idn,
                 data: this.exam.participantList[key]
               };
-              console.log(obj)
+              console.log(obj);
+              if(obj.data.status === RESULT_CODE_LIST.ACTIVE.toString().toLowerCase()){
+                this.activeCount ++;
+              }else if(obj.data.status === RESULT_CODE_LIST.DONE.toString().toLowerCase()){
+                this.doneCount ++;
+                this.commonService.getResultById(obj.data.resultId).then(res=>{
+                  const result:any  = res[0];
+                  obj.data['result'] = result.score;
+
+                  console.log('result: ',result);
+                });
+                // HELLO MTHFCKR
+              }else if(obj.data.status === RESULT_CODE_LIST.PENDING.toString().toLowerCase()){
+                this.pendingCount ++;
+              }
               this.participantList.push(obj);
             }
           );
@@ -63,6 +113,8 @@ export class ExamSettingComponent implements OnInit {
     this.exam.participantList[userId].status = status;
     this.commonService.updateExamParticipantList(this.examId, this.exam.participantList).then(res=>{
       console.log('updated : ', this.exam);
+      this.participantList = [];
+      this.getExamById();
     });
   }
 }
