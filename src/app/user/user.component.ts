@@ -29,46 +29,62 @@ export class UserComponent implements OnInit {
     this.getUserList();
   }
 
-  selectAll(userId){
+  selectAll(userId) {
 
 
-    if(this.privilegeOption === 'all'){
+    if (this.privilegeOption === 'all') {
       this.privilegeTitle = 'Сбросить';
       this.privilegeOption = 'deall';
 
-    }else{
+    } else {
       this.privilegeTitle = 'Выбрать все';
       this.privilegeOption = 'all';
     }
 
     for (let i = 0; i < this.userList.length; i++) {
-      if(this.userList[i].id === userId){
-        if(this.privilegeOption === 'all'){
+      if (this.userList[i].id === userId) {
+        if (this.privilegeOption === 'all') {
           this.userList[i].privilegeList = [];
           this.privilegeList.forEach(value => this.userList[i].privilegeList.push(value.code));
-        }else{
+        } else {
           this.userList[i].privilegeList = [];
         }
       }
     }
   }
 
-  getUserList(): void{
-    this.commonService.getUserList().then(res=>{
+  getUserList(): void {
+    this.commonService.getUserList().then(res => {
       this.userList = res;
     })
   }
 
-  updateUserByUserDocId(user:any):void{
-    this.commonService.updateUserByDocId(user.id, user).then(res=>{
-      this.openSnackBar('Пользователь успешно обновлен','');
+  updateUserByUserDocId(user: any): void {
+
+    let trust = false;
+
+    for (let i = 0; i < user.privilegeList.length; i++) {
+      if(user.privilegeList[i] === 'examination'){
+        trust = true;
+      }
+      if(user.privilegeList[i] === 'question'){
+        trust = false;
+      }
+    }
+    if(trust){
+      user.privilegeList.push('question');
+    }
+    // to remove duplicated elements
+    user.privilegeList = user.privilegeList.filter((el,i,a) => i === a.indexOf(el));
+    this.commonService.updateUserByDocId(user.id, user).then(res => {
+      this.openSnackBar('Пользователь успешно обновлен', '');
       this.getUserList();
     });
   }
 
-  deleteUserByUserDocId(userDocId):void{
-    this.commonService.deleteUserByUserDocId(userDocId).then(res=>{
-      this.openSnackBar('Пользователь успешно удален','');
+  deleteUserByUserDocId(userDocId): void {
+    this.commonService.deleteUserByUserDocId(userDocId).then(res => {
+      this.openSnackBar('Пользователь успешно удален', '');
       this.getUserList();
     });
   }

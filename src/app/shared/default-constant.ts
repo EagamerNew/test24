@@ -67,7 +67,7 @@ export const USER_PRIVILEGES = [
   {
     code: 'exam-list', // Все что связано с экзаменом
     name: 'Список экзаменов',
-    description: ' Все что связано с экзаменом'
+    description: 'Список экзаменов'
   }
 
 ];
