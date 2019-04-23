@@ -32,6 +32,7 @@ const routes: Routes = [
   {path: 'questions-list-section', component: ListQuestionsComponent},
   {path: 'questions-list-section/:docId', component: ListQuestionsComponent},
   {path: 'test/:id', component: TestComponent},
+  {path: 'test/:id/:examId', component: TestComponent},
   {path: 'login-phone', component: PhoneLoginComponent},
   {path: 'profile', component: ProfileComponent},
   {path: 'question-moderation', component: QuestionModerationComponent},

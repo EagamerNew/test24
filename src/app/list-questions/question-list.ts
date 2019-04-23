@@ -13,5 +13,6 @@ export class QuestionList {
   section?:string;
   status?:string;
   note?:string;
+  isExamQuestion?: boolean;
 }
 

@@ -96,7 +96,12 @@ export class MenuComponent implements OnInit {
           }
           break;
         case 'demo-list':
-          if (this.userRole === 'staff' || this.userRole === 'anonymous' || this.userPrivilegeList.includes('question-template') ) {
+          if (this.userRole === 'staff' || this.userRole === 'user'  || this.userRole === 'anonymous' || this.userPrivilegeList.includes('question-template') ) {
+            result = true;
+          }
+          break;
+        case 'exam-list':
+          if (this.userRole === 'user' || this.userPrivilegeList.includes('exam-list') ) {
             result = true;
           }
           break;

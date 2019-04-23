@@ -8,6 +8,7 @@ import { AngularFirestore } from "@angular/fire/firestore";
 
 import { CategoryService } from "../shared/category.service";
 import { SectionService } from "../shared/section.service";
+import {CommonService} from "../shared/common.service";
 
 @Component({
   selector: 'app-question',
@@ -26,11 +27,13 @@ export class QuestionComponent implements OnInit {
   categories: QuestionCategory[] = [];
   sections: QuestionSection[] = [];
   sectionSelectDisable = true;
+  companyList:any[]=[];
 
   constructor(private fb: FormBuilder,
               public snackBar: MatSnackBar,
               private serviceCategory: CategoryService,
               private serviceSection: SectionService,
+              private commonService: CommonService,
               private firestore: AngularFirestore) {
     this.questionTypeKeys.push("4 ответа");
     this.questionTypeKeys.push("2 ответа");
@@ -50,6 +53,13 @@ export class QuestionComponent implements OnInit {
     });
 
     this.getCategories();
+    this.getCompanyList();
+  }
+
+  getCompanyList(){
+    this.commonService.getCompanyList().then(res=>{
+      this.companyList = res;
+    })
   }
 
   getCategories() {

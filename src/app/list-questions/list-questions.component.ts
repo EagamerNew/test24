@@ -7,6 +7,7 @@ import {QuestionSection} from "../question/section/question-section.model";
 import {CategoryService} from "../shared/category.service";
 import {SectionService} from "../shared/section.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {CommonService} from "../shared/common.service";
 
 @Component({
   selector: 'app-list-questions',
@@ -21,16 +22,19 @@ export class ListQuestionsComponent implements OnInit {
   sections: QuestionSection[] = [];
   sectionSelectDisable = true;
   docId: string;
+  companyList:any[] = [];
 
   constructor(private service: QuestionService,
               public snackBar: MatSnackBar,
               private serviceCategory: CategoryService,
               private serviceSection: SectionService,
+              private commonService: CommonService,
               private route: ActivatedRoute,
               private router: Router) {
   }
 
   ngOnInit() {
+    this.getCompanyList();
     this.route.params.subscribe(res => {
       this.docId = res['docId'];
       this.getCategories();
@@ -43,6 +47,13 @@ export class ListQuestionsComponent implements OnInit {
 
     });
 
+  }
+
+
+  getCompanyList(){
+    this.commonService.getCompanyList().then(res=>{
+      this.companyList = res;
+    })
   }
 
   // TODO modify to get one question using doc id

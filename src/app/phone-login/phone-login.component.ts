@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {WindowService} from "../shared/window.service";
 import {PhoneNumber} from "./phonenumber-model";
 import * as firebase from 'firebase'
-import {FormBuilder} from "@angular/forms";
 import {MatSnackBar} from "@angular/material";
 import {CommonService} from "../shared/common.service";
 import {Router} from "@angular/router";
@@ -47,6 +46,11 @@ export class PhoneLoginComponent implements OnInit {
         // })
       }
     });
+  }
+
+  backToMainLogin(){
+    this.windowRef.confirmationResult = null;
+    this.router.navigateByUrl('/login-phone');
   }
 
   convertStringToPhone() {

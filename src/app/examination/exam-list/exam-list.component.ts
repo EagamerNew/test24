@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonService} from "../../shared/common.service";
 import {CookieService} from "ngx-cookie-service";
+import {DatePipe} from "@angular/common";
 
 @Component({
   selector: 'app-exam-list',
@@ -11,7 +12,7 @@ export class ExamListComponent implements OnInit {
 
   template: any = {};
   userId: string = '';
-  userRole: string ='';
+  userRole: string = '';
 
   examList: any[] = [];
   categoryList: any[] = [];
@@ -31,8 +32,8 @@ export class ExamListComponent implements OnInit {
     this.getExamTemplateList();
   }
 
-  participate(examId:string, participantList: any){
-    if(!participantList){
+  participate(examId: string, participantList: any) {
+    if (!participantList) {
       participantList = {};
 
     }
@@ -40,31 +41,48 @@ export class ExamListComponent implements OnInit {
       status: 'pending',
       resultId: ''
     };
-    this.commonService.updateExamParticipantList(examId, participantList).then(res=>{
+    this.commonService.updateExamParticipantList(examId, participantList).then(res => {
       this.getExamTemplateList();
     });
   }
 
-  existInExam(exam){
-    if(exam.participantList){
-      return !exam.participantList[this.userId] !== undefined;
-    }
-    else{
-      return true;
+  existInExam(exam) {
+    if (exam.participantList !== undefined) {
+      if (exam.participantList[this.userId] !== undefined) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
     }
   }
 
-  getShortTemplateList(){
-    this.commonService.getShortTemplateList(this.templateIdList).then(res=>{
+  getFormattedDate(date: any) {
+    try {
+      var datePipe = new DatePipe('en-US');
+      return datePipe.transform(date.toDate(), 'dd/MM/yyyy');
+    } catch (e) {
+      console.log("error with formatting date")
+      return "";
+    }
+  }
+
+  trackByFn(index, item){
+    return index;
+  }
+
+  getShortTemplateList() {
+    this.commonService.getShortTemplateList(this.templateIdList).then(res => {
       this.shortTemplateList = res;
       console.log('shortTemplateList:', res);
     });
   }
 
-  getTemplateNameById(id:string):string{
-    let name ="";
+  getTemplateNameById(id: string): string {
+    let name = "";
     for (let i = 0; i < this.templateIdList.length; i++) {
-      if(this.shortTemplateList[i].id === id){
+      if (this.shortTemplateList[i].id === id) {
         name = this.shortTemplateList[i].name;
         break;
       }
@@ -72,20 +90,25 @@ export class ExamListComponent implements OnInit {
     return name;
   }
 
-  timestampToDate(date): Date{
+  timestampToDate(date): Date {
     return new Date(date);
   }
 
-  getStatus(exam){
-    if(exam.participantList){
-      return exam.participantList[this.userId].status;
+  getStatus(exam) {
+    if (exam.participantList !== undefined) {
+      try {
+        return exam.participantList[this.userId].status;
+      } catch (e) {
+        console.log("IHAVE AN ERROR")
+        return "";
+      }
     }
   }
 
   getExamTemplateList() {
     this.commonService.getExamList().then(res => {
       this.examList = res;
-      this.templateIdList = this.examList.map(res=>{
+      this.templateIdList = this.examList.map(res => {
         return res.templateId;
       });
       console.log('templateIdlist:', this.templateIdList);
@@ -93,7 +116,7 @@ export class ExamListComponent implements OnInit {
     })
   }
 
-  getCategoryAndSectionList(){
+  getCategoryAndSectionList() {
     this.commonService.getCategoryList().then(res => {
       this.categoryList = res;
     });

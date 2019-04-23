@@ -1,0 +1,9 @@
+/*::ng-deep .mat-horizontal-stepper-header-container {*/
+  /*display: none !important;*/
+/*}*/
+/*.mat-horizontal-stepper-header{*/
+  /*pointer-events: none !important;*/
+/*}*/
+.displaying{
+  display:none!important;
+}

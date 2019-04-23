@@ -1,11 +1,11 @@
 <div [hidden]="user">
   <mat-form-field class="example-full-width">
-    <input type="phone" placeholder="Номер телефона(П-р: 87475556677)"  matInput
+    <input type="phone" placeholder="Номер телефона(П-р: 87475556677)" matInput
            [(ngModel)]="phoneString">
   </mat-form-field>
   <mat-form-field class="example-full-width"
                   *ngIf="!windowRef.confirmationResult">
-    <input type="password" placeholder="Пароль"
+    <input type="password" placeholder="Введите пароль"
            matInput
            [(ngModel)]="password">
   </mat-form-field>
@@ -15,11 +15,12 @@
   </mat-form-field>
   <div id="recaptcha-container" width="80%"></div>
 
-  <div fxLayout="row" fxLayoutAlign="center center">
+  <div fxLayout="row" fxLayoutAlign="space-between center">
     <button (click)="checkPhoneAndPassword()"
             *ngIf="!windowRef.confirmationResult"
+            [disabled]="disableButton"
             mat-flat-button class="mat-primary">
-      Войти
+      Войти с паролем
     </button>
     <button (click)="sendLoginCode()"
             *ngIf="!windowRef.confirmationResult"
@@ -27,11 +28,18 @@
             mat-flat-button class="mat-accent">
       Получить код
     </button>
+    <button [disabled]="disableButton"
+            *ngIf="windowRef.confirmationResult"
+            mat-flat-button
+            (click)="backToMainLogin()"
+            class="mat-accent">
+      Назад
+    </button>
     <button (click)="verifyLoginCode()"
             [disabled]="disableButton"
             *ngIf="windowRef.confirmationResult"
             mat-flat-button class="mat-primary">
-      Войти
+      Войти с кодом
     </button>
   </div>
 
@@ -46,8 +54,8 @@
 </div>
 
 <!--<div *ngIf="user">-->
-  <!--You have successfully logged in with your phone number!-->
+<!--You have successfully logged in with your phone number!-->
 
-  <!--UserId: {{ user?.uid }}-->
+<!--UserId: {{ user?.uid }}-->
 
 <!--</div>-->

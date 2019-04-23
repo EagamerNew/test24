@@ -9,8 +9,8 @@
     </mat-form-field>
     <mat-form-field>
       <mat-select placeholder="Компания">
-        <mat-option value="">
-          Нет
+        <mat-option *ngFor="let company of companyList" [value]="company.id">
+          {{company.name}}
         </mat-option>
       </mat-select>
     </mat-form-field>

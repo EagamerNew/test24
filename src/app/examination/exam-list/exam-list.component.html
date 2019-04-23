@@ -1,4 +1,4 @@
-<div *ngFor="let exam of examList" style="padding-top: 10px;">
+<div *ngFor="let exam of examList; trackBy: trackByFn" style="padding-top: 10px;">
   <mat-card class="example-card" style="border:1px solid black;">
     <div>
       <span style="float: left">{{getNameFromCategory(exam.categoryId)}}</span>
@@ -10,14 +10,14 @@
         {{getTemplateNameById(exam.templateId)}}
       </h2>
       <p class="mat-caption">{{getNameFromSection(exam.sectionId)}}</p>
-      <p class="mat-caption">{{exam.date.toDate()| date: 'dd/MM/yyyy'}}</p>
+      <p class="mat-caption">{{getFormattedDate(exam.date)}}</p>
       <p class="mat-caption">{{exam.startTime}}</p>
     </mat-card-content>
     <mat-card-actions>
       <div fxFlex="100" fxLayoutAlign="center center">
         <button mat-raised-button class="mat-primary"
                 [routerLink]="'/exam-setting/'+exam.id"
-                *ngIf="userRole === 'admin' || exam.examinatorUserId === userId">
+                *ngIf="userRole === 'admin' || (exam.examinatorUserId === userId && userRole === 'staff')">
           Настройка
         </button>
         <div>
@@ -27,9 +27,9 @@
             Записаться
           </button>
           <span *ngIf="existInExam(exam)
-                      && userRole !== 'admin'
                       && getStatus(exam) === 'pending'">Заявка на рассмотрении</span>
           <button mat-raised-button class="mat-warn"
+                  [routerLink]="'/test/'+exam.templateId+'/'+exam.id"
                   *ngIf="existInExam(exam) && getStatus(exam) === 'active'">
             Начать
           </button>

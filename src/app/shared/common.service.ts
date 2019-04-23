@@ -20,6 +20,23 @@ export class CommonService {
     this.fireSQL = new FireSQL(this.fireDB);
   }
 
+  saveExamParticipant(resultId:string, userId: string,examId: string){
+    this.getExamParticipantList(examId).then(res=>{
+      let pList = res[0].participantList;
+      console.log('pList: ', res[0].participantList);
+      pList[userId].resultId = resultId;
+      pList[userId].status = 'done';
+      this.updateExamParticipantList(examId,pList).then(res=>{
+        console.log('exam is updated : ', res);
+        console.log('participantListbyUser: ', pList[userId]);
+      });
+    });
+  }
+
+  getExamParticipantList(examId:string){
+    return this.fireSQL.query(`SELECT participantList from examination WHERE __name__ = '${examId}'`);
+  }
+
   getShortTemplateById(id:string){
     return this.fireSQL.query(`SELECT DISTINCT __name__ as id, name FROM template WHERE __name__ = '${id}'`)
   }
@@ -256,7 +273,7 @@ export class CommonService {
 
   getActiveTemplateList() {
     return this.fireSQL.query(`SELECT __name__ as id, name, categoryId, sectionId, questionIdList, status 
-      FROM template WHERE status ='0'`)
+      FROM template WHERE status ='active'`)
       .then(res => {
         return res;
       });

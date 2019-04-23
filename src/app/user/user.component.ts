@@ -17,6 +17,8 @@ export class UserComponent implements OnInit {
   statusList = USER_STATUS;
   roleList = USER_ROLE_LIST;
   privilegeList = USER_PRIVILEGES;
+  privilegeTitle = 'Select all';
+  privilegeOption = 'all';
 
   constructor(public snackBar: MatSnackBar,
               public commonService: CommonService,
@@ -25,6 +27,30 @@ export class UserComponent implements OnInit {
 
   ngOnInit(): void {
     this.getUserList();
+  }
+
+  selectAll(userId){
+
+
+    if(this.privilegeOption === 'all'){
+      this.privilegeTitle = 'Сбросить';
+      this.privilegeOption = 'deall';
+
+    }else{
+      this.privilegeTitle = 'Выбрать все';
+      this.privilegeOption = 'all';
+    }
+
+    for (let i = 0; i < this.userList.length; i++) {
+      if(this.userList[i].id === userId){
+        if(this.privilegeOption === 'all'){
+          this.userList[i].privilegeList = [];
+          this.privilegeList.forEach(value => this.userList[i].privilegeList.push(value.code));
+        }else{
+          this.userList[i].privilegeList = [];
+        }
+      }
+    }
   }
 
   getUserList(): void{
