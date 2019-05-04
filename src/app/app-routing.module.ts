@@ -23,6 +23,7 @@ import {ExaminationComponent} from "./examination/examination.component";
 import {RaitingsComponent} from "./ratings/raitings.component";
 import {ExamListComponent} from "./examination/exam-list/exam-list.component";
 import {ExamSettingComponent} from "./examination/exam-setting/exam-setting.component";
+import {SpecialityComponent} from "./speciality/speciality.component";
 
 const routes: Routes = [
   {path: '', component: MenuComponent},
@@ -50,6 +51,8 @@ const routes: Routes = [
   {path: 'exam', component: ExaminationComponent},
   {path: 'exam-list', component: ExamListComponent},
   {path: 'exam-setting/:id', component: ExamSettingComponent},
+  {path: 'speciality', component: SpecialityComponent},
+
 ];
 
 @NgModule({

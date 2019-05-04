@@ -1,17 +1,17 @@
 
 <mat-form-field class="example-full-width">
-  <input matInput placeholder="ИИН"[(ngModel)]="user.idn" maxlength="12">
+  <input matInput placeholder="ИИН"[(ngModel)]="user.idn" minlength="12" maxlength="12">
   <mat-hint align="end">{{user.idn.length}} / 12</mat-hint>
 </mat-form-field>
 
 <mat-form-field class="example-full-width">
-  <input matInput placeholder="Фамилия"[(ngModel)]="user.lastname" maxlength="20">
+  <input matInput placeholder="Фамилия"[(ngModel)]="user.lastname" minlength="1" maxlength="20">
     <mat-hint align="end">{{user.lastname.length}} / 20</mat-hint>
 </mat-form-field>
 
 
 <mat-form-field class="example-full-width">
-  <input matInput placeholder="Имя"[(ngModel)]="user.firstname" maxlength="20">  
+  <input matInput placeholder="Имя"[(ngModel)]="user.firstname" maxlength="20" minlength="1">
   <mat-hint align="end">{{user.firstname.length}} / 20</mat-hint>
 </mat-form-field>
 
@@ -32,7 +32,7 @@
 </mat-form-field>
 
 <mat-form-field class="example-full-width">
-  <input type="date" matInput placeholder="Дата рождения"[(ngModel)]="user.birthdate" >
+  <input type="date" matInput placeholder="Дата рождения" [(ngModel)]="user.birthdate"  >
 </mat-form-field>
 
 <mat-form-field class="example-full-width">

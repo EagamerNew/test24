@@ -30,7 +30,7 @@ export class NewCompanyComponent implements OnInit {
       this.company.phoneNumber = '';
       this.company.bin = '';
       this.company.subsidiary = '';
-      this.openSnackBar('Компания создан', '');
+      this.openSnackBar('Компания создана', '');
     });
   }
 
@@ -47,4 +47,12 @@ export class Company {
   name: string;
   phoneNumber: string;
   subsidiary: string;
+
+  constructor(){
+    this.id = '';
+    this.bin = '';
+    this.name = '';
+    this.phoneNumber = '';
+    this.subsidiary = '';
+  }
 }

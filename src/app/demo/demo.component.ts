@@ -11,6 +11,7 @@ import {AngularFirestore} from "@angular/fire/firestore";
 import {Template} from "../shared/model/template";
 import {ActivatedRoute, Route, Router} from "@angular/router";
 import * as firebase from 'firebase';
+import {CookieService} from "ngx-cookie-service";
 
 @Component({
   selector: 'app-demo',
@@ -19,7 +20,8 @@ import * as firebase from 'firebase';
 })
 export class DemoComponent implements OnInit {
   constructor(public snackBar: MatSnackBar,
-              private router: Router) {
+              private router: Router,
+              private cookieService: CookieService) {
 
   }
 
@@ -68,9 +70,12 @@ export class DemoComponent implements OnInit {
     this.sectionId = event.value;
     console.log('sectionId: ', event.value);
     let query = `SELECT __name__ as docId FROM question WHERE section = "` + event.value + `" AND status='accepted'`;
-    if(this.isExamTemplate){
+    if (this.isExamTemplate) {
       query = `SELECT __name__ as docId FROM question WHERE section = "` + event.value + `" AND status='accepted' 
-      AND isExamQuestion = `+ this.isExamTemplate + ``;
+      AND isExamQuestion = ` + this.isExamTemplate + ``;
+    }
+    if (this.cookieService.get('role') !== 'admin') {
+      query += `AND author='${this.cookieService.get('userId')}'`;
     }
     this.fireSQL.query(query).then(result => {
       this.countAvailable = result.length;
@@ -98,11 +103,11 @@ export class DemoComponent implements OnInit {
       console.log('To push id: ', idList);
 
       let template: any = {
-        name:"",
-        categoryId:"",
-        sectionId:"",
-        questionIdList:[],
-        status:"0"
+        name: "",
+        categoryId: "",
+        sectionId: "",
+        questionIdList: [],
+        status: "0"
       };
       template.questionIdList = idList;
       template.categoryId = this.categoryId;
@@ -114,7 +119,7 @@ export class DemoComponent implements OnInit {
       console.log('template to create: ', template);
 
       var db = firebase.firestore();
-      db.collection('template').add(template).then(res=>{
+      db.collection('template').add(template).then(res => {
         this.openSnackBar('Шаблон успешно создан', '');
         this.setDefault();
         // setTimeout(new function(){

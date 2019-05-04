@@ -20,24 +20,46 @@ export class CommonService {
     this.fireSQL = new FireSQL(this.fireDB);
   }
 
-  saveExamParticipant(resultId:string, userId: string,examId: string){
-    this.getExamParticipantList(examId).then(res=>{
+  deleteSpeciality(id:string){
+    return this.firestore.collection('speciality').doc(id).delete();
+  }
+
+  updateSpeciality(speciality) {
+    return this.firestore.collection('speciality').doc(speciality.id).update({'name': speciality.name});
+  }
+
+  getSpecialityList() {
+    return this.fireSQL.query(`SELECT __name__ as id, name FROM speciality`);
+  }
+
+  saveQuestionSpeciality(speciality) {
+    return this.firestore.collection('speciality').add(speciality);
+  }
+
+  getQuestionListByAuthorId(authorId: string) {
+    // TODO USING DOCID
+    return this.fireSQL.query(`SELECT __name__ as docId, answers,author, category,correctAnswer, description, point, 
+    questionType, section, status FROM question WHERE author='${authorId}'`);
+  }
+
+  saveExamParticipant(resultId: string, userId: string, examId: string) {
+    this.getExamParticipantList(examId).then(res => {
       let pList = res[0].participantList;
       console.log('pList: ', res[0].participantList);
       pList[userId].resultId = resultId;
       pList[userId].status = 'done';
-      this.updateExamParticipantList(examId,pList).then(res=>{
+      this.updateExamParticipantList(examId, pList).then(res => {
         console.log('exam is updated : ', res);
         console.log('participantListbyUser: ', pList[userId]);
       });
     });
   }
 
-  getExamParticipantList(examId:string){
+  getExamParticipantList(examId: string) {
     return this.fireSQL.query(`SELECT participantList from examination WHERE __name__ = '${examId}'`);
   }
 
-  getShortTemplateById(id:string){
+  getShortTemplateById(id: string) {
     return this.fireSQL.query(`SELECT DISTINCT __name__ as id, name FROM template WHERE __name__ = '${id}'`)
   }
 

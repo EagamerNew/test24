@@ -1,5 +1,6 @@
 <mat-form-field class="example-full-width">
-  <input matInput placeholder="БИН" [(ngModel)]="company.bin">
+  <input matInput placeholder="БИН" [(ngModel)]="company.bin"  maxlength="12" minlength="12">
+  <mat-hint align="end">{{company.bin.length}} / 12</mat-hint>
 </mat-form-field>
 <mat-form-field class="example-full-width">
   <input matInput placeholder="Название" [(ngModel)]="company.name">

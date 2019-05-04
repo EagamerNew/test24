@@ -7,8 +7,15 @@
       {{question.description}}
     </mat-panel-description>
   </mat-expansion-panel-header>
+  <!--<mat-form-field class="example-full-width">-->
+    <!--<input matInput placeholder="author" [(ngModel)]="question.author" disabled>-->
+  <!--</mat-form-field>-->
   <mat-form-field class="example-full-width">
-    <input matInput placeholder="author" [(ngModel)]="question.author" disabled>
+    <mat-select placeholder="Специальность" [(ngModel)]="question.speciality">
+      <mat-option *ngFor="let speciality of specialityList" [value]="speciality.id">
+        {{speciality.name}}
+      </mat-option>
+    </mat-select>
   </mat-form-field>
   <mat-form-field class="example-full-width">
     <mat-select placeholder="Компания" [(ngModel)]="question.company">
@@ -37,7 +44,7 @@
     <input matInput placeholder="description" [(ngModel)]="question.description">
   </mat-form-field>
   <mat-form-field class="example-full-width">
-    <input matInput placeholder="correctAnswer" [(ngModel)]="question.correctAnswer">
+    <input matInput placeholder="correctAnswer" [(ngModel)]="question.correctAnswer" disabled>
   </mat-form-field>
   <mat-form-field class="example-full-width">
     <input matInput placeholder="point" [(ngModel)]="question.point">

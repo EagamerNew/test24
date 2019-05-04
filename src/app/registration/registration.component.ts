@@ -18,7 +18,7 @@ export class RegistrationComponent implements OnInit {
     lastname: "",
     firstname: "",
     gender: "",
-    birthdate: new Date(),
+    birthdate: new Date('2000-01-01T00:00:00'),
     phoneNumber: "",
     city: "",
     userId: "",
@@ -36,6 +36,7 @@ export class RegistrationComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log("Date is: ", this.user.birthdate);
     // this.router.params.subscribe(params => {
     //   this.userId = params['id'];
     //   if (!this.userId) {

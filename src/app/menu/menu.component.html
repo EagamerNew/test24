@@ -6,6 +6,9 @@
     <button mat-button *ngIf="this.cookie.get('userId') && checkToAccess('question-category')" [routerLink]="['/question-category']"> <!--categoryPR -->
       Добавить категорию
     </button>
+    <button mat-button *ngIf="this.cookie.get('userId') && checkToAccess('question-speciality')" [routerLink]="['/speciality']"> <!--specialityPR -->
+      Добавить специальность
+    </button>
     <button mat-button *ngIf="this.cookie.get('userId') && checkToAccess('question-section')" [routerLink]="['question-section']"><!--sectionPR -->
       Добавить раздел
     </button>

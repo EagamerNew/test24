@@ -14,42 +14,42 @@ export class QuestionService {
     this.fireSQL = new FireSQL(this.firebase.firestore);
   }
 
-  getQuestionListByIdIn(idList: string[]){
+  getQuestionListByIdIn(idList: string[]) {
     let temp = "";
-    for(let str of idList){
+    for (let str of idList) {
       temp = temp + '"' + str + '",';
     }
     temp = temp.substring(0, temp.length - 1);
     // console.log(temp);
-    return this.fireSQL.query(`SELECT __name__ as docId, answers, category, correctAnswer,
+    return this.fireSQL.query(`SELECT __name__ as docId, answers, author, category, correctAnswer,
                                     description, point, questionType, section
-                                     FROM question WHERE __name__ IN (`+temp+`) `);
+                                     FROM question WHERE __name__ IN (` + temp + `) `);
   }
 
-  getCategoryNameById(id){
+  getCategoryNameById(id) {
     return this.firebase.collection('category').doc(id).snapshotChanges();
   }
 
-  getSectionNameById(id){
+  getSectionNameById(id) {
     return this.firebase.collection('section').doc(id).snapshotChanges();
   }
 
   getActiveTemplateList() {
     return this.firebase
-      .collection('template', ref => ref.where("status","==","0")
+      .collection('template', ref => ref.where("status", "==", "0")
       ).snapshotChanges();
   }
 
-  getTemplateById(id: string){
+  getTemplateById(id: string) {
     return this.firebase
       .collection('template').doc(id).snapshotChanges();
-}
+  }
 
   getAllQuestions() {
     return this.firebase.collection('question').snapshotChanges()
   }
 
-  getQuestionById(docId:string) {
+  getQuestionById(docId: string) {
     return this.firebase.doc('question/' + docId).snapshotChanges();
   }
 
@@ -58,6 +58,12 @@ export class QuestionService {
       .collection('question',
         ref => ref.where("status", "==", "accepted")
       ).snapshotChanges();
+  }
+
+  getActiveQuestionsByAuthorId(authorId: string) {
+    return this.fireSQL.query(`SELECT __name__ as docId, answers,company,speciality, author, category, correctAnswer,
+                                    description, point, questionType, section
+                                     FROM question WHERE author = '${authorId}'`);
   }
 
   getRejectedQuestions() {

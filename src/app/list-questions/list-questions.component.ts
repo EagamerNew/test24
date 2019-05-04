@@ -8,6 +8,7 @@ import {CategoryService} from "../shared/category.service";
 import {SectionService} from "../shared/section.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {CommonService} from "../shared/common.service";
+import {CookieService} from "ngx-cookie-service";
 
 @Component({
   selector: 'app-list-questions',
@@ -19,10 +20,11 @@ export class ListQuestionsComponent implements OnInit {
   questions: QuestionList[];
 
   categories: QuestionCategory[] = [];
+  specialityList: any[] = [];
   sections: QuestionSection[] = [];
   sectionSelectDisable = true;
   docId: string;
-  companyList:any[] = [];
+  companyList: any[] = [];
 
   constructor(private service: QuestionService,
               public snackBar: MatSnackBar,
@@ -30,18 +32,24 @@ export class ListQuestionsComponent implements OnInit {
               private serviceSection: SectionService,
               private commonService: CommonService,
               private route: ActivatedRoute,
-              private router: Router) {
+              private router: Router,
+              private cookieService: CookieService) {
   }
 
   ngOnInit() {
     this.getCompanyList();
+    this.getSpecialityList();
     this.route.params.subscribe(res => {
       this.docId = res['docId'];
       this.getCategories();
       if (this.docId) {
         this.getRejectedQuestion();
       } else {
-        this.getQuestions();
+        if(this.cookieService.get('role') === 'admin'){
+          this.getQuestions();
+        }else{
+          this.getQuestionsByAuthorId();
+        }
       }
 
 
@@ -49,9 +57,15 @@ export class ListQuestionsComponent implements OnInit {
 
   }
 
+  getSpecialityList(){
+    this.commonService.getSpecialityList().then(res=>{
+      this.specialityList = res;
+    })
+  }
 
-  getCompanyList(){
-    this.commonService.getCompanyList().then(res=>{
+
+  getCompanyList() {
+    this.commonService.getCompanyList().then(res => {
       this.companyList = res;
     })
   }
@@ -96,6 +110,23 @@ export class ListQuestionsComponent implements OnInit {
     )
   }
 
+  getQuestionsByAuthorId(){
+    this.service.getActiveQuestionsByAuthorId(this.cookieService.get('userId')).then(
+      list => {
+        this.questions = list.map(itemq => {
+          this.serviceSection.getSections().subscribe(res => {
+            res.map(item => {
+              this.sections.push(new QuestionSection(item.payload.doc.id, item.payload.doc.get('name'),
+                item.payload.doc.get('categoryId')))
+            });
+          });
+          let temp : any = itemq;
+          return temp;
+        })
+      }
+    )
+  }
+
   save(question) {
     if (this.docId) {
       question.status = 'in_moderation';
@@ -113,7 +144,7 @@ export class ListQuestionsComponent implements OnInit {
   getCategories() {
     this.serviceCategory.getCotegories().subscribe(
       list => {
-        this.categories = []
+        this.categories = [];
         list.map(item => {
           this.categories.push(new QuestionCategory(item.payload.doc.id, item.payload.doc.get('name')))
         })

@@ -1,14 +1,21 @@
 <section>
   <form fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" [formGroup]="questionForm" (ngSubmit)="onSave()">
+    <!--<mat-form-field>-->
+      <!--<mat-select placeholder="Автор">-->
+        <!--<mat-option value="">-->
+          <!--Нет-->
+        <!--</mat-option>-->
+      <!--</mat-select>-->
+    <!--</mat-form-field>-->
     <mat-form-field>
-      <mat-select placeholder="Автор">
-        <mat-option value="">
-          Нет
+      <mat-select placeholder="Специальность" formControlName="speciality">
+        <mat-option *ngFor="let speciality of specialityList" [value]="speciality.id">
+          {{speciality.name}}
         </mat-option>
       </mat-select>
     </mat-form-field>
     <mat-form-field>
-      <mat-select placeholder="Компания">
+      <mat-select placeholder="Компания" formControlName="company">
         <mat-option *ngFor="let company of companyList" [value]="company.id">
           {{company.name}}
         </mat-option>
@@ -32,13 +39,6 @@
       <mat-select placeholder="Выберите тип ответа" formControlName="questionType" required (selectionChange)="doShowAnswersInput($event)">
         <mat-option *ngFor="let key of questionTypeKeys" [value]="key">
           {{key}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-select placeholder="Специальность">
-        <mat-option value="">
-          Нет
         </mat-option>
       </mat-select>
     </mat-form-field>

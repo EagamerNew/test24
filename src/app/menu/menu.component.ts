@@ -73,6 +73,11 @@ export class MenuComponent implements OnInit {
             result = true;
           }
           break;
+        case 'question-speciality':
+          if (this.userRole === 'staff' || this.userPrivilegeList.includes('speciality')) {
+            result = true;
+          }
+          break;
         case 'question-section':
           if (this.userRole === 'staff' || this.userPrivilegeList.includes('section')) {
             result = true;

@@ -10,6 +10,7 @@ export interface IQuestion {
     sectionId?: string;
     status?: string;
     note?: string;
+    speciality?: string;
 }
 
 
@@ -25,7 +26,8 @@ export class Question implements IQuestion {
         public point?: number,
         public sectionId?: string,
         public status?: string,
-        public note?: string
+        public note?: string,
+        public speciality?: string
     ) {
         this.id = this.id ? this.id : null;
         this.description = this.description ? this.description : '';
@@ -38,5 +40,6 @@ export class Question implements IQuestion {
         this.sectionId = this.sectionId ? this.sectionId : null;
         this.status = this.status ? this.status : null;
         this.note = this.note ? this.note : null;
+        this.speciality = this.speciality ? this.speciality : null;
     }
 }

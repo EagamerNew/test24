@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {QuestionService} from "../shared/question.service";
 import {QuestionSection} from "../question/section/question-section.model";
 import {QuestionList} from "../list-questions/question-list";
+import {CookieService} from "ngx-cookie-service";
+import {CommonService} from "../shared/common.service";
 
 @Component({
   selector: 'app-question-moderation',
@@ -10,7 +12,9 @@ import {QuestionList} from "../list-questions/question-list";
 })
 export class QuestionModerationComponent implements OnInit {
 
-  constructor(private service: QuestionService) {
+  constructor(private service: QuestionService,
+              private cookieService: CookieService,
+              private commonService: CommonService) {
   }
 
   allQuestionList: QuestionList[] = [];
@@ -30,16 +34,25 @@ export class QuestionModerationComponent implements OnInit {
   }
 
   getAllQuestions(): void {
-    this.service.getAllQuestions().subscribe(res => {
-      this.allQuestionList = res.map(item => {
-        return {
-          docId: item.payload.doc.id,
-          ...item.payload.doc.data()
-        }
+    console.log(this.cookieService.get('userId'));
+    if (this.cookieService.get('role') === 'admin') {
+      this.service.getAllQuestions().subscribe(res => {
+        this.allQuestionList = res.map(item => {
+          return {
+            docId: item.payload.doc.id,
+            ...item.payload.doc.data()
+          }
+        });
+        console.log('questionList: ', this.allQuestionList);
+        this.questionList = this.allQuestionList;
       });
-      console.log('questionList: ', this.allQuestionList);
-      this.questionList = this.allQuestionList;
-    })
+    } else {
+      this.commonService.getQuestionListByAuthorId(this.cookieService.get('userId')).then(res=>{
+        this.allQuestionList = res;
+        console.log('questionList by userId : ', this.allQuestionList);
+        this.questionList = this.allQuestionList;
+      });
+    }
   }
 
   activateQuestion(question): void {
@@ -94,7 +107,7 @@ export class QuestionModerationComponent implements OnInit {
       console.log(this.searchText);
       this.questionList = [];
       this.allQuestionList.forEach(value => {
-        if (value.docId.toLowerCase().includes(this.searchText.toLowerCase()) ) {
+        if (value.docId.toLowerCase().includes(this.searchText.toLowerCase())) {
           this.questionList.push(value);
         }
       });

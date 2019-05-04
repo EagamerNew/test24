@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { FormArray, FormControl, Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { Question } from './question.model';
-import { QuestionCategory } from './category/question-category.model';
-import { QuestionSection } from './section/question-section.model';
-import { MatSnackBar } from '@angular/material';
-import { AngularFirestore } from "@angular/fire/firestore";
+import {Component, OnInit} from '@angular/core';
+import {FormArray, FormControl, Validators, FormBuilder, FormGroup} from '@angular/forms';
+import {Question} from './question.model';
+import {QuestionCategory} from './category/question-category.model';
+import {QuestionSection} from './section/question-section.model';
+import {MatSnackBar} from '@angular/material';
+import {AngularFirestore} from "@angular/fire/firestore";
 
-import { CategoryService } from "../shared/category.service";
-import { SectionService } from "../shared/section.service";
+import {CategoryService} from "../shared/category.service";
+import {SectionService} from "../shared/section.service";
 import {CommonService} from "../shared/common.service";
+import {CookieService} from "ngx-cookie-service";
 
 @Component({
   selector: 'app-question',
@@ -27,13 +28,15 @@ export class QuestionComponent implements OnInit {
   categories: QuestionCategory[] = [];
   sections: QuestionSection[] = [];
   sectionSelectDisable = true;
-  companyList:any[]=[];
+  companyList: any[] = [];
+  private specialityList: any[] = [];
 
   constructor(private fb: FormBuilder,
               public snackBar: MatSnackBar,
               private serviceCategory: CategoryService,
               private serviceSection: SectionService,
               private commonService: CommonService,
+              private cookieService: CookieService,
               private firestore: AngularFirestore) {
     this.questionTypeKeys.push("4 ответа");
     this.questionTypeKeys.push("2 ответа");
@@ -41,10 +44,12 @@ export class QuestionComponent implements OnInit {
 
   ngOnInit() {
     this.questionForm = this.fb.group({
+      company: new FormControl(''),
+      speciality: new FormControl(''),
       category: new FormControl(''),
       section: new FormControl(''),
       questionType: new FormControl(null),
-      description: new FormControl('', { validators: [Validators.required] }),
+      description: new FormControl('', {validators: [Validators.required]}),
       answers: this.fb.array([]),
       correctAnswer: new FormControl(''),
       point: new FormControl(''),
@@ -53,11 +58,20 @@ export class QuestionComponent implements OnInit {
     });
 
     this.getCategories();
+    this.getSpecialityList();
     this.getCompanyList();
   }
 
-  getCompanyList(){
-    this.commonService.getCompanyList().then(res=>{
+
+  getSpecialityList() {
+    this.commonService.getSpecialityList().then(res => {
+      this.specialityList = res;
+    })
+  }
+
+
+  getCompanyList() {
+    this.commonService.getCompanyList().then(res => {
       this.companyList = res;
     })
   }
@@ -86,6 +100,7 @@ export class QuestionComponent implements OnInit {
     )
     this.sectionSelectDisable = false;
   }
+
   get answersForm() {
     return this.questionForm.get("answers") as FormArray;
   }
@@ -94,6 +109,7 @@ export class QuestionComponent implements OnInit {
     let question: Question = this.questionForm.value;
     // console.log(question);
     question.status = 'in_moderation';
+    question.author = this.cookieService.get('userId');
     this.firestore.collection('question').add(question);
 
     this.questionForm.patchValue({
