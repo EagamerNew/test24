@@ -20,6 +20,11 @@ export class CommonService {
     this.fireSQL = new FireSQL(this.fireDB);
   }
 
+  getExamHistoryByUserId(userId:string){
+    return this.fireSQL.query(`SELECT __name__ as id, category,title,score,mistake,correct,section FROM result 
+      WHERE status='done' AND userId='${userId}'`);
+  }
+
   deleteSpeciality(id:string){
     return this.firestore.collection('speciality').doc(id).delete();
   }

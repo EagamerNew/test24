@@ -20,6 +20,7 @@ export class ProfileComponent implements OnInit {
   docUserId: string;
   newPassword;
 
+  examHistory: any[]= [];
   constructor(private cookieService: CookieService,
               private commonService: CommonService,
               private snackBar: MatSnackBar) {
@@ -28,7 +29,14 @@ export class ProfileComponent implements OnInit {
   ngOnInit() {
     if (this.docUserId = this.cookieService.get('userId')) {
       this.getUserByDocId();
+      this.getExamHistory();
     }
+  }
+
+  getExamHistory(){
+    this.commonService.getExamHistoryByUserId(this.docUserId).then(res=>{
+      this.examHistory = res;
+    })
   }
 
   getUserByDocId() {
