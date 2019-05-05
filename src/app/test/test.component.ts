@@ -31,7 +31,8 @@ export class TestComponent implements OnInit {
     title: "",
     userId: "",
     templateId: "",
-    status: ''
+    status: '',
+    username:''
   };
 
   constructor(private questionService: QuestionService,
@@ -223,7 +224,10 @@ export class TestComponent implements OnInit {
 
           if (this.cookieService.get("userId")) {
             this.dataForResult.userId = this.cookieService.get("userId");
-            this.saveResult(this.dataForResult);
+            this.commonService.getUserByDocId(this.dataForResult.userId).then(res=>{
+              this.dataForResult.username = res[0].lastname + ' ' + res[0].firstname;
+              this.saveResult(this.dataForResult);
+            });
           }
           this.finish = true;
         });

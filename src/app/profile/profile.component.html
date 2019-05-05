@@ -1,7 +1,7 @@
 <div *ngIf="user">
-  <mat-expansion-panel *ngIf="examHistory.length > 0">
+  <mat-expansion-panel style="margin-bottom:20px;" *ngIf="examHistory.length > 0">
     <mat-expansion-panel-header>
-      <mat-panel-title>Мои результаты экзаменов</mat-panel-title>
+      <mat-panel-title>Мои результаты </mat-panel-title>
       <mat-panel-description>
         <!--{{question.description}}-->
       </mat-panel-description>
@@ -9,7 +9,7 @@
     <div *ngFor="let exam of examHistory">
       <div style="border: 1px solid black; margin-bottom:3%;border-radius:7px;">
         <div style="margin:7px;">
-          <b>Название шаблона экзамена:</b>{{exam.title}}
+          <b>Название шаблона:</b>{{exam.title}}
           <br>
           <b>Категория:</b>{{exam.category}}
           <br>
@@ -21,6 +21,7 @@
         </div>
       </div>
     </div>
+    <br>
   </mat-expansion-panel>
 
   <mat-form-field class="example-full-width">

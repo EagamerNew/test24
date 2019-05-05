@@ -1,6 +1,7 @@
 <div [hidden]="user">
   <mat-form-field class="example-full-width">
-    <input type="phone" placeholder="Номер телефона(П-р: 87475556677)" matInput
+    <span matPrefix>+7 &nbsp;</span>
+    <input type="phone" placeholder="Номер телефона" matInput
            [(ngModel)]="phoneString">
   </mat-form-field>
   <mat-form-field class="example-full-width"
@@ -52,7 +53,6 @@
   <!--</div>-->
 
 </div>
-
 <!--<div *ngIf="user">-->
 <!--You have successfully logged in with your phone number!-->
 

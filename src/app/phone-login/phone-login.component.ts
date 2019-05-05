@@ -55,10 +55,10 @@ export class PhoneLoginComponent implements OnInit {
 
   convertStringToPhone() {
     this.phoneNumber.country = '7';
-    this.phoneNumber.area = this.phoneString.substr(1, 3);
-    this.phoneNumber.prefix = this.phoneString.substr(4, 3);
-    this.phoneNumber.line = this.phoneString.substr(7, 4);
-    console.log(this.phoneNumber);
+    this.phoneNumber.area = this.phoneString.substr(0, 3);
+    this.phoneNumber.prefix = this.phoneString.substr(3, 3);
+    this.phoneNumber.line = this.phoneString.substr(6, 4);
+    console.log(this.phoneNumber, ' ', this.phoneString);
   }
 
   sendLoginCode() {

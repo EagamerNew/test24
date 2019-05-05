@@ -28,7 +28,7 @@ export class RaitingsComponent implements OnInit {
 
 
   getResultList(): void {
-    this._serviceCommon.getResultList().then(res => {
+    this._serviceCommon.getResultList('ratings').then(res => {
       console.log(res, '--');
       this.results = res.map(result => {
         return {
@@ -40,7 +40,8 @@ export class RaitingsComponent implements OnInit {
           category: result.category,
           section: result.section,
           title: result.title,
-          userId: result.userId
+          userId: result.userId,
+          username: result.username
         }
       });
       console.log('resuls', JSON.stringify(this.results));
@@ -83,6 +84,7 @@ export class RaitingsComponent implements OnInit {
       this.result.section = this.results[i].section;
       this.result.title = this.results[i].title;
       this.result.userId = this.results[i].userId;
+      this.result.username = this.results[i].username;
       this.sortingResulsts.push(this.result);
     }
     console.log('==========================================')
@@ -96,6 +98,7 @@ export class RaitingsComponent implements OnInit {
         this.ratingResult.count = 1;
         this.ratingResult.scoreTotal = this.results[i].score;
         this.ratingResult.userId = this.results[i].userId;
+        this.ratingResult.username = this.results[i].username ;
         console.log('=-=-=-=-=-=-================================')
         console.log(this.ratingResult)
         console.log('=-=-=-=-=-=-================================')
@@ -147,5 +150,5 @@ class Rating {
   scoreTotal: number;
   count: number;
   userId: string;
-  userName: string;
+  username: string;
 }

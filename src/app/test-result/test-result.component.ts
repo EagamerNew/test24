@@ -29,7 +29,8 @@ export class TestResultComponent implements OnInit {
         section: 'Менеджмент',
         title: '',
         userDocId: '',
-        templateId: ''
+        templateId: '',
+        username: ''
       }
     }
     // For find percent of correct answer

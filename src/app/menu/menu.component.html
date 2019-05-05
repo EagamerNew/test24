@@ -53,6 +53,9 @@
     </button>
   </div>
 
+  <button mat-button *ngIf="this.cookie.get('userId')"  [routerLink]="['ratings']">
+    Рейтинг
+  </button>
   <button mat-button *ngIf="this.cookie.get('userId')" [routerLink]="['/profile']">
     Мой профиль
   </button>

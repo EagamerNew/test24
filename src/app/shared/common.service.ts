@@ -6,6 +6,7 @@ import {Observable} from "rxjs";
 import {Template} from './model/template';
 import {User} from "./model/user";
 import {USER_ROLE_LIST} from "./default-constant";
+import {CookieService} from "ngx-cookie-service";
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class CommonService {
   private fireDB;
   private fireSQL: FireSQL;
 
-  constructor(private firestore: AngularFirestore) {
+  constructor(private firestore: AngularFirestore,private cookieService: CookieService) {
     this.fireDB = firebase.firestore();
     this.fireSQL = new FireSQL(this.fireDB);
   }
@@ -114,8 +115,15 @@ export class CommonService {
     return this.firestore.collection('result').add(result);
   }
 
-  getResultList() {
-    return this.fireSQL.query(`SELECT __name__ as id, isTest,correct,mistake,score,category,section,title,userId FROM result`);
+  getResultList(cased?:string) {
+    let query = `SELECT __name__ as id, isTest,correct,mistake,score,category,section,title,userId,username 
+      FROM result `;
+    if(cased && cased==='ratings'){
+      if(this.cookieService.get('role') !== 'admin'){
+        query += ` WHERE userId = '${this.cookieService.get('userId')}'`;
+      }
+    }
+    return this.fireSQL.query(query);
   }
 
   saveUser(user: any) {

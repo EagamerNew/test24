@@ -1,31 +1,29 @@
 <div *ngFor="let res of ratingResults" style="padding-bottom:7%;">
   <mat-card class="example-card">
     <mat-card-header>
-      <mat-card-subtitle><h3><b style="float: left">{{res.userId}}</b> &nbsp;&nbsp;<b
-        style="float: right">{{(res.scoreTotal / res.count)| number : '1.2-2'}}</b></h3></mat-card-subtitle>
+      <mat-card-subtitle>
+        <h4>
+          <b style="float: left">{{res.username}}</b> &nbsp;&nbsp;
+        <b style="float: right">
+          /&nbsp;&nbsp;Общ. баллл:
+          <span *ngIf="res.count >= 5">{{(res.scoreTotal / res.count)| number : '1.2-2'}}</span>
+          <span *ngIf="res.count < 5" style="color:red;">*</span>
+        </b>
+      </h4>
+      </mat-card-subtitle>
     </mat-card-header>
     <mat-card-content *ngFor="let res2 of sortingResulsts">
-      <p *ngIf="res.userId == res2.userId">{{res2.category}}/{{res2.section}} &nbsp; {{res2.score/res2.count| number : '1.2-2'}}///{{res2.count}} </p>
+      <p *ngIf="res.userId == res2.userId">{{res2.category}} -
+        &nbsp;
+        <span *ngIf="res2.count >= 5">{{res2.score / res2.count| number : '1.2-2'}}</span>
+        <span *ngIf="res2.count < 5" style="color:red;font-weight: bold;">*</span>
+      </p>
 
     </mat-card-content>
-    <!--<mat-card-actions>-->
-    <!--<button mat-button *ngIf="question.status === 'accepted'" >В архив</button>-->
-    <!--<mat-form-field *ngIf="question.status === 'in_moderation'">-->
-    <!--<input type="text" matInput placeholder="Причина отказа" autocomplete="off" [(ngModel)]="question.note">-->
-    <!--</mat-form-field>-->
-    <!--<button mat-stroked-button *ngIf="question.status === 'in_moderation'"-->
-    <!--style="color:#f44336;"-->
-    <!--class="mat-error" (click)="rejectQuestion(question)">Отказ</button>-->
-    <!--<button mat-stroked-button *ngIf="question.status === 'in_moderation'"-->
-    <!--style="color:#76ff03;"-->
-    <!--class="mat-active" (click)="activateQuestion(question)">Допуск</button>-->
-    <!--<button mat-stroked-button *ngIf="question.status === 'rejected'"-->
-    <!--style="color:#ff9800;"-->
-    <!--class="mat-warn" (click)="archieveQuestion(question)">В архив</button>-->
-    <!--<button mat-stroked-button *ngIf="question.status === 'rejected'"-->
-    <!--style="color:#9e9e9e;"-->
-    <!--[routerLink]="'/questions-list-section/' + question.docId"-->
-    <!--class="mat-warn">Изменить</button>-->
-    <!--</mat-card-actions>-->
   </mat-card>
 </div>
+<div *ngIf="ratingResults.length === 0">
+  Данные не найдено
+</div>
+<br>
+<i>* - Не было сдано 5 и более экзаменов</i>

@@ -29,7 +29,7 @@ export class QuestionComponent implements OnInit {
   sections: QuestionSection[] = [];
   sectionSelectDisable = true;
   companyList: any[] = [];
-  private specialityList: any[] = [];
+  specialityList: any[] = [];
 
   constructor(private fb: FormBuilder,
               public snackBar: MatSnackBar,
