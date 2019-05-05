@@ -16,6 +16,8 @@ export class RaitingsComponent implements OnInit {
   }
 
   results: any[] = [];
+  result: any;
+  sortingResulsts: any[] = [];
   ratingResults: Rating[] = [];
   ratingResult: Rating = new Rating();
 
@@ -41,12 +43,50 @@ export class RaitingsComponent implements OnInit {
           userId: result.userId
         }
       });
-      for (let i = 0; i < this.results.length; i++) {
-        this.results[i].userId = (Math.floor(Math.random() * 4) + 1) + '';
-      }
       console.log('resuls', JSON.stringify(this.results));
-      this.getRatingGroupByUser();
+      this.getRatingGroupByUser()
+      this.getResultsGroupByUserAndSection()
     })
+  }
+
+  getResultsGroupByUserAndSection() {
+    for (let i = 0; i < this.results.length; i++) {
+      this.result = new Object();
+      this.result.count = 0;
+      this.result.score = 0;
+      let check = false;
+      for (let j = 0; j < this.sortingResulsts.length; j++) {
+        if (this.results[i].userId == this.sortingResulsts[j].userId &&
+          this.results[i].category == this.sortingResulsts[j].category) {
+          check = true;
+          break;
+        }
+      }
+      if (check) {
+        continue;
+      }
+      console.log('------------------------------++++++++++++++++++++++++++++++')
+      for (let j = i; j < this.results.length; j++) {
+        if (this.results[i].userId == this.results[j].userId && this.results[i].category == this.results[j].category) {
+          console.log(JSON.stringify(this.results[j]))
+          this.result.score += this.results[j].score;
+          this.result.count += 1;
+          console.log('====-----------=====')
+          console.log(this.sortingResulsts)
+        }
+      }
+      this.result.id = this.results[i].id;
+      this.result.isTest = this.results[i].isTest;
+      this.result.correct = this.results[i].correct;
+      this.result.mistake = this.results[i].mistake;
+      this.result.category = this.results[i].category;
+      this.result.section = this.results[i].section;
+      this.result.title = this.results[i].title;
+      this.result.userId = this.results[i].userId;
+      this.sortingResulsts.push(this.result);
+    }
+    console.log('==========================================')
+    console.log(this.sortingResulsts);
   }
 
   getRatingGroupByUser(): void {
@@ -55,15 +95,11 @@ export class RaitingsComponent implements OnInit {
         this.ratingResult = new Rating();
         this.ratingResult.count = 1;
         this.ratingResult.scoreTotal = this.results[i].score;
-        if (!this.results[i].userId) {
-          this._serviceCommon.getUserByDocId(this.results[i].userId).then(res => {
-            this.ratingResult.userId = this.results[i].userId;
-            this.ratingResult.userName = res[0].lastname + ' ' + res[0].firstname;
-          })
-        } else {
-          this.ratingResult.userId = this.results[i].userId;
-          this.ratingResult.userName = "Муратов Кайрат" + this.results[i].userId;
-        }
+        this.ratingResult.userId = this.results[i].userId;
+        console.log('=-=-=-=-=-=-================================')
+        console.log(this.ratingResult)
+        console.log('=-=-=-=-=-=-================================')
+
       } else {
         continue;
       }
@@ -112,5 +148,4 @@ class Rating {
   count: number;
   userId: string;
   userName: string;
-
 }

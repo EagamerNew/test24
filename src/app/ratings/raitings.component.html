@@ -1,11 +1,11 @@
 <div *ngFor="let res of ratingResults" style="padding-bottom:7%;">
   <mat-card class="example-card">
     <mat-card-header>
-      <mat-card-subtitle><h3><b style="float: left">{{res.userName}}</b> &nbsp;&nbsp;<b
+      <mat-card-subtitle><h3><b style="float: left">{{res.userId}}</b> &nbsp;&nbsp;<b
         style="float: right">{{(res.scoreTotal / res.count)| number : '1.2-2'}}</b></h3></mat-card-subtitle>
     </mat-card-header>
-    <mat-card-content *ngFor="let res2 of results">
-      <p *ngIf="res.userId == res2.userId">{{res2.category}}/{{res2.section}} &nbsp; {{res2.score}}</p>
+    <mat-card-content *ngFor="let res2 of sortingResulsts">
+      <p *ngIf="res.userId == res2.userId">{{res2.category}}/{{res2.section}} &nbsp; {{res2.score/res2.count| number : '1.2-2'}}///{{res2.count}} </p>
 
     </mat-card-content>
     <!--<mat-card-actions>-->

@@ -226,15 +226,18 @@ export class CommonService {
   }
 
   updateCompany(company) {
+    console.log('===================================')
+    console.log(JSON.stringify(company))
     return this.firestore.collection('company').doc(company.id).set({
       bin: company.bin,
       name: company.name,
       phoneNumber: company.phoneNumber,
+      subsidiary:company.subsidiary
     });
   }
 
   getCompanyById(id) {
-    return this.fireSQL.query(`SELECT __name__ as id, bin, name,phoneNumber FROM company where __name__ ='` + id + `'`);
+    return this.fireSQL.query(`SELECT __name__ as id, bin, name,phoneNumber,subsidiary FROM company where __name__ ='` + id + `'`);
   }
 
   deleteCompany(id) {

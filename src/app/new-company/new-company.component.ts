@@ -29,7 +29,7 @@ export class NewCompanyComponent implements OnInit {
       this.company.name = '';
       this.company.phoneNumber = '';
       this.company.bin = '';
-      this.company.subsidiary = '';
+      this.company.subsidiary = [];
       this.openSnackBar('Компания создана', '');
     });
   }
@@ -46,13 +46,13 @@ export class Company {
   bin: string;
   name: string;
   phoneNumber: string;
-  subsidiary: string;
+  subsidiary: string[];
 
   constructor(){
     this.id = '';
     this.bin = '';
     this.name = '';
     this.phoneNumber = '';
-    this.subsidiary = '';
+    this.subsidiary = [];
   }
 }
