@@ -48,7 +48,7 @@ export class PhoneLoginComponent implements OnInit {
     });
   }
 
-  backToMainLogin(){
+  backToMainLogin() {
     this.windowRef.confirmationResult = null;
     this.router.navigateByUrl('/login-phone');
   }
@@ -69,16 +69,26 @@ export class PhoneLoginComponent implements OnInit {
     const num = this.phoneNumber.e164;
 
     //
-    firebase.auth().signInWithPhoneNumber(num, appVerifier)
-      .then(result => {
 
-        this.windowRef.confirmationResult = result;
+    this.commonService.getUserByPhone(this.phoneString).then(res => {
+      if (res && res[0]) {
+        firebase.auth().signInWithPhoneNumber(num, appVerifier)
+          .then(result => {
+
+            this.windowRef.confirmationResult = result;
+            this.disableButton = false;
+          })
+          .catch(error => {
+            this.openSnackBar('Аккаунт с таким номером не найден', '');
+            console.log(error);
+          });
+      } else {
         this.disableButton = false;
-      })
-      .catch(error => {
-        this.openSnackBar('Аккаунт с таким номером не найден', '');
-        console.log(error);
-      });
+        this.openSnackBar("Аккаунт не найден. Свяжитесь с администратором.", "");
+        console.log("error kind of -1");
+      }
+    });
+
 
   }
 

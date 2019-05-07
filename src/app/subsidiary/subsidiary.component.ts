@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CommonService} from "../shared/common.service";
 import {City} from "../city/city.component";
 
@@ -8,11 +8,11 @@ import {City} from "../city/city.component";
   styleUrls: ['./subsidiary.component.css']
 })
 export class SubsidiaryComponent implements OnInit {
-  subsidiary:Subsidiary = new Subsidiary();
-  subsidiaryList:Subsidiary [] =[];
+  subsidiary: Subsidiary = new Subsidiary();
+  subsidiaryList: Subsidiary [] = [];
   cities: City[] = [];
 
-  constructor(private _service:CommonService) {
+  constructor(private _service: CommonService) {
 
   }
 
@@ -21,6 +21,7 @@ export class SubsidiaryComponent implements OnInit {
     this.getCityList()
 
   }
+
   setSubsidiary(): void {
     console.log(this.subsidiary)
 
@@ -35,6 +36,7 @@ export class SubsidiaryComponent implements OnInit {
 
     });
   }
+
   updateSubsidiary(subsidiary): void {
     let temp: any = {
       id: subsidiary.id,
@@ -48,6 +50,7 @@ export class SubsidiaryComponent implements OnInit {
 
     });
   }
+
   delete(subsidiary): void {
     let temp: any = {
       id: subsidiary.id,
@@ -56,16 +59,17 @@ export class SubsidiaryComponent implements OnInit {
       address: subsidiary.address
     };
     this._service.deleteSubsidiary(temp).then(res => {
-    this.getSubsidiaryList();
+      this.getSubsidiaryList();
     });
   }
-  getSubsidiaryList(){
+
+  getSubsidiaryList() {
     console.log('-------------')
     this._service.getSubsidiaryList().then(res => {
       console.log(res)
-      this.subsidiaryList = res.map(result =>{
+      this.subsidiaryList = res.map(result => {
         return {
-          id:result.id,
+          id: result.id,
           cityCode: result.cityCode,
           address: result.address,
           name: result.name
@@ -77,9 +81,9 @@ export class SubsidiaryComponent implements OnInit {
 
   getCityList(): void {
     this._service.getCityList().then(res => {
-      this.cities = res.map(result =>{
+      this.cities = res.map(result => {
         return {
-          id:result.id,
+          id: result.id,
           code: result.code,
           name: result.name
         }
@@ -89,8 +93,8 @@ export class SubsidiaryComponent implements OnInit {
 }
 
 export class Subsidiary {
-  id:string;
-  cityCode:string;
-  name:string;
-  address:string;
+  id: string;
+  cityCode: string;
+  name: string;
+  address: string;
 }

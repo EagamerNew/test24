@@ -1,8 +1,8 @@
 <div [hidden]="user">
   <mat-form-field class="example-full-width">
     <span matPrefix>+7 &nbsp;</span>
-    <input type="phone" placeholder="Номер телефона" matInput
-           [(ngModel)]="phoneString">
+    <input type="phone" placeholder="Номер телефона" matInput [(ngModel)]="phoneString" maxlength="10">
+    <mat-hint align="end">{{phoneString.length}} / 10</mat-hint>
   </mat-form-field>
   <mat-form-field class="example-full-width"
                   *ngIf="!windowRef.confirmationResult">

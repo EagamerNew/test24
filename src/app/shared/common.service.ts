@@ -21,6 +21,10 @@ export class CommonService {
     this.fireSQL = new FireSQL(this.fireDB);
   }
 
+  archiveExam(examId:string){
+    return this.firestore.collection('examination').doc(examId).update({status: 'archived'});
+  }
+
   getExamHistoryByUserId(userId:string){
     return this.fireSQL.query(`SELECT __name__ as id, category,title,score,mistake,correct,section FROM result 
       WHERE status='done' AND userId='${userId}'`);

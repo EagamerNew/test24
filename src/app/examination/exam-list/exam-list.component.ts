@@ -68,7 +68,7 @@ export class ExamListComponent implements OnInit {
     }
   }
 
-  trackByFn(index, item){
+  trackByFn(index, item) {
     return index;
   }
 
@@ -108,11 +108,23 @@ export class ExamListComponent implements OnInit {
   getExamTemplateList() {
     this.commonService.getExamList().then(res => {
       this.examList = res;
-      this.templateIdList = this.examList.map(res => {
+      this.templateIdList = this.examList.map((res, index) => {
+        // let now = new Date();
+        // if (now > new Date(res.date)) {
+        //   this.archiveExam(res.id, index);
+        // } else {
+        //   return res.templateId;
+        // }
         return res.templateId;
       });
       console.log('templateIdlist:', this.templateIdList);
       this.getShortTemplateList();
+    })
+  }
+
+  archiveExam(examId: string, index) {
+    this.commonService.archiveExam(examId).then(res => {
+      this.examList.splice(index, 1);
     })
   }
 
