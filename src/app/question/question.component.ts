@@ -18,6 +18,8 @@ import {CookieService} from "ngx-cookie-service";
 })
 export class QuestionComponent implements OnInit {
 
+  user:any;
+
   questionForm: FormGroup;
 
   questionTypeKeys: string[] = [];
@@ -43,23 +45,7 @@ export class QuestionComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.questionForm = this.fb.group({
-      company: new FormControl(''),
-      speciality: new FormControl(''),
-      category: new FormControl(''),
-      section: new FormControl(''),
-      questionType: new FormControl(null),
-      description: new FormControl('', {validators: [Validators.required]}),
-      answers: this.fb.array([]),
-      correctAnswer: new FormControl(''),
-      point: new FormControl(''),
-      sectionId: new FormControl(''),
-      isExamQuestion: new FormControl(false)
-    });
-
-    this.getCategories();
-    this.getSpecialityList();
-    this.getCompanyList();
+    this.getUserAndLoadData();
   }
 
 
@@ -69,6 +55,29 @@ export class QuestionComponent implements OnInit {
     })
   }
 
+  getUserAndLoadData(){
+    this.commonService.getUserByDocId(this.cookieService.get("userId")).then(res=>{
+      console.log('user:', res);
+      this.questionForm = this.fb.group({
+        company: new FormControl(''),
+        speciality: new FormControl(''),
+        category: new FormControl(''),
+        section: new FormControl(''),
+        questionType: new FormControl(null),
+        description: new FormControl('', {validators: [Validators.required]}),
+        answers: this.fb.array([]),
+        correctAnswer: new FormControl(''),
+        point: new FormControl(''),
+        sectionId: new FormControl(''),
+        isExamQuestion: new FormControl(false),
+        authorName: new FormControl(res[0].lastname),
+      });
+
+      this.getCategories();
+      this.getSpecialityList();
+      this.getCompanyList();
+    });
+  }
 
   getCompanyList() {
     this.commonService.getCompanyList().then(res => {

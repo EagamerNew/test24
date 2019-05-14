@@ -1,12 +1,8 @@
-<section>
+<section *ngIf="questionForm">
   <form fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" [formGroup]="questionForm" (ngSubmit)="onSave()">
-    <!--<mat-form-field>-->
-      <!--<mat-select placeholder="Автор">-->
-        <!--<mat-option value="">-->
-          <!--Нет-->
-        <!--</mat-option>-->
-      <!--</mat-select>-->
-    <!--</mat-form-field>-->
+    <mat-form-field>
+      <input type="text" matInput placeholder="Автор" formControlName="authorName" [disabled]="true" readonly [readonly]="true">
+    </mat-form-field>
     <mat-form-field>
       <mat-select placeholder="Специальность" formControlName="speciality">
         <mat-option *ngFor="let speciality of specialityList" [value]="speciality.id">

@@ -1,23 +1,24 @@
-
 <mat-form-field class="example-full-width">
-  <input matInput placeholder="ИИН"[(ngModel)]="user.idn" minlength="12" maxlength="12">
+  <input matInput placeholder="ИИН" [(ngModel)]="user.idn" minlength="12" maxlength="12"
+         #uidn="ngModel" required>
   <mat-hint align="end">{{user.idn.length}} / 12</mat-hint>
 </mat-form-field>
 
 <mat-form-field class="example-full-width">
-  <input matInput placeholder="Фамилия"[(ngModel)]="user.lastname" minlength="1" maxlength="20">
-    <mat-hint align="end">{{user.lastname.length}} / 20</mat-hint>
+  <input matInput placeholder="Фамилия" [(ngModel)]="user.lastname" minlength="1" maxlength="20"
+         #ulname="ngModel" required>
+  <mat-hint align="end">{{user.lastname.length}} / 20</mat-hint>
 </mat-form-field>
 
-
 <mat-form-field class="example-full-width">
-  <input matInput placeholder="Имя"[(ngModel)]="user.firstname" maxlength="20" minlength="1">
+  <input matInput placeholder="Имя" [(ngModel)]="user.firstname" maxlength="20" minlength="1"
+         #ufname="ngModel" required>
   <mat-hint align="end">{{user.firstname.length}} / 20</mat-hint>
 </mat-form-field>
 
 <mat-form-field class="example-full-width">
   <mat-select placeholder="Пол" [(ngModel)]="user.gender">
-    <mat-option  *ngFor="let gen of gender" [value]="gen.code">
+    <mat-option *ngFor="let gen of gender" [value]="gen.code">
       {{gen.name}}
     </mat-option>
   </mat-select>
@@ -25,22 +26,35 @@
 
 <mat-form-field class="example-full-width">
   <mat-select placeholder="Город" [(ngModel)]="user.city">
-    <mat-option  *ngFor="let city of cities" [value]="city.code">
+    <mat-option *ngFor="let city of cities" [value]="city.code">
       {{city.name}}
     </mat-option>
   </mat-select>
 </mat-form-field>
 
 <mat-form-field class="example-full-width">
-  <input type="date" matInput placeholder="Дата рождения" [(ngModel)]="user.birthdate"  >
+  <input type="date" matInput placeholder="Дата рождения" [(ngModel)]="user.birthdate">
 </mat-form-field>
 
 <mat-form-field class="example-full-width">
-  <input matInput placeholder="Номер телефона" [(ngModel)]="user.phoneNumber" >
+  <span matPrefix>+7 &nbsp;</span>
+  <input matInput placeholder="Номер телефона" [(ngModel)]="user.phoneNumber" maxlength="10" minlength="10"
+        #uphone="ngModel" required>
+  <mat-hint align="end">{{user.phoneNumber.length}} / 10</mat-hint>
 </mat-form-field>
+
 <hr>
 <mat-grid-list cols="2" rowHeight="2:1">
-  <mat-grid-tile><button mat-button >Отменить</button></mat-grid-tile>
-  <mat-grid-tile><button mat-button (click)="save()">Сохранить</button></mat-grid-tile>
+  <mat-grid-tile>
+    <button mat-button>Отменить</button>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <button mat-button type="submit"
+            [disabled]="uidn.errors?.minlength || ulname.errors?.minlength
+                        || ufname.errors?.minlength || uphone.errors?.minlength
+                        || !user.idn || !user.firstname || !user.lastname
+                        || !user.phoneNumber"
+            (click)="save()">Сохранить</button>
+  </mat-grid-tile>
 </mat-grid-list>
 
