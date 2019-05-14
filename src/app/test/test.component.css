@@ -10,3 +10,19 @@
 ::ng-deep .mat-horizontal-content-container{
   padding: 0 !important;
 }
+::ng-deep .mat-radio-label{
+  word-break: break-word;
+  white-space: unset !important;
+}
+::ng-deep .mat-horizontal-stepper-header-container{
+  flex-wrap: wrap;
+  padding: 0px !important;
+}
+.mat-horizontal-stepper-header-container{
+  flex-wrap: wrap;
+  padding:0px !important;
+}
+::ng-deep .mat-stepper-label-position-bottom .mat-horizontal-stepper-header {
+  padding: 0px!important;
+}
+

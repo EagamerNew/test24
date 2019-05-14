@@ -115,6 +115,11 @@ export class MenuComponent implements OnInit {
             result = true;
           }
           break;
+        case 'staff':
+          if (this.userPrivilegeList.includes('staff')) {
+            result = true;
+          }
+          break;
       }
     }
 

@@ -1,0 +1,24 @@
+<mat-form-field class="example-full-width">
+  <mat-select placeholder="Компания" [(ngModel)]="tempVal.company" (selectionChange)="getSubsidiaryList()">
+    <mat-option *ngFor="let company of companyList" [value]="company">
+      {{company.name}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+<mat-form-field class="example-full-width">
+  <mat-select placeholder="Филиал" >
+    <mat-option *ngFor="let subsidiary of subsidiaryList" [value]="subsidiary.id">
+      {{subsidiary.name}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<mat-form-field class="example-full-width">
+  <input matInput placeholder="ИИН" [(ngModel)]="tempVal.userIdn" minlength="12" maxlength="12"
+         #uidn="ngModel" required>
+  <mat-hint align="end">{{tempVal.userIdn.length}} / 12</mat-hint>
+</mat-form-field>
+
+<div fxLayout="row" fxLayoutAlign="center center">
+  <button mat-raised-button class="mat-accent" (click)="add()" [disabled]=" !tempVal.userIdn">Добавить</button>
+</div>

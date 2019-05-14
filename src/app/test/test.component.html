@@ -10,6 +10,7 @@
     <b>00:{{time}}</b>
   </div>
   <mat-horizontal-stepper *ngIf="questions" labelPosition="bottom"
+                          fxLayout="column" fxLayoutAlign="center center"
                           [selectedIndex]="currentStep" #stepper  linear>
     <mat-step [editable]="false" *ngFor="let question of questions;let i = index;">
       <p>{{question.description}}</p>

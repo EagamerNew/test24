@@ -33,7 +33,10 @@
 </mat-form-field>
 
 <mat-form-field class="example-full-width">
-  <input type="date" matInput placeholder="Дата рождения" [(ngModel)]="user.birthdate">
+  <!--<input type="date" matInput placeholder="Дата рождения" [(ngModel)]="user.birthdate" maxlength="3">-->
+  <input matInput [matDatepicker]="dp3" placeholder="Дата рождения" [(ngModel)]="user.birthdate" disabled>
+  <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
+  <mat-datepicker #dp3 disabled="false"></mat-datepicker>
 </mat-form-field>
 
 <mat-form-field class="example-full-width">

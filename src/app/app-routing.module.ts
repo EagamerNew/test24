@@ -24,6 +24,7 @@ import {RaitingsComponent} from "./ratings/raitings.component";
 import {ExamListComponent} from "./examination/exam-list/exam-list.component";
 import {ExamSettingComponent} from "./examination/exam-setting/exam-setting.component";
 import {SpecialityComponent} from "./speciality/speciality.component";
+import {StaffComponent} from "./staff/staff.component";
 
 const routes: Routes = [
   {path: '', component: MenuComponent},
@@ -52,6 +53,7 @@ const routes: Routes = [
   {path: 'exam-list', component: ExamListComponent},
   {path: 'exam-setting/:id', component: ExamSettingComponent},
   {path: 'speciality', component: SpecialityComponent},
+  {path: 'staff', component: StaffComponent},
 
 ];
 

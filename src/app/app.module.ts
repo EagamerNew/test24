@@ -47,6 +47,7 @@ import {ExamListComponent} from "./examination/exam-list/exam-list.component";
 import {NgxMaterialTimepickerModule} from "ngx-material-timepicker";
 import {ExamSettingComponent} from "./examination/exam-setting/exam-setting.component";
 import {SpecialityComponent} from "./speciality/speciality.component";
+import {StaffComponent} from "./staff/staff.component";
 
 @NgModule({
   declarations: [
@@ -76,7 +77,8 @@ import {SpecialityComponent} from "./speciality/speciality.component";
     RaitingsComponent,
     ExamListComponent,
     ExamSettingComponent,
-    SpecialityComponent
+    SpecialityComponent,
+    StaffComponent
   ],
   imports: [
     BrowserModule,

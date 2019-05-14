@@ -3,7 +3,7 @@ import {ActivatedRoute} from "@angular/router";
 import {MatSnackBar} from "@angular/material";
 import {User} from "../shared/model/user";
 import {CommonService} from "../shared/common.service";
-import {CITIES, GENDER, USER_STATUS} from "../shared/default-constant";
+import {CITIES, GENDER, USER_PRIVILEGES_SHORT, USER_STATUS} from "../shared/default-constant";
 
 @Component({
   selector: 'app-registration',
@@ -18,13 +18,13 @@ export class RegistrationComponent implements OnInit {
     lastname: "",
     firstname: "",
     gender: "",
-    birthdate: new Date('2000-01-01T00:00:00'),
+    birthdate: new Date('1990-01-01T00:00:00'),
     phoneNumber: "",
     city: "",
     userId: "",
     status: "created",
     role: "user",
-    privilegeList:[]
+    privilegeList: []
   };
   gender = GENDER;
   statusList = USER_STATUS;
@@ -36,14 +36,7 @@ export class RegistrationComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log("Date is: ", this.user.birthdate);
-    // this.router.params.subscribe(params => {
-    //   this.userId = params['id'];
-    //   if (!this.userId) {
-    //     this.openSnackBar('Ошибка при аутентификации пользователя', '')
-    //   }
-    // });
-
+    
   }
 
   save() {
@@ -52,6 +45,7 @@ export class RegistrationComponent implements OnInit {
       console.log('phoneNumber: ', this.user.phoneNumber);
       console.log('length: ', res.length);
       if (res.length === 0) {
+        this.user.privilegeList.push(USER_PRIVILEGES_SHORT.EXAM_LIST.toString());
         this.commonService.saveUser(this.user).then(res => {
           this.user = {
             idn: "",
@@ -64,7 +58,7 @@ export class RegistrationComponent implements OnInit {
             userId: "",
             status: "created",
             role: "user",
-            privilegeList:[]
+            privilegeList: []
           };
           this.openSnackBar('Пользователь создан', '');
         });

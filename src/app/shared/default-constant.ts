@@ -73,9 +73,27 @@ export const USER_PRIVILEGES = [
     code: 'exam-list', // Все что связано с экзаменом
     name: 'Список экзаменов',
     description: 'Список экзаменов'
+  },
+  {
+    code: 'staff',
+    name: 'Добавить сотрудника',
+    description: 'Добавление сотрудника по ИИН в компанию'
   }
 
 ];
+
+export enum USER_PRIVILEGES_SHORT {
+  QUESTION = 'question',
+  CATEGORY = 'category',
+  SPECIALITY = 'speciality',
+  SECTION = 'section',
+  QUESTION_MODERATION = 'question-moderation',
+  QUESTION_TEMPLATE = 'question-template',
+  USERS = 'users',
+  EXAMINATION = 'examination',
+  EXAM_LIST = 'exam-list',
+  STAFF = 'staff'
+}
 
 export enum RESULT_CODE_LIST {
   PENDING = 'pending',

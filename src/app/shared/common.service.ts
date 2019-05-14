@@ -21,6 +21,14 @@ export class CommonService {
     this.fireSQL = new FireSQL(this.fireDB);
   }
 
+  setCompanyIdForUser(docId, companyId){
+    return this.firestore.collection('user').doc(docId).update({companyId: companyId, role:'staff'});
+  }
+
+  getUserByIdn(idn){
+    return this.fireSQL.query(`SELECT __name__ as id, companyId from user WHERE idn = '${idn}'`);
+  }
+
   archiveExam(examId:string){
     return this.firestore.collection('examination').doc(examId).update({status: 'archived'});
   }
@@ -81,6 +89,16 @@ export class CommonService {
     temp = temp.substring(0, temp.length - 1);
     console.log('temp to search: ', temp)
     return this.fireSQL.query(`SELECT DISTINCT __name__ as id, name FROM template WHERE __name__ IN (${temp})`)
+  }
+
+  getSubsidiaryListByListIdn(idList: string[]) {
+    let temp = "";
+    for (let str of idList) {
+      temp = temp + '"' + str + '",';
+    }
+    temp = temp.substring(0, temp.length - 1);
+    console.log('temp to search: ', temp)
+    return this.fireSQL.query(`SELECT DISTINCT __name__ as id, name FROM subsidiary WHERE __name__ IN (${temp})`)
   }
 
   getResultById(id: string) {
@@ -150,6 +168,7 @@ export class CommonService {
       city: user.city,
       phoneNumber: user.phoneNumber,
       role: user.role,
+      password: user.password,
       privilegeList: user.privilegeList
     });
   }
@@ -165,6 +184,7 @@ export class CommonService {
       city: user.city,
       phoneNumber: user.phoneNumber,
       role: user.role,
+      password: user.password,
       privilegeList: user.privilegeList
     });
   }
@@ -214,7 +234,10 @@ export class CommonService {
   }
 
   getExaminatorList() {
-    return this.fireSQL.query(`SELECT __name__ as id, firstname, lastname FROM user WHERE role = 'staff'`);
+    return this.firestore.collection('user', ref => ref.where('privilegeList', 'array-contains',
+      'examination').where('role', '==', 'staff')).snapshotChanges();
+    // return this.fireSQL.query(`SELECT __name__ as id, firstname, lastname FROM user WHERE role = 'staff'
+    //   and privilegeList is 'examination'`);
   }
 
   deleteSubsidiary(subsidiary) {
@@ -257,7 +280,7 @@ export class CommonService {
   }
 
   getCompanyList() {
-    return this.fireSQL.query(`SELECT __name__ as id, bin, name,phoneNumber FROM company`);
+    return this.fireSQL.query(`SELECT __name__ as id, bin,subsidiary, name,phoneNumber FROM company`);
   }
 
   getUserList() {

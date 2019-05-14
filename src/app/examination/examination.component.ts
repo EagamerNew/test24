@@ -65,8 +65,18 @@ export class ExaminationComponent implements OnInit {
     });
   }
   getExaminatorList(){
-    this.commonService.getExaminatorList().then(res=>{
-      this.examinatorList = res;
+    this.commonService.getExaminatorList().subscribe(res=>{
+      console.log(res);
+      this.examinatorList = [];
+      res.map(value => {
+        this.examinatorList.push(
+        {
+          id: value.payload.doc.id,
+          firstname: value.payload.doc.get("firstname"),
+          lastname: value.payload.doc.get("lastname")
+        }
+        );
+      });
     });
   }
 
