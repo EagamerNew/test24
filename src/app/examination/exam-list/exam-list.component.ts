@@ -46,7 +46,7 @@ export class ExamListComponent implements OnInit {
     });
   }
 
-  existInExam(exam) {
+  existInExam(exam): boolean {
     if (exam.participantList !== undefined) {
       if (exam.participantList[this.userId] !== undefined) {
         return true;
@@ -61,7 +61,7 @@ export class ExamListComponent implements OnInit {
   getFormattedDate(date: any) {
     try {
       var datePipe = new DatePipe('en-US');
-      return datePipe.transform(date.toDate(), 'dd/MM/yyyy');
+      return datePipe.transform(new Date(date), 'dd/MM/yyyy');
     } catch (e) {
       console.log("error with formatting date")
       return "";
@@ -90,10 +90,6 @@ export class ExamListComponent implements OnInit {
     return name;
   }
 
-  timestampToDate(date): Date {
-    return new Date(date);
-  }
-
   getStatus(exam) {
     if (exam.participantList !== undefined) {
       try {
@@ -109,16 +105,19 @@ export class ExamListComponent implements OnInit {
     this.commonService.getExamList().then(res => {
       this.examList = res;
       this.templateIdList = this.examList.map((res, index) => {
-        // let now = new Date();
-        // if (now > new Date(res.date)) {
-        //   this.archiveExam(res.id, index);
-        // } else {
-        //   return res.templateId;
-        // }
+        let now = new Date();
+        if (now > new Date(res.date)) {
+          this.archiveExam(res.id, index);
+        } else {
+          return res.templateId;
+        }
         return res.templateId;
       });
+      console.log('examList:', this.examList);
       console.log('templateIdlist:', this.templateIdList);
-      this.getShortTemplateList();
+      if (this.examList && this.examList.length > 0) {
+        this.getShortTemplateList();
+      }
     })
   }
 

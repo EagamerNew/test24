@@ -106,7 +106,7 @@ export class CommonService {
   getExamList() {
     return this.fireSQL.query(`SELECT __name__ as id, categoryId, address, cityId, sectionId, startTime,
           date, examinatorUserId, companyId, templateId, participantList
-      FROM examination`);
+      FROM examination WHERE status = 'active'`);
   }
 
   getExamById(id: string) {
