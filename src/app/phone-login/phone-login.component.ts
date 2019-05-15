@@ -113,6 +113,7 @@ export class PhoneLoginComponent implements OnInit {
             let reUser: any = res[0];
             this.user = result.user;
             console.log("res: ", res[0], " this.user.uid: " + this.user.uid);
+            this.cookieService.set('companyId', this.user.companyId);
             this.windowRef.confirmationResult = null;
             if (reUser.status === 'created') {
               this.commonService.updateUserId(reUser, this.user.uid).then(res => {
@@ -152,6 +153,7 @@ export class PhoneLoginComponent implements OnInit {
       expiredDate.setHours(expiredDate.getHours() + 1);
       if (res && res.length > 0) {
         console.log(tempUser);
+        this.cookieService.set('companyId', tempUser.companyId, expiredDate);
         this.cookieService.set('userId', tempUser.id, expiredDate);
         this.cookieService.set('role', tempUser.role, expiredDate);
         this.openSnackBar('Вы успешно авторизовались', '');

@@ -19,6 +19,7 @@ import {CookieService} from "ngx-cookie-service";
 export class QuestionComponent implements OnInit {
 
   user:any;
+  role: string = '';
 
   questionForm: FormGroup;
 
@@ -45,6 +46,7 @@ export class QuestionComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.role = this.cookieService.get('role');
     this.getUserAndLoadData();
   }
 
@@ -57,9 +59,9 @@ export class QuestionComponent implements OnInit {
 
   getUserAndLoadData(){
     this.commonService.getUserByDocId(this.cookieService.get("userId")).then(res=>{
-      console.log('user:', res);
+      console.log('user data:', res);
       this.questionForm = this.fb.group({
-        company: new FormControl(''),
+        company: new FormControl(res[0].companyId),
         speciality: new FormControl(''),
         category: new FormControl(''),
         section: new FormControl(''),
@@ -119,6 +121,7 @@ export class QuestionComponent implements OnInit {
     // console.log(question);
     question.status = 'in_moderation';
     question.author = this.cookieService.get('userId');
+    console.log('question: ', question);
     this.firestore.collection('question').add(question);
 
     this.questionForm.patchValue({

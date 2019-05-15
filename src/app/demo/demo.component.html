@@ -4,11 +4,19 @@
     <input type="text" matInput [(ngModel)]="templateName" required placeholder="Название шаблона теста">
   </mat-form-field>
   <mat-form-field>
+    <mat-select placeholder="Компания" [(ngModel)]="companyId" [disabled]="role !== 'admin'">
+      <mat-option *ngFor="let company of companyList" [value]="company.id">
+        {{company.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
     <input type="text" matInput [hidden]="true">
     <mat-checkbox [(ngModel)]="isExamTemplate" (change)="setDefault()">Этот шаблон для экзамена</mat-checkbox>
   </mat-form-field>
   <mat-form-field>
     <mat-select placeholder="Категория" required
+                [disabled]="disableAll"
                 (selectionChange)="getSectionsByCategory($event)">
       <mat-option *ngFor="let category of categories" [value]="category.id">
         {{category.name}}
@@ -16,7 +24,8 @@
     </mat-select>
   </mat-form-field>
   <mat-form-field>
-    <mat-select placeholder="Раздел" required [disabled]="sectionSelectDisable"
+    <mat-select placeholder="Раздел"
+                required [disabled]="sectionSelectDisable || disableAll"
                 (selectionChange)="getQuestionIdListBySectionId($event)">
       <mat-option *ngFor="let section of sections" [value]="section.id">
         {{section.name}}
@@ -30,7 +39,7 @@
     <p>Доступно вопросов: <b>{{countAvailable}}</b></p>
   </span>
   <mat-form-field>
-    <input type="number" matInput [(ngModel)]="countQuestion" required placeholder="Сколько вопросов внутри теста">
+    <input type="number" matInput [(ngModel)]="countQuestion" [disabled]="disableAll" required placeholder="Сколько вопросов внутри теста">
   </mat-form-field>
-  <button mat-button (click)="createTemplate()">Создать шаблон теста</button>
+  <button mat-button (click)="createTemplate()" [disabled]="disableAll">Создать шаблон теста</button>
 </section>

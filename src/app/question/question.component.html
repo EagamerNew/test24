@@ -11,7 +11,7 @@
       </mat-select>
     </mat-form-field>
     <mat-form-field>
-      <mat-select placeholder="Компания" formControlName="company">
+      <mat-select placeholder="Компания" formControlName="company" [disabled]="role !== 'admin'">
         <mat-option *ngFor="let company of companyList" [value]="company.id">
           {{company.name}}
         </mat-option>

@@ -57,7 +57,7 @@ export class CommonService {
   getQuestionListByAuthorId(authorId: string) {
     // TODO USING DOCID
     return this.fireSQL.query(`SELECT __name__ as docId, answers,author, category,correctAnswer, description, point, 
-    questionType, section, status FROM question WHERE author='${authorId}'`);
+    questionType, section, company, status FROM question WHERE author='${authorId}'`);
   }
 
   saveExamParticipant(resultId: string, userId: string, examId: string) {
@@ -227,7 +227,7 @@ export class CommonService {
 
   checkPhoneAndPassword(phone, password) {
     return this.fireSQL.query(`SELECT __name__ as id, idn,role ,privilegeList,lastname,firstname, birthdate, 
-          gender, city, phoneNumber, status
+          gender, city, phoneNumber, status, companyId
           FROM user  
           WHERE phoneNumber = '` + phone + `' 
           AND password = '` + password + `'`);
@@ -291,7 +291,7 @@ export class CommonService {
 
   getUserByPhone(phone: string) {
     return this.fireSQL.query(`SELECT __name__ as id,role, idn,privilegeList, lastname,firstname, birthdate, 
-          gender, city,phoneNumber, status
+          gender, city,phoneNumber, status, companyId
         FROM user WHERE phoneNumber= '` + phone + `'`).then(res => {
       return res;
     });
@@ -299,7 +299,7 @@ export class CommonService {
 
   getUserByDocId(docId: string) {
     return this.fireSQL.query(`SELECT __name__ as id, idn,role,privilegeList, lastname,firstname, birthdate, 
-          gender, city,phoneNumber, status
+          gender, city,phoneNumber, status, companyId
         FROM user WHERE __name__ = '` + docId + `'`).then(res => {
       return res;
     });

@@ -12,6 +12,7 @@ import {Template} from "../shared/model/template";
 import {ActivatedRoute, Route, Router} from "@angular/router";
 import * as firebase from 'firebase';
 import {CookieService} from "ngx-cookie-service";
+import {CommonService} from "../shared/common.service";
 
 @Component({
   selector: 'app-demo',
@@ -21,7 +22,8 @@ import {CookieService} from "ngx-cookie-service";
 export class DemoComponent implements OnInit {
   constructor(public snackBar: MatSnackBar,
               private router: Router,
-              private cookieService: CookieService) {
+              private cookieService: CookieService,
+              private commonService: CommonService) {
 
   }
 
@@ -37,11 +39,28 @@ export class DemoComponent implements OnInit {
   templateName: string = "";
   isExamTemplate: boolean = false;
   questionIdList: string[] = [];
+  companyList: any[] = [];
+  companyId: string = ''
+  role: string = '';
+  disableAll: boolean = false;
 
   ngOnInit() {
     this.fireSQL = new FireSQL(firebase.firestore());
-
+    this.role = this.cookieService.get('role');
+    this.companyId = this.cookieService.get('companyId');
+    if ((!this.companyId || this.companyId === '') && this.role !== 'admin') {
+      this.disableAll = true;
+      console.log('I am in case companyId: ', this.companyId);
+      this.openSnackBar('Вы не состоите в компании. Вопросы не доступны', '');
+    }
+    this.getCompanyList();
     this.getCategories();
+  }
+
+  getCompanyList() {
+    this.commonService.getCompanyList().then(res => {
+      this.companyList = res;
+    })
   }
 
   getCategories() {
@@ -74,12 +93,11 @@ export class DemoComponent implements OnInit {
       query = `SELECT __name__ as docId FROM question WHERE section = "` + event.value + `" AND status='accepted' 
       AND isExamQuestion = ` + this.isExamTemplate + ``;
     }
-    if (this.cookieService.get('role') !== 'admin') {
-      query += `AND author='${this.cookieService.get('userId')}'`;
-    }
+    query += ` AND company='${this.companyId}'`;
     this.fireSQL.query(query).then(result => {
       this.countAvailable = result.length;
       console.log('questionIdList: ', result);
+      console.log('companyId: ', this.companyId);
       console.log('available: ', this.countAvailable);
       this.questionIdList = result.map(res => {
         return res.docId;
