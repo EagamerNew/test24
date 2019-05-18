@@ -283,11 +283,6 @@ export class ListQuestionsComponent implements OnInit {
         lastId = this.questionIdList[ind-5].id;
       }
     })
-    console.log(this.questionIdList.indexOf(this.questions[0].docId) - 5);
-    console.log('this.questions[0].description: ',this.questions[0].description);
-    console.log('docId: ',this.questions[0].docId);
-    console.log('lastId: ', lastId);
-    console.log('this.questionIdList.indexOf(this.questions[0].docId): ', this.questionIdList.indexOf(this.questions[0].docId));
     if (this.isAdmin) {
       this.service.getActivePrevQuestions(lastId).subscribe(res => {
         this.questions = res.map(val => {

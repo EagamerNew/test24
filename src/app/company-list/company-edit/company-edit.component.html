@@ -7,16 +7,16 @@
 <mat-form-field class="example-full-width">
   <input matInput placeholder="+7 Номер мобильного" [(ngModel)]="company.phoneNumber">
 </mat-form-field>
-<mat-form-field class="example-full-width"  >
-  <!--<div *ngFor="let subsidary of company.subsidiary">-->
-  <mat-select matInput placeholder="Филиал" [(ngModel)]="company.subsidiary" multiple>
-    <mat-option *ngFor="let subsidiary of subsidiaryList" [value]="subsidiary.id">
-      {{subsidiary.name}}
-    </mat-option>
-  </mat-select>
-  <!--</div>-->
+<!--<mat-form-field class="example-full-width"  >-->
+  <!--&lt;!&ndash;<div *ngFor="let subsidary of company.subsidiary">&ndash;&gt;-->
+  <!--<mat-select matInput placeholder="Филиал" [(ngModel)]="company.subsidiary" multiple>-->
+    <!--<mat-option *ngFor="let subsidiary of subsidiaryList" [value]="subsidiary.id">-->
+      <!--{{subsidiary.name}}-->
+    <!--</mat-option>-->
+  <!--</mat-select>-->
+  <!--&lt;!&ndash;</div>&ndash;&gt;-->
 
-</mat-form-field>
+<!--</mat-form-field>-->
 
 <!--<mat-form-field class="example-full-width">-->
 <!--<input type="button" (click)="addSubsidary()" value="add subsidary">-->
@@ -29,4 +29,15 @@
   <div>
     <button mat-icon-button (click)="deleteCompany()" color="warn" mat-button>Удалить</button>
   </div>
+</div>
+<h3>Филиалы</h3>
+<div fxLayout="row" fxLayoutAlign="space-between center" *ngFor="let item of subsidiaryList">
+  <div style="width:100%; margin-bottom:7px;border: 1px solid black; border-radius:7px;">
+    <div style="margin:7px;">
+      <span style="font-weight: bold; font-size: 18px;">{{item.name}}({{item.address}})</span>
+    </div>
+  </div>
+</div>
+<div fxLayout="row" fxLayoutAlign="center center">
+  <button mat-raised-button class="mat-primary" [routerLink]="'/subsidiary/' + id">Добавить еще</button>
 </div>

@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonService} from "../shared/common.service";
 import {City} from "../city/city.component";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-subsidiary',
@@ -12,14 +13,27 @@ export class SubsidiaryComponent implements OnInit {
   subsidiaryList: Subsidiary [] = [];
   cities: City[] = [];
 
-  constructor(private _service: CommonService) {
+  tempCompanyId: string;
+  companyList: any[];
+  constructor(private _service: CommonService,
+              private route: ActivatedRoute) {
 
   }
 
   ngOnInit() {
+    if(this.route.snapshot.params['id']){
+      this.subsidiary.companyId = this.route.snapshot.params['id'];
+    }
     this.getSubsidiaryList();
     this.getCityList()
+    this.getCompanyList();
+  }
 
+
+  getCompanyList() {
+    this._service.getCompanyList().then(res => {
+      this.companyList = res;
+    })
   }
 
   setSubsidiary(): void {
@@ -42,7 +56,8 @@ export class SubsidiaryComponent implements OnInit {
       id: subsidiary.id,
       name: subsidiary.name,
       cityCode: subsidiary.cityCode,
-      address: subsidiary.address
+      address: subsidiary.address,
+      companyId: subsidiary.companyId
     };
     console.log(temp)
     this._service.updateSubsidiary(temp).then(res => {
@@ -56,7 +71,8 @@ export class SubsidiaryComponent implements OnInit {
       id: subsidiary.id,
       name: subsidiary.name,
       cityCode: subsidiary.cityCode,
-      address: subsidiary.address
+      address: subsidiary.address,
+      companyId: subsidiary.companyId
     };
     this._service.deleteSubsidiary(temp).then(res => {
       this.getSubsidiaryList();
@@ -72,7 +88,8 @@ export class SubsidiaryComponent implements OnInit {
           id: result.id,
           cityCode: result.cityCode,
           address: result.address,
-          name: result.name
+          name: result.name,
+          companyId: result.companyId
         }
       });
     });
@@ -97,4 +114,5 @@ export class Subsidiary {
   cityCode: string;
   name: string;
   address: string;
+  companyId: string;
 }

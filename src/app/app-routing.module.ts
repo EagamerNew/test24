@@ -47,6 +47,7 @@ const routes: Routes = [
   {path: 'company-list', component: CompanyListComponent},
   {path: 'company-list/:id', component: CompanyEditComponent},
   {path: 'subsidiary', component: SubsidiaryComponent},
+  {path: 'subsidiary/:id', component: SubsidiaryComponent},
   {path: 'users', component: UserComponent},
   {path: 'ratings', component: RaitingsComponent},
   {path: 'exam', component: ExaminationComponent},

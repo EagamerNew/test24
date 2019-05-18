@@ -31,14 +31,15 @@ export class CompanyEditComponent implements OnInit {
 
   getSubsidiaryList() {
     console.log('-------------')
-    this._service.getSubsidiaryList().then(res => {
+    this._service.getSubsidiaryListByCompanyId(this.id).then(res => {
       console.log(res)
       this.subsidiaryList = res.map(result => {
         return {
           id: result.id,
           cityCode: result.cityCode,
           address: result.address,
-          name: result.name
+          name: result.name,
+          companyId: result.companyId
         }
       });
     });

@@ -19,7 +19,7 @@ export class CommonService {
   private fireDB;
   private fireSQL: FireSQL;
 
-  constructor(private firestore: AngularFirestore,private cookieService: CookieService) {
+  constructor(private firestore: AngularFirestore, private cookieService: CookieService) {
     this.fireDB = firebase.firestore();
     this.fireSQL = new FireSQL(this.fireDB);
   }
@@ -31,24 +31,24 @@ export class CommonService {
   }
 
 
-  setCompanyIdForUser(docId, companyId){
-    return this.firestore.collection('user').doc(docId).update({companyId: companyId, role:'staff'});
+  setCompanyIdForUser(docId, companyId) {
+    return this.firestore.collection('user').doc(docId).update({companyId: companyId, role: 'staff'});
   }
 
-  getUserByIdn(idn){
+  getUserByIdn(idn) {
     return this.fireSQL.query(`SELECT __name__ as id, companyId from user WHERE idn = '${idn}'`);
   }
 
-  archiveExam(examId:string){
+  archiveExam(examId: string) {
     return this.firestore.collection('examination').doc(examId).update({status: 'archived'});
   }
 
-  getExamHistoryByUserId(userId:string){
+  getExamHistoryByUserId(userId: string) {
     return this.fireSQL.query(`SELECT __name__ as id, category,title,score,mistake,correct,section FROM result 
       WHERE status='done' AND userId='${userId}'`);
   }
 
-  deleteSpeciality(id:string){
+  deleteSpeciality(id: string) {
     return this.firestore.collection('speciality').doc(id).delete();
   }
 
@@ -147,11 +147,11 @@ export class CommonService {
     return this.firestore.collection('result').add(result);
   }
 
-  getResultList(cased?:string) {
+  getResultList(cased?: string) {
     let query = `SELECT __name__ as id, isTest,correct,mistake,score,category,section,title,userId,username 
       FROM result `;
-    if(cased && cased==='ratings'){
-      if(this.cookieService.get('role') !== 'admin'){
+    if (cased && cased === 'ratings') {
+      if (this.cookieService.get('role') !== 'admin') {
         query += ` WHERE userId = '${this.cookieService.get('userId')}'`;
       }
     }
@@ -220,7 +220,12 @@ export class CommonService {
   }
 
   getSubsidiaryList() {
-    return this.fireSQL.query(`SELECT __name__ as id, cityCode, name,address FROM subsidiary`);
+    return this.fireSQL.query(`SELECT __name__ as id, cityCode, name,address, companyId FROM subsidiary`);
+  }
+
+  getSubsidiaryListByCompanyId(companyId: string) {
+    return this.fireSQL.query(`SELECT __name__ as id, cityCode, name,address, companyId FROM subsidiary
+      WHERE companyId = '${companyId}'`);
   }
 
   updateSubsidiary(subsidiary) {
@@ -228,6 +233,7 @@ export class CommonService {
       cityCode: subsidiary.cityCode,
       name: subsidiary.name,
       address: subsidiary.address,
+      companyId: subsidiary.companyId
     });
   }
 
@@ -277,7 +283,7 @@ export class CommonService {
       bin: company.bin,
       name: company.name,
       phoneNumber: company.phoneNumber,
-      subsidiary:company.subsidiary
+      subsidiary: company.subsidiary
     });
   }
 
