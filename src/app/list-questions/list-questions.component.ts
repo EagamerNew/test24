@@ -28,6 +28,7 @@ export class ListQuestionsComponent implements OnInit {
   loading: boolean = true;
 
   companyId: string;
+  questionIdList: any[];
   isAdmin: boolean = false;
   page = 1;
   maxPage = 0;
@@ -113,6 +114,7 @@ export class ListQuestionsComponent implements OnInit {
     this.page = 1;
     this.loading = true;
     this.service.getListIdOfActiveQuestion().then(ress => {
+      this.questionIdList = ress;
       console.log('max length res:', ress);
       this.maxPage = Math.ceil(ress.length / 5);
       console.log('maxPage is: ', this.maxPage);
@@ -145,6 +147,7 @@ export class ListQuestionsComponent implements OnInit {
     this.page = 1;
     this.loading = true;
     this.service.getListIdOfActiveCompanyQuestion(this.companyId).then(ress => {
+      this.questionIdList = ress;
       console.log('max length res:', ress);
       this.maxPage = Math.ceil(ress.length / 5);
       console.log('maxPage is: ', this.maxPage);
@@ -274,18 +277,23 @@ export class ListQuestionsComponent implements OnInit {
   predQuestions() {
     this.page--;
     this.loading = true;
-    let lastId = this.questions[0].docId;
+    let lastId = this.questionIdList[this.questionIdList.indexOf(this.questions[0].docId) - 5];
+    this.questionIdList.forEach((val,ind)=>{
+      if(val.id === this.questions[0].docId){
+        lastId = this.questionIdList[ind-5].id;
+      }
+    })
+    console.log(this.questionIdList.indexOf(this.questions[0].docId) - 5);
+    console.log('this.questions[0].description: ',this.questions[0].description);
+    console.log('docId: ',this.questions[0].docId);
+    console.log('lastId: ', lastId);
+    console.log('this.questionIdList.indexOf(this.questions[0].docId): ', this.questionIdList.indexOf(this.questions[0].docId));
     if (this.isAdmin) {
       this.service.getActivePrevQuestions(lastId).subscribe(res => {
         this.questions = res.map(val => {
           return {
             docId: val.payload.doc.id,
             ...val.payload.doc.data()
-          }
-        });
-        this.questions.forEach((val, ind) => {
-          if (val.docId === lastId) {
-            this.questions.splice(ind, 1);
           }
         });
         this.loading = false;
@@ -298,12 +306,7 @@ export class ListQuestionsComponent implements OnInit {
             ...val.payload.doc.data()
           }
         });
-        this.questions.forEach((val, ind) => {
-          if (val.docId === lastId) {
-            this.loading = false;
-            this.questions.splice(ind, 1);
-          }
-        });
+        this.loading = false;
       });
     }
   }

@@ -96,7 +96,7 @@ export class QuestionService {
   getActivePrevQuestions(id) {
     return this.firebase
       .collection('question',
-        ref => ref.where("status", "==", "accepted").orderBy(FieldPath.documentId()).endAt(id).limit(6)
+        ref => ref.where("status", "==", "accepted").orderBy(FieldPath.documentId()).startAt(id).limit(5)
       ).snapshotChanges();
   }
 
@@ -105,7 +105,7 @@ export class QuestionService {
       .collection('question',
         ref => ref.where("status", "==", "accepted")
           .where('company', '==', company)
-          .orderBy(FieldPath.documentId()).endAt(id).limit(6)
+          .orderBy(FieldPath.documentId()).startAt(id).limit(5)
       ).snapshotChanges();
   }
 
