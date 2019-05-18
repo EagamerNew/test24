@@ -25,6 +25,12 @@ export class ListQuestionsComponent implements OnInit {
   sectionSelectDisable = true;
   docId: string;
   companyList: any[] = [];
+  loading: boolean = true;
+
+  companyId: string;
+  isAdmin: boolean = false;
+  page = 1;
+  maxPage = 0;
 
   constructor(private service: QuestionService,
               public snackBar: MatSnackBar,
@@ -37,6 +43,7 @@ export class ListQuestionsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loading = true;
     this.getCompanyList();
     this.getSpecialityList();
     this.route.params.subscribe(res => {
@@ -45,10 +52,19 @@ export class ListQuestionsComponent implements OnInit {
       if (this.docId) {
         this.getRejectedQuestion();
       } else {
-        if(this.cookieService.get('role') === 'admin'){
+        if (this.cookieService.get('role') === 'admin') {
+          this.isAdmin = true;
           this.getQuestions();
-        }else{
-          this.getQuestionsByAuthorId();
+
+        } else {
+          this.isAdmin = false;
+          if (this.cookieService.get('companyId')) {
+            this.companyId = this.cookieService.get('companyId');
+            this.getQuestionsByCompanyId();
+
+          } else {
+            this.openSnackBar('Вы не состоите в компании!', '');
+          }
         }
       }
 
@@ -57,8 +73,8 @@ export class ListQuestionsComponent implements OnInit {
 
   }
 
-  getSpecialityList(){
-    this.commonService.getSpecialityList().then(res=>{
+  getSpecialityList() {
+    this.commonService.getSpecialityList().then(res => {
       this.specialityList = res;
     })
   }
@@ -81,6 +97,7 @@ export class ListQuestionsComponent implements OnInit {
                 this.sections.push(new QuestionSection(item.payload.doc.id, item.payload.doc.get('name'), item.payload.doc.get('categoryId')))
               })
             });
+            console.log('case 3');
             return {
               docId: item.payload.doc.id,
               ...item.payload.doc.data()
@@ -93,49 +110,83 @@ export class ListQuestionsComponent implements OnInit {
   }
 
   getQuestions() {
+    this.page = 1;
+    this.loading = true;
+    this.service.getListIdOfActiveQuestion().then(ress => {
+      console.log('max length res:', ress);
+      this.maxPage = Math.ceil(ress.length / 5);
+      console.log('maxPage is: ', this.maxPage);
+      console.log('size is: ', ress.length);
+    });
     this.service.getActiveQuestions().subscribe(
       list => {
+
+        console.log('list: ', list);
+
         this.questions = list.map(item => {
-          this.serviceSection.getSections().subscribe(res => {
-            res.map(item => {
-              this.sections.push(new QuestionSection(item.payload.doc.id, item.payload.doc.get('name'), item.payload.doc.get('categoryId')))
-            })
-          });
+
           return {
             docId: item.payload.doc.id,
             ...item.payload.doc.data()
           }
-        })
+        });
+        this.serviceSection.getSections().subscribe(res => {
+          res.map(item => {
+            this.sections.push(new QuestionSection(item.payload.doc.id, item.payload.doc.get('name'), item.payload.doc.get('categoryId')))
+          })
+        });
+        this.loading = false;
+
       }
     )
   }
 
-  getQuestionsByAuthorId(){
-    this.service.getActiveQuestionsByAuthorId(this.cookieService.get('userId')).then(
+  getQuestionsByCompanyId() {
+    this.page = 1;
+    this.loading = true;
+    this.service.getListIdOfActiveCompanyQuestion(this.companyId).then(ress => {
+      console.log('max length res:', ress);
+      this.maxPage = Math.ceil(ress.length / 5);
+      console.log('maxPage is: ', this.maxPage);
+      console.log('size is: ', ress.length);
+    });
+    this.service.getActiveCompanyQuestions(this.cookieService.get('companyId')).subscribe(
       list => {
         this.questions = list.map(itemq => {
-          this.serviceSection.getSections().subscribe(res => {
-            res.map(item => {
-              this.sections.push(new QuestionSection(item.payload.doc.id, item.payload.doc.get('name'),
-                item.payload.doc.get('categoryId')))
-            });
+          return {
+            docId: itemq.payload.doc.id,
+            ...itemq.payload.doc.data()
+          }
+        });
+        this.serviceSection.getSections().subscribe(res => {
+          res.map(item => {
+
+            this.loading = false;
+            this.sections.push(new QuestionSection(item.payload.doc.id, item.payload.doc.get('name'),
+              item.payload.doc.get('categoryId')))
           });
-          let temp : any = itemq;
-          return temp;
-        })
+        });
       }
     )
+
   }
 
   save(question) {
+    this.loading = true;
     if (this.docId) {
       question.status = 'in_moderation';
     }
     this.service.updateQuestion(question).then(
       res => {
-        console.log("success", JSON.stringify(res));
+        console.log("success", res);
         if (this.docId) {
           this.router.navigateByUrl('');
+        }
+        this.loading = false;
+        if(this.isAdmin){
+          this.getQuestions();
+        }else{
+          this.getQuestionsByCompanyId();
         }
       }
     )
@@ -168,7 +219,12 @@ export class ListQuestionsComponent implements OnInit {
 
   delete(question) {
     this.service.deleteQuestion(question.docId);
-    this.getQuestions();
+
+    if(this.isAdmin){
+      this.getQuestions();
+    }else{
+      this.getQuestionsByCompanyId();
+    }
     this.openSnackBar('Вопрос успешно удален!', '');
   }
 
@@ -176,5 +232,79 @@ export class ListQuestionsComponent implements OnInit {
     this.snackBar.open(message, action, {
       duration: 2000,
     });
+  }
+
+  nextQuestions() {
+    this.page++;
+    this.loading = true;
+    let lastId = this.questions[this.questions.length - 1].docId;
+    if (this.isAdmin) {
+      this.service.getActiveNextQuestions(lastId).subscribe(res => {
+        this.questions = res.map(val => {
+          return {
+            docId: val.payload.doc.id,
+            ...val.payload.doc.data()
+          }
+        });
+        this.questions.forEach((val, ind) => {
+          if (val.docId === lastId) {
+            this.loading = false;
+            this.questions.splice(ind, 1);
+          }
+        });
+      });
+    } else {
+      this.service.getActiveNextCompanyQuestions(lastId, this.companyId).subscribe(res => {
+        this.questions = res.map(val => {
+          return {
+            docId: val.payload.doc.id,
+            ...val.payload.doc.data()
+          }
+        });
+        this.questions.forEach((val, ind) => {
+          if (val.docId === lastId) {
+            this.loading = false;
+            this.questions.splice(ind, 1);
+          }
+        });
+      });
+    }
+  }
+
+  predQuestions() {
+    this.page--;
+    this.loading = true;
+    let lastId = this.questions[0].docId;
+    if (this.isAdmin) {
+      this.service.getActivePrevQuestions(lastId).subscribe(res => {
+        this.questions = res.map(val => {
+          return {
+            docId: val.payload.doc.id,
+            ...val.payload.doc.data()
+          }
+        });
+        this.questions.forEach((val, ind) => {
+          if (val.docId === lastId) {
+            this.questions.splice(ind, 1);
+          }
+        });
+        this.loading = false;
+      });
+    } else {
+      this.service.getActivePrevCompanyQuestions(lastId, this.companyId).subscribe(res => {
+        this.questions = res.map(val => {
+          return {
+            docId: val.payload.doc.id,
+            ...val.payload.doc.data()
+          }
+        });
+        this.questions.forEach((val, ind) => {
+          if (val.docId === lastId) {
+            this.loading = false;
+            this.questions.splice(ind, 1);
+          }
+        });
+      });
+    }
   }
 }

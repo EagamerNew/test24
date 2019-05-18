@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {AngularFirestore} from "@angular/fire/firestore";
 import * as fire from "firebase"
 import {FireSQL} from "firesql";
+import FieldPath = fire.firestore.FieldPath;
 
 @Injectable({
   providedIn: 'root'
@@ -53,17 +54,65 @@ export class QuestionService {
     return this.firebase.doc('question/' + docId).snapshotChanges();
   }
 
+  getListIdOfActiveQuestion(){
+    return this.fireSQL.query(`SELECT __name__ as id FROM question WHERE status = 'accepted'`);
+  }
+
+  getListIdOfActiveCompanyQuestion(companyId){
+    return this.fireSQL.query(`SELECT __name__ as id FROM question WHERE status = 'accepted' AND company = '${companyId}'`);
+  }
+
   getActiveQuestions() {
     return this.firebase
       .collection('question',
-        ref => ref.where("status", "==", "accepted")
+        ref => ref.where("status", "==", "accepted").limit(5)
       ).snapshotChanges();
   }
 
-  getActiveQuestionsByAuthorId(authorId: string) {
+  getActiveCompanyQuestions(companyId) {
+    return this.firebase
+      .collection('question',
+        ref => ref.where("status", "==", "accepted")
+          .where('company', '==', companyId).limit(5)
+      ).snapshotChanges();
+  }
+
+  getActiveNextQuestions(id) {
+    return this.firebase
+      .collection('question',
+        ref => ref.where("status", "==", "accepted").orderBy(FieldPath.documentId()).startAt(id).limit(6)
+      ).snapshotChanges();
+  }
+
+  getActiveNextCompanyQuestions(id,companyId) {
+    return this.firebase
+      .collection('question',
+        ref => ref.where("status", "==", "accepted")
+          .where('company', '==', companyId)
+          .orderBy(FieldPath.documentId()).startAt(id).limit(6)
+      ).snapshotChanges();
+  }
+
+  getActivePrevQuestions(id) {
+    return this.firebase
+      .collection('question',
+        ref => ref.where("status", "==", "accepted").orderBy(FieldPath.documentId()).endAt(id).limit(6)
+      ).snapshotChanges();
+  }
+
+  getActivePrevCompanyQuestions(id,company) {
+    return this.firebase
+      .collection('question',
+        ref => ref.where("status", "==", "accepted")
+          .where('company', '==', company)
+          .orderBy(FieldPath.documentId()).endAt(id).limit(6)
+      ).snapshotChanges();
+  }
+
+  getActiveQuestionsByCompanyId(companyId: string) {
     return this.fireSQL.query(`SELECT __name__ as docId, answers,company,speciality, author, category, correctAnswer,
-                                    description, point, questionType, section
-                                     FROM question WHERE author = '${authorId}'`);
+                                    description, point, questionType, section, isExamQuestion
+                                     FROM question WHERE company = '${companyId}'`);
   }
 
   getRejectedQuestions() {
@@ -90,6 +139,7 @@ export class QuestionService {
   updateQuestion(question) {
     let docId = question.docId;
     delete question.docId;
+    console.log('updating question: ', question, '\n docId:', docId);
     return this.firebase.collection('question').doc(docId).set(question);
   }
 

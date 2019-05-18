@@ -20,5 +20,5 @@
 </mat-form-field>
 
 <div fxLayout="row" fxLayoutAlign="center center">
-  <button mat-raised-button class="mat-accent" (click)="add()" [disabled]=" !tempVal.userIdn">Добавить</button>
+  <button mat-raised-button class="mat-accent" (click)="add()" [disabled]="uidn.errors?.minlength || !tempVal.userIdn">Добавить</button>
 </div>

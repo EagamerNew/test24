@@ -48,6 +48,7 @@ import {NgxMaterialTimepickerModule} from "ngx-material-timepicker";
 import {ExamSettingComponent} from "./examination/exam-setting/exam-setting.component";
 import {SpecialityComponent} from "./speciality/speciality.component";
 import {StaffComponent} from "./staff/staff.component";
+import {NgxPaginationModule} from "ngx-pagination";
 
 @NgModule({
   declarations: [
@@ -90,7 +91,7 @@ import {StaffComponent} from "./staff/staff.component";
     ReactiveFormsModule,
     AngularFirestoreModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
-    NgxMaterialTimepickerModule
+    NgxMaterialTimepickerModule,
   ],
   providers: [QuestionService,
     CookieService,

@@ -7,6 +7,9 @@ import {Template} from './model/template';
 import {User} from "./model/user";
 import {USER_ROLE_LIST} from "./default-constant";
 import {CookieService} from "ngx-cookie-service";
+import {FirebaseListObservable} from "@angular/fire/database-deprecated";
+import {AngularFireDatabase} from "@angular/fire/database";
+import CollectionReference = firebase.firestore.CollectionReference;
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +23,13 @@ export class CommonService {
     this.fireDB = firebase.firestore();
     this.fireSQL = new FireSQL(this.fireDB);
   }
+
+  getQuestionsByPagination(offset, startKey?) {
+    // this.firestore.collection('question', {
+    //
+    // })
+  }
+
 
   setCompanyIdForUser(docId, companyId){
     return this.firestore.collection('user').doc(docId).update({companyId: companyId, role:'staff'});
@@ -338,7 +348,7 @@ export class CommonService {
 
   getActiveTemplateList() {
     return this.fireSQL.query(`SELECT __name__ as id, name, categoryId, sectionId, questionIdList, status 
-      FROM template WHERE status ='active'`)
+      FROM template WHERE status ='active' AND isExamTemplate = false`)
       .then(res => {
         return res;
       });

@@ -1,69 +1,80 @@
-<mat-expansion-panel *ngFor="let question of questions" (opened)="docId && question.docId === docId">
-  <mat-expansion-panel-header>
-    <mat-panel-title>
-      {{question.questionTypeCode}}
-    </mat-panel-title>
-    <mat-panel-description>
-      {{question.description}}
-    </mat-panel-description>
-  </mat-expansion-panel-header>
-  <!--<mat-form-field class="example-full-width">-->
+<div >
+  <div *ngIf="loading" fxLayoutAlign="center center" fxLayout="row">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+  <mat-expansion-panel *ngFor="let question of questions"
+                       (opened)="docId && question.docId === docId">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{question.questionTypeCode}}
+      </mat-panel-title>
+      <mat-panel-description>
+        {{question.description}}
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <!--<mat-form-field class="example-full-width">-->
     <!--<input matInput placeholder="author" [(ngModel)]="question.author" disabled>-->
-  <!--</mat-form-field>-->
-  <mat-form-field class="example-full-width">
-    <mat-select placeholder="Специальность" [(ngModel)]="question.speciality">
-      <mat-option *ngFor="let speciality of specialityList" [value]="speciality.id">
-        {{speciality.name}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <mat-form-field class="example-full-width">
-    <mat-select placeholder="Компания" [(ngModel)]="question.company">
-      <mat-option *ngFor="let company of companyList" [value]="company.id">
-        {{company.name}}
-      </mat-option>
-    </mat-select>
-    <input matInput placeholder="company" >
-  </mat-form-field>
-  <mat-form-field class="example-full-width">
-    <mat-select placeholder="Категория" [(ngModel)]="question.category" required
-                (selectionChange)="getSectionsByCategory($event)">
-      <mat-option *ngFor="let category of categories" [value]="category.id">
-        {{category.name}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <mat-form-field class="example-full-width">
-    <mat-select placeholder="Раздел" [(ngModel)]="question.sectionId" [disabled]="sectionSelectDisable">
-      <mat-option *ngFor="let section of sections" [value]="section.id">
-        {{section.name}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <mat-form-field class="example-full-width">
-    <input matInput placeholder="description" [(ngModel)]="question.description">
-  </mat-form-field>
-  <mat-form-field class="example-full-width">
-    <input matInput placeholder="correctAnswer" [(ngModel)]="question.correctAnswer" disabled>
-  </mat-form-field>
-  <mat-form-field class="example-full-width">
-    <input matInput placeholder="point" [(ngModel)]="question.point">
-  </mat-form-field>
-  <mat-form-field class="example-full-width">
-    <input *ngIf="question.questionTypeCode !== 'two_answer'" matInput placeholder="questionTypeCode"
-           value="Четыре варианта" disabled>
-    <input *ngIf="question.questionTypeCode === 'two_answer'" matInput placeholder="questionTypeCode"
-           value="Два варианта" disabled>
-  </mat-form-field>
+    <!--</mat-form-field>-->
+    <mat-form-field class="example-full-width">
+      <mat-select placeholder="Специальность" [(ngModel)]="question.speciality">
+        <mat-option *ngFor="let speciality of specialityList" [value]="speciality.id">
+          {{speciality.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <mat-select placeholder="Компания" [(ngModel)]="question.company">
+        <mat-option *ngFor="let company of companyList" [value]="company.id">
+          {{company.name}}
+        </mat-option>
+      </mat-select>
+      <input matInput placeholder="company" >
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <mat-select placeholder="Категория" [(ngModel)]="question.category" required
+                  (selectionChange)="getSectionsByCategory($event)">
+        <mat-option *ngFor="let category of categories" [value]="category.id">
+          {{category.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <mat-select placeholder="Раздел" [(ngModel)]="question.sectionId" [disabled]="sectionSelectDisable">
+        <mat-option *ngFor="let section of sections" [value]="section.id">
+          {{section.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <input matInput placeholder="description" [(ngModel)]="question.description">
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <input matInput placeholder="correctAnswer" [(ngModel)]="question.correctAnswer" disabled>
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <input matInput placeholder="point" [(ngModel)]="question.point">
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <input *ngIf="question.questionTypeCode !== 'two_answer'" matInput placeholder="questionTypeCode"
+             value="Четыре варианта" disabled>
+      <input *ngIf="question.questionTypeCode === 'two_answer'" matInput placeholder="questionTypeCode"
+             value="Два варианта" disabled>
+    </mat-form-field>
 
-  <mat-form-field class="example-full-width" *ngFor="let answer of question.answers;let i = index">
-    <input matInput placeholder="answers" [(ngModel)]="question.answers[i].answer">
-  </mat-form-field>
-  <mat-form-field class="example-full-width">
-    <input type="text" matInput [hidden]="true">
-    <mat-checkbox [(ngModel)]="question.isExamQuestion">Этот вопрос для экзамена</mat-checkbox>
-  </mat-form-field>
-  <button mat-button (click)="save(question)">Сохранить</button>
+    <mat-form-field class="example-full-width" *ngFor="let answer of question.answers;let i = index">
+      <input matInput placeholder="answers" [(ngModel)]="question.answers[i].answer">
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <input type="text" matInput [hidden]="true">
+      <mat-checkbox [(ngModel)]="question.isExamQuestion">Этот вопрос для экзамена</mat-checkbox>
+    </mat-form-field>
+    <button mat-button (click)="save(question)">Сохранить</button>
 
-  <button mat-button (click)="delete(question)">Удалить</button>
-</mat-expansion-panel>
+    <button mat-button (click)="delete(question)">Удалить</button>
+  </mat-expansion-panel>
+</div>
+<div fxLayoutAlign="space-between center">
+  <button (click)="predQuestions()" [disabled]="page === 1 || loading" mat-button>Пред.</button>
+  <span ><i>{{page}}/{{maxPage}}</i></span>
+  <button (click)="nextQuestions()" [disabled]="page === maxPage || loading" mat-button>След.</button>
+</div>
