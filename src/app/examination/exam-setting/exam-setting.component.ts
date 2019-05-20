@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {CommonService} from "../../shared/common.service";
 import {RESULT_CODE_LIST} from "../../shared/default-constant";
+import {DatePipe} from "@angular/common";
 
 @Component({
   selector: 'app-exam-setting',
@@ -37,6 +38,16 @@ export class ExamSettingComponent implements OnInit {
 
   changeSelectedRequest(code:string){
     this.code = code;
+  }
+
+  getFormattedDate(date: any) {
+    try {
+      var datePipe = new DatePipe('en-US');
+      return datePipe.transform(new Date(date), 'dd/MM/yyyy');
+    } catch (e) {
+      console.log("error with formatting date")
+      return "";
+    }
   }
 
   getSectionList(){
@@ -89,7 +100,6 @@ export class ExamSettingComponent implements OnInit {
 
                   console.log('result: ',result);
                 });
-                // HELLO MTHFCKR
               }else if(obj.data.status === RESULT_CODE_LIST.PENDING.toString().toLowerCase()){
                 this.pendingCount ++;
               }
@@ -102,6 +112,7 @@ export class ExamSettingComponent implements OnInit {
   }
 
   activateUser(userId:string){
+    this.pendingCount--;
     this.setStatusToExamParticipant(userId,RESULT_CODE_LIST.ACTIVE.toString().toLowerCase());
   }
 

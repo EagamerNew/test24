@@ -1,5 +1,5 @@
 <div *ngIf="exam">
-  <b *ngIf="exam.date">{{exam.date.toDate()| date: 'dd/MM/yyyy'}}</b>
+  <b *ngIf="exam.date">{{getFormattedDate(exam.date)}}</b>
   <br>
   <b *ngIf="shortTemplate">{{shortTemplate.name}}</b>
   <br>
@@ -41,7 +41,7 @@
         <div style="margin:7px;">
           {{participant.lastname}} {{participant.firstname}}
           <br>
-          <span style="text-align: right;float:right">{{participant.data.result}}</span>
+          <span style="text-align: right;float:right;font-weight: bold;">{{participant.data.result}}</span>
           {{participant.idn}}
         </div>
       </div>
