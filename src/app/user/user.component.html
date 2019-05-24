@@ -1,3 +1,8 @@
+<mat-form-field class="example-full-width">
+  <input type="text" matInput placeholder="Поиск..."
+         autocomplete="off" [(ngModel)]="searchText" (keyup)="search()">
+  <mat-hint>По ФИО или ИИН</mat-hint>
+</mat-form-field>
 <mat-expansion-panel *ngFor="let user of userList">
   <mat-expansion-panel-header>
     <mat-panel-title>

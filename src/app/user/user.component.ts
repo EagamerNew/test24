@@ -12,6 +12,7 @@ import {CITIES, GENDER, USER_PRIVILEGES, USER_ROLE_LIST, USER_STATUS} from "../s
 export class UserComponent implements OnInit {
 
   userList: any;
+  allUserList: any;
   cityList = CITIES;
   genderList = GENDER;
   statusList = USER_STATUS;
@@ -19,6 +20,7 @@ export class UserComponent implements OnInit {
   privilegeList = USER_PRIVILEGES;
   privilegeTitle = 'Select all';
   privilegeOption = 'all';
+  searchText = '';
 
   constructor(public snackBar: MatSnackBar,
               public commonService: CommonService,
@@ -56,6 +58,7 @@ export class UserComponent implements OnInit {
   getUserList(): void {
     this.commonService.getUserList().then(res => {
       this.userList = res;
+      this.allUserList = res;
     })
   }
 
@@ -96,5 +99,22 @@ export class UserComponent implements OnInit {
     this.snackBar.open(message, action, {
       duration: 2000,
     });
+  }
+
+  search(): void {
+    if (this.searchText === '' || this.searchText === null || this.searchText.length === 0) {
+      this.userList = this.allUserList;
+    } else {
+      console.log(this.searchText);
+      this.userList = [];
+      this.allUserList.forEach(value => {
+        if (value.idn.toLowerCase().includes(this.searchText.toLowerCase())
+          || value.lastname.toLowerCase().includes(this.searchText.toLowerCase())
+          || value.firstname.toLowerCase().includes(this.searchText.toLowerCase())
+        ) {
+          this.userList.push(value);
+        }
+      });
+    }
   }
 }

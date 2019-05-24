@@ -54,11 +54,11 @@ export class QuestionService {
     return this.firebase.doc('question/' + docId).snapshotChanges();
   }
 
-  getListIdOfActiveQuestion(){
+  getListIdOfActiveQuestion() {
     return this.fireSQL.query(`SELECT __name__ as id FROM question WHERE status = 'accepted'`);
   }
 
-  getListIdOfActiveCompanyQuestion(companyId){
+  getListIdOfActiveCompanyQuestion(companyId) {
     return this.fireSQL.query(`SELECT __name__ as id FROM question WHERE status = 'accepted' AND company = '${companyId}'`);
   }
 
@@ -66,6 +66,18 @@ export class QuestionService {
     return this.firebase
       .collection('question',
         ref => ref.where("status", "==", "accepted").limit(5)
+      ).snapshotChanges();
+  }
+
+  searchActiveQuestions(searchString: string) {
+    return this.firebase
+      .collection('question',
+        ref => ref
+          .where("status", "==", "accepted")
+          .orderBy('description')
+          .startAt(searchString)
+          .endAt(searchString + "\uf8ff")
+          .limit(10)
       ).snapshotChanges();
   }
 
@@ -77,6 +89,18 @@ export class QuestionService {
       ).snapshotChanges();
   }
 
+  searchActiveCompanyQuestions(companyId,searchString) {
+    return this.firebase
+      .collection('question',
+        ref => ref.where("status", "==", "accepted")
+          .where('company', '==', companyId)
+          .orderBy('description')
+          .startAt(searchString)
+          .endAt(searchString + "\uf8ff")
+          .limit(5)
+      ).snapshotChanges();
+  }
+
   getActiveNextQuestions(id) {
     return this.firebase
       .collection('question',
@@ -84,7 +108,7 @@ export class QuestionService {
       ).snapshotChanges();
   }
 
-  getActiveNextCompanyQuestions(id,companyId) {
+  getActiveNextCompanyQuestions(id, companyId) {
     return this.firebase
       .collection('question',
         ref => ref.where("status", "==", "accepted")
@@ -100,7 +124,7 @@ export class QuestionService {
       ).snapshotChanges();
   }
 
-  getActivePrevCompanyQuestions(id,company) {
+  getActivePrevCompanyQuestions(id, company) {
     return this.firebase
       .collection('question',
         ref => ref.where("status", "==", "accepted")

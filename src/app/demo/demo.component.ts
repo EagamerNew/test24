@@ -125,13 +125,15 @@ export class DemoComponent implements OnInit {
         categoryId: "",
         sectionId: "",
         questionIdList: [],
-        status: "0"
+        status: "0",
+        companyId: ""
       };
       template.questionIdList = idList;
       template.categoryId = this.categoryId;
       template.sectionId = this.sectionId;
       template.name = this.templateName;
       template.isExamTemplate = this.isExamTemplate;
+      template.companyId = this.companyId;
       template.status = "active";
 
       console.log('template to create: ', template);
@@ -150,6 +152,7 @@ export class DemoComponent implements OnInit {
       this.openSnackBar('Ошибка! Количество вопросов не должно превышать доступных вопросов', '');
     }
   }
+
 
   shuffle(arr) {
     return arr.map(function (val, i) {

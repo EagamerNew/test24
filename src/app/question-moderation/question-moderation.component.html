@@ -1,6 +1,7 @@
 <mat-form-field style="width:300px;">
-  <input type="text" matInput placeholder="Поиск по id вопроса"
+  <input type="text" matInput placeholder="Поиск..."
          autocomplete="off" [(ngModel)]="searchText" (keyup)="searchQuestion()">
+  <mat-hint>По названию или id</mat-hint>
 </mat-form-field>
 <p (click)="displayQuestion('all')">
   <small>Все ({{countQuestionList('all')}})</small>

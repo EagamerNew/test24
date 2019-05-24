@@ -42,7 +42,7 @@ export class ExaminationComponent implements OnInit {
     this.getCompanyList();
     this.getCategories();
     this.getCityList();
-    this.getExaminatorList();
+    // this.getExaminatorList();
     this.getExamTemplateList();
   }
 
@@ -65,18 +65,29 @@ export class ExaminationComponent implements OnInit {
     });
   }
   getExaminatorList(){
-    this.commonService.getExaminatorList().subscribe(res=>{
-      console.log(res);
-      this.examinatorList = [];
-      res.map(value => {
-        this.examinatorList.push(
-        {
-          id: value.payload.doc.id,
-          firstname: value.payload.doc.get("firstname"),
-          lastname: value.payload.doc.get("lastname")
-        }
-        );
-      });
+    this.commonService.getExaminatorList(this.exam.companyId).subscribe(res=>{
+      console.log('examinatorList:',res);
+      if(res.length > 0){
+        this.examinatorList = [];
+        res.map(value => {
+          this.examinatorList.push(
+            {
+              id: value.payload.doc.id,
+              firstname: value.payload.doc.get("firstname"),
+              lastname: value.payload.doc.get("lastname")
+            }
+          );
+        });
+      }else{
+        this.openSnackBar('В данной компании отсутствуют экзаменаторы');
+      }
+
+    });
+  }
+
+  openSnackBar(message: string, action: string = '') {
+    this.snackBar.open(message, action, {
+      duration: 2000,
     });
   }
 

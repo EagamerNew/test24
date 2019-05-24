@@ -10,6 +10,7 @@ import {CookieService} from "ngx-cookie-service";
 import {FirebaseListObservable} from "@angular/fire/database-deprecated";
 import {AngularFireDatabase} from "@angular/fire/database";
 import CollectionReference = firebase.firestore.CollectionReference;
+import {DocumentData} from 'firesql/types/utils';
 
 @Injectable({
   providedIn: 'root'
@@ -24,12 +25,101 @@ export class CommonService {
     this.fireSQL = new FireSQL(this.fireDB);
   }
 
-  getQuestionsByPagination(offset, startKey?) {
-    // this.firestore.collection('question', {
-    //
-    // })
+  filterTemplate(filterTemplate: any): Promise<DocumentData[]>{
+
+    let globalQuery = `SELECT * FROM template WHERE status ='active' AND isExamTemplate = false `;
+    let haved = false;
+
+    if(filterTemplate.companyId){
+      globalQuery += ` AND companyId = '${filterTemplate.companyId}'`
+      haved = true;
+    }
+    if(filterTemplate.categoryId){
+      if(!haved){
+        globalQuery += ' AND ';
+      }else{
+        globalQuery += ' OR ';
+      }
+      globalQuery += ` categoryId = '${filterTemplate.categoryId}'`
+    }
+    if(filterTemplate.sectionId){
+
+      if(!haved){
+        globalQuery += ' AND ';
+      }else{
+        globalQuery += ' OR ';
+      }
+      globalQuery += ` sectionId = '${filterTemplate.sectionId}'`
+    }
+    console.log('globalQuery:', globalQuery);
+    return this.fireSQL.query(globalQuery,{includeId:'id'});
   }
 
+  async searchTemplate(searchText: string): Promise<DocumentData[]> {
+    console.log('searchText: ', searchText);
+    // company, section, category, --city
+    let companyIdString: string = '';
+    let categoryIdString: string = '';
+    let sectionIdString: string = '';
+    let globalQuery = `SELECT * FROM template WHERE status ='active' AND isExamTemplate = false
+                AND ( name LIKE '${searchText}%' `;
+    let sectionId = await this.findSectionIdListBySearchText(searchText);
+    console.log('sectionId: ', sectionId);
+    if (sectionId && sectionId.length > 0) {
+      sectionId.map(sectionList => {
+        sectionIdString = sectionIdString + '"' + sectionList.id + '",';
+      });
+      sectionIdString = sectionIdString.substring(0, sectionIdString.length - 1);
+      globalQuery += ` OR sectionId IN (${sectionIdString})`;
+    }
+    console.log('sectionIDS: ', sectionIdString);
+
+    let companyId = await this.findCompanyIdListBySearchText(searchText);
+    console.log('companyId: ', companyId);
+    if (companyId && companyId.length > 0) {
+      companyId.map(companyList => {
+        companyIdString = companyIdString + '"' + companyList.id + '",';
+      });
+      companyIdString = companyIdString.substring(0, companyIdString.length - 1);
+      globalQuery += ` OR companyId IN (${companyIdString})`;
+    }
+    console.log('companyIDS: ', companyIdString);
+
+    let categoryId = await this.findCategoryIdListBySearchText(searchText);
+    console.log('categoryId: ', categoryId);
+    if (categoryId && categoryId.length > 0) {
+      categoryId.map(categoryList => {
+        categoryIdString = categoryIdString + '"' + categoryList.id + '",';
+      });
+      categoryIdString = categoryIdString.substring(0, categoryIdString.length - 1);
+      globalQuery += ` OR categoryId IN (${categoryIdString})`;
+    }
+    console.log('categoryIDS: ', categoryIdString);
+
+    globalQuery += `)`;
+    console.log('globalQuery: ', globalQuery);
+    return this.fireSQL
+            .query(globalQuery, {includeId: 'id'});
+
+  }
+
+  findSectionIdListBySearchText(searchText: string): Promise<DocumentData[]> {
+    let query = `SELECT __name__ as id FROM section WHERE name LIKE '${searchText}%'`;
+    console.log('query section is:', query)
+    return this.fireSQL.query(query);
+  }
+
+  findCategoryIdListBySearchText(searchText: string) {
+    let query = `SELECT __name__ as id FROM category WHERE name LIKE '${searchText}%'`;
+    console.log('query category is:', query)
+    return this.fireSQL.query(query);
+  }
+
+  findCompanyIdListBySearchText(searchText: string) {
+    let query = `SELECT __name__ as id FROM company WHERE name LIKE '${searchText}%'`;
+    console.log('query company is:', query)
+    return this.fireSQL.query(query);
+  }
 
   setCompanyIdForUser(docId, companyId) {
     return this.firestore.collection('user').doc(docId).update({companyId: companyId, role: 'staff'});
@@ -249,9 +339,12 @@ export class CommonService {
           AND password = '` + password + `'`);
   }
 
-  getExaminatorList() {
-    return this.firestore.collection('user', ref => ref.where('privilegeList', 'array-contains',
-      'examination').where('role', '==', 'staff')).snapshotChanges();
+  getExaminatorList(companyId: string) {
+    return this.firestore.collection('user', ref =>
+      ref.where('privilegeList', 'array-contains', 'examination')
+        .where('role', '==', 'staff')
+        .where('companyId', '==', companyId))
+      .snapshotChanges();
     // return this.fireSQL.query(`SELECT __name__ as id, firstname, lastname FROM user WHERE role = 'staff'
     //   and privilegeList is 'examination'`);
   }

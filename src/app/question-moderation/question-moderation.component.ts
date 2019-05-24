@@ -101,13 +101,14 @@ export class QuestionModerationComponent implements OnInit {
   }
 
   searchQuestion(): void {
-    if (this.searchText === '' || this.searchText === null) {
+    if (this.searchText === '' || this.searchText === null || this.searchText.length === 0) {
       this.questionList = this.allQuestionList;
     } else {
       console.log(this.searchText);
       this.questionList = [];
       this.allQuestionList.forEach(value => {
-        if (value.docId.toLowerCase().includes(this.searchText.toLowerCase())) {
+        if (value.docId.toLowerCase().includes(this.searchText.toLowerCase())
+          || value.description.toLowerCase().includes(this.searchText.toLowerCase())) {
           this.questionList.push(value);
         }
       });

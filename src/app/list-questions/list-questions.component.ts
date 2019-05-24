@@ -26,12 +26,14 @@ export class ListQuestionsComponent implements OnInit {
   docId: string;
   companyList: any[] = [];
   loading: boolean = true;
+  searching: boolean = false;
 
   companyId: string;
   questionIdList: any[];
   isAdmin: boolean = false;
   page = 1;
   maxPage = 0;
+  searchString: string = "";
 
   constructor(private service: QuestionService,
               public snackBar: MatSnackBar,
@@ -72,6 +74,52 @@ export class ListQuestionsComponent implements OnInit {
 
     });
 
+  }
+
+  handleSearchString() {
+    this.searchString = "";
+    this.searching = false;
+    if (this.isAdmin) {
+      this.getQuestions();
+    } else {
+      this.getQuestionsByCompanyId();
+    }
+
+  }
+
+  search() {
+    this.loading = true;
+    if (this.searchString.trim().length > 0) {
+      this.searching = true;
+      if (this.isAdmin) {
+        console.log('searchString: ' + this.searchString)
+        this.service.searchActiveQuestions(this.searchString).subscribe(res => {
+          let result: any = res;
+          this.questions = result.map(reslist => {
+            return {
+              docId: reslist.payload.doc.id,
+              ...reslist.payload.doc.data()
+            }
+          });
+          this.loading = false;
+          console.log('result: ', this.questions);
+        });
+      } else {
+        this.service.searchActiveCompanyQuestions(this.companyId,this.searchString).subscribe(res => {
+          let result: any = res;
+          this.questions = result.map(reslist => {
+            return {
+              docId: reslist.payload.doc.id,
+              ...reslist.payload.doc.data()
+            }
+          });
+          this.loading = false;
+          console.log('result: ', this.questions);
+        });
+      }
+    } else {
+      this.handleSearchString();
+    }
   }
 
   getSpecialityList() {
@@ -186,9 +234,9 @@ export class ListQuestionsComponent implements OnInit {
           this.router.navigateByUrl('');
         }
         this.loading = false;
-        if(this.isAdmin){
+        if (this.isAdmin) {
           this.getQuestions();
-        }else{
+        } else {
           this.getQuestionsByCompanyId();
         }
       }
@@ -223,9 +271,9 @@ export class ListQuestionsComponent implements OnInit {
   delete(question) {
     this.service.deleteQuestion(question.docId);
 
-    if(this.isAdmin){
+    if (this.isAdmin) {
       this.getQuestions();
-    }else{
+    } else {
       this.getQuestionsByCompanyId();
     }
     this.openSnackBar('Вопрос успешно удален!', '');
@@ -278,9 +326,9 @@ export class ListQuestionsComponent implements OnInit {
     this.page--;
     this.loading = true;
     let lastId = this.questionIdList[this.questionIdList.indexOf(this.questions[0].docId) - 5];
-    this.questionIdList.forEach((val,ind)=>{
-      if(val.id === this.questions[0].docId){
-        lastId = this.questionIdList[ind-5].id;
+    this.questionIdList.forEach((val, ind) => {
+      if (val.id === this.questions[0].docId) {
+        lastId = this.questionIdList[ind - 5].id;
       }
     })
     if (this.isAdmin) {

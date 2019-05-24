@@ -1,4 +1,10 @@
 <div >
+  <mat-form-field class="example-full-width" *ngIf="!this.docId">
+    <input matInput placeholder="Поиск..." [(ngModel)]="searchString">
+    <button mat-icon-button matSuffix (click)="search()" [disabled]="searchString.trim().length === 0 || loading"><mat-icon >search</mat-icon></button>
+    <button mat-icon-button matSuffix (click)="handleSearchString()" [disabled]="searchString.trim().length === 0 || loading"><mat-icon >clear</mat-icon></button>
+    <mat-hint>Название вопроса</mat-hint>
+  </mat-form-field>
   <div *ngIf="loading" fxLayoutAlign="center center" fxLayout="row">
     <mat-spinner diameter="40"></mat-spinner>
   </div>
@@ -28,7 +34,6 @@
           {{company.name}}
         </mat-option>
       </mat-select>
-      <input matInput placeholder="company" >
     </mat-form-field>
     <mat-form-field class="example-full-width">
       <mat-select placeholder="Категория" [(ngModel)]="question.category" required
@@ -73,7 +78,7 @@
     <button mat-button (click)="delete(question)">Удалить</button>
   </mat-expansion-panel>
 </div>
-<div fxLayoutAlign="space-between center">
+<div fxLayoutAlign="space-between center" *ngIf="!docId && !searching">
   <button (click)="predQuestions()" [disabled]="page === 1 || loading" mat-button>Пред.</button>
   <span ><i>{{page}}/{{maxPage}}</i></span>
   <button (click)="nextQuestions()" [disabled]="page === maxPage || loading" mat-button>След.</button>
