@@ -25,6 +25,37 @@ export class CommonService {
     this.fireSQL = new FireSQL(this.fireDB);
   }
 
+  filterExamination(filterTemplate: any): Promise<DocumentData[]>{
+
+    let globalQuery = `SELECT categoryId, address, cityId, sectionId, startTime,
+          date, examinatorUserId, companyId, templateId, participantList FROM examination WHERE status ='active' `;
+    let haved = false;
+
+    if(filterTemplate.companyId){
+      globalQuery += ` AND companyId = '${filterTemplate.companyId}'`
+      haved = true;
+    }
+    if(filterTemplate.categoryId){
+      if(!haved){
+        globalQuery += ' AND ';
+      }else{
+        globalQuery += ' OR ';
+      }
+      globalQuery += ` categoryId = '${filterTemplate.categoryId}'`
+    }
+    if(filterTemplate.sectionId){
+
+      if(!haved){
+        globalQuery += ' AND ';
+      }else{
+        globalQuery += ' OR ';
+      }
+      globalQuery += ` sectionId = '${filterTemplate.sectionId}'`
+    }
+    console.log('globalQuery:', globalQuery);
+    return this.fireSQL.query(globalQuery,{includeId:'id'});
+  }
+
   filterTemplate(filterTemplate: any): Promise<DocumentData[]>{
 
     let globalQuery = `SELECT * FROM template WHERE status ='active' AND isExamTemplate = false `;
@@ -376,12 +407,13 @@ export class CommonService {
       bin: company.bin,
       name: company.name,
       phoneNumber: company.phoneNumber,
-      subsidiary: company.subsidiary
+      subsidiary: company.subsidiary,
+      status: company.status
     });
   }
 
   getCompanyById(id) {
-    return this.fireSQL.query(`SELECT __name__ as id, bin, name,phoneNumber,subsidiary FROM company where __name__ ='` + id + `'`);
+    return this.fireSQL.query(`SELECT __name__ as id, bin, name,phoneNumber,subsidiary,status FROM company where __name__ ='` + id + `'`);
   }
 
   deleteCompany(id) {
@@ -389,7 +421,11 @@ export class CommonService {
   }
 
   getCompanyList() {
-    return this.fireSQL.query(`SELECT __name__ as id, bin,subsidiary, name,phoneNumber FROM company`);
+    return this.fireSQL.query(`SELECT __name__ as id, bin,subsidiary, name,phoneNumber,status FROM company`);
+  }
+
+  getActiveCompanyList() {
+    return this.fireSQL.query(`SELECT __name__ as id, bin,subsidiary, name,phoneNumber,status FROM company WHERE status='active'`);
   }
 
   getUserList() {

@@ -1,6 +1,8 @@
 <mat-form-field style="width:300px;">
   <input type="text" matInput placeholder="Поиск..."
-         autocomplete="off" [(ngModel)]="searchText" (keyup)="searchQuestion()">
+         autocomplete="off" [(ngModel)]="searchText">
+  <button mat-icon-button matSuffix (click)="searchQuestion()" [disabled]="searchText.trim().length === 0 || loading"><mat-icon >search</mat-icon></button>
+  <button mat-icon-button matSuffix (click)="handleSearchString()" [disabled]="searchText.trim().length === 0 || loading"><mat-icon >clear</mat-icon></button>
   <mat-hint>По названию или id</mat-hint>
 </mat-form-field>
 <p (click)="displayQuestion('all')">
@@ -15,6 +17,11 @@
 <p (click)="displayQuestion('in_moderation')">
   <small>На модерации ({{countQuestionList('in_moderation')}})</small>
 </p>
+
+<div *ngIf="loading" fxLayoutAlign="center center" fxLayout="row">
+  <mat-spinner diameter="40"></mat-spinner>
+</div>
+
 <div *ngFor="let question of questionList" style="padding-bottom:7%;">
   <mat-card class="example-card">
     <mat-card-header>

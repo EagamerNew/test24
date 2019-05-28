@@ -14,6 +14,7 @@ export class CompanyEditComponent implements OnInit {
   company: Company = new Company();
   id: any;
   subsidiaryList: Subsidiary [] = [];
+  statusList: any[] = [{name:'Активный',code:'active'},{name:'В архиве',code:'archived'}];
 
   constructor(private _service: CommonService,
               public snackBar: MatSnackBar,
@@ -66,6 +67,7 @@ export class CompanyEditComponent implements OnInit {
           name: res[0].name,
           subsidiary: res[0].subsidiary,
           phoneNumber: res[0].phoneNumber,
+          status: res[0].status
         };
 
       }
@@ -83,7 +85,8 @@ export class CompanyEditComponent implements OnInit {
       bin: this.company.bin,
       phoneNumber: this.company.phoneNumber,
       name: this.company.name,
-      subsidiary: this.company.subsidiary
+      subsidiary: this.company.subsidiary,
+      status: this.company.status
     };
     this._service.updateCompany(temp).then(res => {
       // this.router.navigateByUrl('/company-list')

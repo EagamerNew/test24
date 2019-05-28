@@ -31,7 +31,7 @@ export class SubsidiaryComponent implements OnInit {
 
 
   getCompanyList() {
-    this._service.getCompanyList().then(res => {
+    this._service.getActiveCompanyList().then(res => {
       this.companyList = res;
     })
   }

@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {CommonService} from "../../shared/common.service";
 import {CookieService} from "ngx-cookie-service";
 import {DatePipe} from "@angular/common";
+import {Template} from "../../shared/model/template";
 
 @Component({
   selector: 'app-exam-list',
@@ -15,11 +16,18 @@ export class ExamListComponent implements OnInit {
   userRole: string = '';
 
   examList: any[] = [];
+  originExamList: any[] = [];
   categoryList: any[] = [];
   sectionList: any[] = [];
 
   templateIdList: string[] = [];
   shortTemplateList: any[] = [];
+
+  sectionSelectDisable: boolean = true;
+  filterTemplate: any = new Object();
+  categorySectionList = [];
+  companyList: any = [];
+  loading:boolean = true;
 
   constructor(public cookieService: CookieService,
               private commonService: CommonService) {
@@ -29,7 +37,20 @@ export class ExamListComponent implements OnInit {
     this.userId = this.cookieService.get('userId');
     this.userRole = this.cookieService.get('role');
     this.getCategoryAndSectionList();
+    this.getCompanyList();
     this.getExamTemplateList();
+  }
+
+
+  getSectionsByCategory(event) {
+    const categoryId: string = event.value;
+    this.categorySectionList = [];
+    this.sectionList.forEach(value => {
+      if (value.categoryId === categoryId) {
+        this.categorySectionList.push(value);
+      }
+    });
+    this.sectionSelectDisable = false;
   }
 
   participate(examId: string, participantList: any) {
@@ -101,8 +122,10 @@ export class ExamListComponent implements OnInit {
     }
   }
 
-  getExamTemplateList() {
-    this.commonService.getExamList().then(res => {
+  getFilteredExamTemplateList(){
+    this.loading = true;
+    this.commonService.filterExamination(this.filterTemplate).then(res =>{
+      this.loading = false;
       this.examList = res;
       this.templateIdList = this.examList.map((res, index) => {
         let now = new Date();
@@ -113,11 +136,48 @@ export class ExamListComponent implements OnInit {
         }
         return res.templateId;
       });
+      this.loading = false;
       console.log('examList:', this.examList);
       console.log('templateIdlist:', this.templateIdList);
       if (this.examList && this.examList.length > 0) {
         this.getShortTemplateList();
       }
+    })
+  }
+
+  handleRestoreFilter() {
+    this.examList = this.originExamList;
+    this.categorySectionList = [];
+    this.sectionSelectDisable = true;
+    this.filterTemplate = new Object();
+  }
+
+  getExamTemplateList() {
+
+    this.commonService.getExamList().then(res => {
+      this.examList = res;
+      this.originExamList = res;
+      this.templateIdList = this.examList.map((res, index) => {
+        let now = new Date();
+        if (now > new Date(res.date)) {
+          this.archiveExam(res.id, index);
+        } else {
+          return res.templateId;
+        }
+        return res.templateId;
+      });
+      this.loading = false;
+      console.log('examList:', this.examList);
+      console.log('templateIdlist:', this.templateIdList);
+      if (this.examList && this.examList.length > 0) {
+        this.getShortTemplateList();
+      }
+    })
+  }
+
+  getCompanyList() {
+    this.commonService.getCompanyList().then(res => {
+      this.companyList = res;
     })
   }
 

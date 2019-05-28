@@ -47,6 +47,7 @@ export class Company {
   name: string;
   phoneNumber: string;
   subsidiary: string[];
+  status: string;
 
   constructor(){
     this.id = '';
@@ -54,5 +55,6 @@ export class Company {
     this.name = '';
     this.phoneNumber = '';
     this.subsidiary = [];
+    this.status = '';
   }
 }

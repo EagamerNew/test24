@@ -45,7 +45,7 @@ export class ListComponent implements OnInit {
     this.service.getSectionList().then(res => {
       this.sectionList = res;
     })
-    this.service.getCompanyList().then(res => {
+    this.service.getActiveCompanyList().then(res => {
       this.companyList = res;
     })
   }

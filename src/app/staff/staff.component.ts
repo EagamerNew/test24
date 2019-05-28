@@ -51,7 +51,7 @@ export class StaffComponent implements OnInit {
   }
 
   getCompanyList() {
-    this.commonService.getCompanyList().then(res => {
+    this.commonService.getActiveCompanyList().then(res => {
       this.companyList = res;
     })
   }

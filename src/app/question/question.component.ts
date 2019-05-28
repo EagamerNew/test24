@@ -82,18 +82,19 @@ export class QuestionComponent implements OnInit {
   }
 
   getCompanyList() {
-    this.commonService.getCompanyList().then(res => {
+    this.commonService.getActiveCompanyList().then(res => {
       this.companyList = res;
     })
   }
 
   getCategories() {
-    this.serviceCategory.getCotegories().subscribe(
+    this.commonService.getCategoryList().then(
       list => {
         this.categories = []
         list.map(item => {
-          this.categories.push(new QuestionCategory(item.payload.doc.id, item.payload.doc.get('name')))
+          this.categories.push(new QuestionCategory(item.id, item.name))
         })
+        console.log(this.categories);
       }
     )
   }

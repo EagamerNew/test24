@@ -10,7 +10,7 @@ export class CategoryService {
   constructor(private firebase: AngularFirestore) { }
 
   getCotegories(){
-    return this.firebase.collection('category').snapshotChanges()
+    return this.firebase.collection('question',ref=>ref.where('status','==', 'active')).snapshotChanges();
   }
   
 

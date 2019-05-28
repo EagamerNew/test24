@@ -1,3 +1,37 @@
+
+<div>
+  <mat-form-field class="example-full-width">
+    <mat-select placeholder="Компания" [(ngModel)]="filterTemplate.companyId">
+      <mat-option *ngFor="let company of companyList" [value]="company.id">
+        {{company.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field class="example-full-width">
+    <mat-select placeholder="Категория" [(ngModel)]="filterTemplate.categoryId" required
+                (selectionChange)="getSectionsByCategory($event)">
+      <mat-option *ngFor="let category of categoryList" [value]="category.id">
+        {{category.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field class="example-full-width">
+    <mat-select placeholder="Раздел" [(ngModel)]="filterTemplate.sectionId" [disabled]="sectionSelectDisable">
+      <mat-option *ngFor="let section of categorySectionList" [value]="section.id">
+        {{section.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div fxLayoutAlign="center center" fxLayout="row">
+    <button mat-raised-button class="mat-accent" (click)="getFilteredExamTemplateList()">Показать результаты</button>
+    <button mat-icon-button (click)="handleRestoreFilter()" matTooltip="Сбросить"><mat-icon>settings_backup_restore</mat-icon></button>
+  </div>
+</div>
+
+<div *ngIf="loading" fxLayoutAlign="center center" fxLayout="row">
+  <mat-spinner diameter="40"></mat-spinner>
+</div>
+
 <div *ngIf="examList && examList.length > 0">
   <div *ngFor="let exam of examList; trackBy: trackByFn" style="padding-top: 10px;">
     <mat-card class="example-card" style="border:1px solid black;">

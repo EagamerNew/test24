@@ -20,6 +20,7 @@ export class QuestionModerationComponent implements OnInit {
   allQuestionList: QuestionList[] = [];
   questionList: QuestionList[] = [];
   searchText: string = "";
+  loading: boolean = true;
 
   /*
   * Status of questions:
@@ -34,6 +35,7 @@ export class QuestionModerationComponent implements OnInit {
   }
 
   getAllQuestions(): void {
+    this.loading = true;
     console.log(this.cookieService.get('userId'));
     if (this.cookieService.get('role') === 'admin') {
       this.service.getAllQuestions().subscribe(res => {
@@ -45,12 +47,14 @@ export class QuestionModerationComponent implements OnInit {
         });
         console.log('questionList: ', this.allQuestionList);
         this.questionList = this.allQuestionList;
+        this.loading = false;
       });
     } else {
-      this.commonService.getQuestionListByAuthorId(this.cookieService.get('userId')).then(res=>{
+      this.commonService.getQuestionListByAuthorId(this.cookieService.get('userId')).then(res => {
         this.allQuestionList = res;
         console.log('questionList by userId : ', this.allQuestionList);
         this.questionList = this.allQuestionList;
+        this.loading = false;
       });
     }
   }
@@ -90,6 +94,10 @@ export class QuestionModerationComponent implements OnInit {
         }
       });
     }
+  }
+
+  handleSearchString() {
+    this.searchText = "";
   }
 
   countQuestionList(type: string): number {

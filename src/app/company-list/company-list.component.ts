@@ -10,12 +10,15 @@ import {Subsidiary} from "../subsidiary/subsidiary.component";
 })
 export class CompanyListComponent implements OnInit {
   companyList:Company[] = [];
+  loading : boolean = true;
+
   constructor(private _service: CommonService,) { }
   ngOnInit() {
     this.getpositionList()
   }
 
   getpositionList(): void {
+    this.loading = true;
     this._service.getCompanyList().then(res => {
       console.log(res)
       this.companyList = res.map(result =>{
@@ -24,9 +27,11 @@ export class CompanyListComponent implements OnInit {
           bin: result.bin,
           phoneNumber: result.phoneNumber,
           subsidiary: result.subsidiary,
-          name: result.name
+          name: result.name,
+          status: result.status
         }
       });
+      this.loading = false;
     });
   }
 }

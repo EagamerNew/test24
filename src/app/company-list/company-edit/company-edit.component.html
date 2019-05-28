@@ -7,6 +7,15 @@
 <mat-form-field class="example-full-width">
   <input matInput placeholder="+7 Номер мобильного" [(ngModel)]="company.phoneNumber">
 </mat-form-field>
+
+<mat-form-field class="example-full-width">
+  <mat-select placeholder="Статус"
+              required [(ngModel)]="company.status">
+    <mat-option *ngFor="let status of statusList" [value]="status.code">
+      {{status.name}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
 <!--<mat-form-field class="example-full-width"  >-->
   <!--&lt;!&ndash;<div *ngFor="let subsidary of company.subsidiary">&ndash;&gt;-->
   <!--<mat-select matInput placeholder="Филиал" [(ngModel)]="company.subsidiary" multiple>-->

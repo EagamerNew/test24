@@ -1,0 +1,8 @@
+.active-company{
+  border: 1px solid dodgerblue!important;
+  color: dodgerblue!important;
+}
+.archived-company{
+  border: 1px solid orangered!important;
+  color: orangered!important;
+}
