@@ -3,6 +3,8 @@ import {CommonService} from "../../shared/common.service";
 import {CookieService} from "ngx-cookie-service";
 import {DatePipe} from "@angular/common";
 import {Template} from "../../shared/model/template";
+import {Router} from "@angular/router";
+import {MatSnackBar} from "@angular/material";
 
 @Component({
   selector: 'app-exam-list',
@@ -30,6 +32,8 @@ export class ExamListComponent implements OnInit {
   loading:boolean = true;
 
   constructor(public cookieService: CookieService,
+              private router: Router,
+              private matSnackBar: MatSnackBar,
               private commonService: CommonService) {
   }
 
@@ -54,6 +58,12 @@ export class ExamListComponent implements OnInit {
   }
 
   participate(examId: string, participantList: any) {
+    if(!this.userId){
+      this.matSnackBar.open("Вы не вошли", '',{
+        duration: 1000
+      })
+      this.router.navigateByUrl('login-phone');
+    }
     if (!participantList) {
       participantList = {};
 
@@ -127,6 +137,7 @@ export class ExamListComponent implements OnInit {
     this.commonService.filterExamination(this.filterTemplate).then(res =>{
       this.loading = false;
       this.examList = res;
+      console.log(this.examList)
       this.templateIdList = this.examList.map((res, index) => {
         let now = new Date();
         if (now > new Date(res.date)) {
@@ -143,6 +154,9 @@ export class ExamListComponent implements OnInit {
         this.getShortTemplateList();
       }
     })
+  }
+  getSize(obj){
+    return Object.keys(obj).length;
   }
 
   handleRestoreFilter() {
@@ -176,7 +190,7 @@ export class ExamListComponent implements OnInit {
   }
 
   getCompanyList() {
-    this.commonService.getCompanyList().then(res => {
+    this.commonService.getActiveCompanyList().then(res => {
       this.companyList = res;
     })
   }

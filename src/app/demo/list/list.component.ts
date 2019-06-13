@@ -6,6 +6,7 @@ import {CommonService} from "../../shared/common.service";
 import {MatSnackBar} from "@angular/material";
 import {CookieService} from "ngx-cookie-service";
 import {QuestionSection} from "../../question/section/question-section.model";
+import {template} from "@angular/core/src/render3";
 
 @Component({
   selector: 'app-list',
@@ -26,6 +27,7 @@ export class ListComponent implements OnInit {
   sectionList: any[] = [];
   categorySectionList: any[] = [];
   companyList: any[] = [];
+  displayCompanyList: any[] = [];
   allTemplateList: Template[] = [];
   searching: boolean = false;
   loading: boolean = false;
@@ -33,7 +35,7 @@ export class ListComponent implements OnInit {
   showFilterResult: boolean = false;
   sectionSelectDisable: boolean = true;
   disableReset: boolean = true;
-
+  resultList = [];
   filterTemplate: any = new Object();
 
   ngOnInit() {
@@ -47,6 +49,9 @@ export class ListComponent implements OnInit {
     })
     this.service.getActiveCompanyList().then(res => {
       this.companyList = res;
+    })
+    this.service.getCompanyList().then(res => {
+      this.displayCompanyList = res;
     })
   }
 
@@ -70,13 +75,27 @@ export class ListComponent implements OnInit {
   getActiveTemplateList() {
     this.service.getActiveTemplateList().then(res => {
       console.log(res);
+      let templateIdList = [];
       this.templateList = res.map(mres => {
-        let temp =  new Template(mres.id, mres.name, mres.categoryId, mres.sectionId, mres.questionIdList, mres.status);
+        let temp =  new Template(mres.id, mres.name, mres.categoryId, mres.sectionId, mres.questionIdList,mres.companyId, mres.status);
+        templateIdList.push(temp.id);
         this.allTemplateList.push(temp);
         return temp;
       });
+      this.getResultListByTemplateIds(templateIdList);
       this.loading = false;
     })
+  }
+
+  getResultListByTemplateIds(ids:string[]){
+    this.service.getTemplateResultListByIds(ids).then(res=>{
+      this.resultList = res;
+    })
+  }
+
+  getCountForTemplateResult(id:string){
+    let res;
+    return this.resultList.filter(value => value.templateId === id).length + 1;
   }
 
   getNameFromSection(id): string {
@@ -85,6 +104,15 @@ export class ListComponent implements OnInit {
       return res.name;
     } else {
       return "Раздел не найден";
+    }
+  }
+
+  getNameFromCompany(id): string {
+    let res;
+    if (res = this.displayCompanyList.find(value => value.id === id)) {
+      return res.name;
+    } else {
+      return "Компания не найдена";
     }
   }
 
@@ -135,7 +163,7 @@ export class ListComponent implements OnInit {
       this.service.searchTemplate(this.searchText).then(res=>{
         if(res && res.length > 0){
           this.templateList = res.map(mres => {
-            let temp =  new Template(mres.id, mres.name, mres.categoryId, mres.sectionId, mres.questionIdList, mres.status);
+            let temp =  new Template(mres.id, mres.name, mres.categoryId, mres.sectionId, mres.questionIdList,mres.companyId, mres.status);
             return temp;
           });
         }
@@ -159,7 +187,7 @@ export class ListComponent implements OnInit {
       this.templateList = [];
       if(res && res.length > 0){
         this.templateList = res.map(mres => {
-          let temp =  new Template(mres.id, mres.name, mres.categoryId, mres.sectionId, mres.questionIdList, mres.status);
+          let temp =  new Template(mres.id, mres.name, mres.categoryId, mres.sectionId, mres.questionIdList,mres.companyId, mres.status);
           return temp;
         });
       }

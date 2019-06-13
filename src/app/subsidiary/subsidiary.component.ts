@@ -42,7 +42,8 @@ export class SubsidiaryComponent implements OnInit {
     let temp: any = {
       name: this.subsidiary.name,
       cityCode: this.subsidiary.cityCode,
-      address: this.subsidiary.address
+      address: this.subsidiary.address,
+      companyId: this.subsidiary.companyId
     };
     this._service.addSubsidiary(temp).then(res => {
       this.subsidiary = new Subsidiary();

@@ -93,7 +93,7 @@ export class CommonService {
     let categoryIdString: string = '';
     let sectionIdString: string = '';
     let globalQuery = `SELECT * FROM template WHERE status ='active' AND isExamTemplate = false
-                AND ( name LIKE '${searchText}%' `;
+                AND ( (name LIKE '${searchText.toLowerCase()}%' OR name LIKE '${searchText.charAt(0).toUpperCase() + searchText.slice(1)}%') `;
     let sectionId = await this.findSectionIdListBySearchText(searchText);
     console.log('sectionId: ', sectionId);
     if (sectionId && sectionId.length > 0) {
@@ -135,19 +135,19 @@ export class CommonService {
   }
 
   findSectionIdListBySearchText(searchText: string): Promise<DocumentData[]> {
-    let query = `SELECT __name__ as id FROM section WHERE name LIKE '${searchText}%'`;
+    let query = `SELECT __name__ as id FROM section WHERE name LIKE '${searchText}%' OR name LIKE '${searchText.charAt(0).toUpperCase() + searchText.slice(1)}%'`;
     console.log('query section is:', query)
     return this.fireSQL.query(query);
   }
 
   findCategoryIdListBySearchText(searchText: string) {
-    let query = `SELECT __name__ as id FROM category WHERE name LIKE '${searchText}%'`;
+    let query = `SELECT __name__ as id FROM category WHERE name LIKE '${searchText}%' OR name LIKE '${searchText.charAt(0).toUpperCase() + searchText.slice(1)}%'`;
     console.log('query category is:', query)
     return this.fireSQL.query(query);
   }
 
   findCompanyIdListBySearchText(searchText: string) {
-    let query = `SELECT __name__ as id FROM company WHERE name LIKE '${searchText}%'`;
+    let query = `SELECT __name__ as id FROM company WHERE name LIKE '${searchText}%' OR name LIKE '${searchText.charAt(0).toUpperCase() + searchText.slice(1)}%'`;
     console.log('query company is:', query)
     return this.fireSQL.query(query);
   }
@@ -288,19 +288,8 @@ export class CommonService {
   }
 
   updateUserId(user, userId: string) {
-    return this.firestore.collection('user').doc(user.id).set({
-      userId: userId,
-      idn: user.idn,
-      firstname: user.firstname,
-      lastname: user.lastname,
-      birthdate: user.birthdate,
-      gender: user.gender,
-      status: 'active',
-      city: user.city,
-      phoneNumber: user.phoneNumber,
-      role: user.role,
-      password: user.password,
-      privilegeList: user.privilegeList
+    return this.firestore.collection('user').doc(user.id).update({
+      status: 'active'
     });
   }
 
@@ -316,7 +305,8 @@ export class CommonService {
       phoneNumber: user.phoneNumber,
       role: user.role,
       password: user.password,
-      privilegeList: user.privilegeList
+      privilegeList: user.privilegeList,
+      companyId: user.companyId
     });
   }
 
@@ -482,11 +472,21 @@ export class CommonService {
   }
 
   getActiveTemplateList() {
-    return this.fireSQL.query(`SELECT __name__ as id, name, categoryId, sectionId, questionIdList, status 
+    return this.fireSQL.query(`SELECT __name__ as id, name, categoryId, sectionId,companyId, questionIdList, status 
       FROM template WHERE status ='active' AND isExamTemplate = false`)
       .then(res => {
         return res;
       });
+  }
+
+  getTemplateResultListByIds(temlateIds: string[]){
+    let temp = "";
+    for (let str of temlateIds) {
+      temp = temp + '"' + str + '",';
+    }
+    temp = temp.substring(0, temp.length - 1);
+    console.log('temp to search: ', temp);
+    return this.fireSQL.query(`SELECT __name__ as id,templateId FROM result WHERE templateId IN (${temp})`);
   }
 
   deleteTemplateById(id: string) {

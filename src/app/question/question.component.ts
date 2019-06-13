@@ -33,6 +33,7 @@ export class QuestionComponent implements OnInit {
   sectionSelectDisable = true;
   companyList: any[] = [];
   specialityList: any[] = [];
+  disableSave = false;
 
   constructor(private fb: FormBuilder,
               public snackBar: MatSnackBar,
@@ -60,6 +61,10 @@ export class QuestionComponent implements OnInit {
   getUserAndLoadData(){
     this.commonService.getUserByDocId(this.cookieService.get("userId")).then(res=>{
       console.log('user data:', res);
+      if(!res[0].companyId){
+        this.disableSave = true;
+        this.openSnackBar('Вы не состоите в компании для создание вопроса!','');
+      }
       this.questionForm = this.fb.group({
         company: new FormControl(res[0].companyId),
         speciality: new FormControl(''),
@@ -72,7 +77,7 @@ export class QuestionComponent implements OnInit {
         point: new FormControl(''),
         sectionId: new FormControl(''),
         isExamQuestion: new FormControl(false),
-        authorName: new FormControl(res[0].lastname),
+        authorName: new FormControl(res[0].lastname + ' ' + res[0].firstname),
       });
 
       this.getCategories();

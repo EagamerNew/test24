@@ -11,10 +11,12 @@ import html2canvas from 'html2canvas';
 export class TestResultComponent implements OnInit {
 
   @Input() data: any;
+  @Input() companyId: string;
+  companyName: string = 'Компания не найдена';
 
   percent: string = '';
 
-  constructor() {
+  constructor(private commonService: CommonService) {
   }
 
   ngOnInit() {
@@ -32,6 +34,14 @@ export class TestResultComponent implements OnInit {
         templateId: '',
         username: ''
       }
+    }
+    if(this.companyId){
+      this.commonService.getCompanyById(this.companyId).then(res=> {
+          if (res) {
+            this.companyName = res[0].name;
+          }
+        }
+      );
     }
     // For find percent of correct answer
     const all: number = parseInt(this.data.correct) + parseInt(this.data.mistake);

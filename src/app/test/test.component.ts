@@ -6,8 +6,6 @@ import {MatSnackBar, MatStepper} from "@angular/material";
 import {CommonService} from "../shared/common.service";
 import {CookieService} from "ngx-cookie-service";
 import {RESULT_CODE_LIST} from "../shared/default-constant";
-import {$} from "protractor";
-
 @Component({
   selector: 'app-test',
   templateUrl: './test.component.html',
@@ -26,6 +24,7 @@ export class TestComponent implements OnInit {
     correct: '',
     mistake: '',
     score: '',
+    scoreMust: '',
     category: "",
     section: "",
     title: "",
@@ -105,8 +104,8 @@ export class TestComponent implements OnInit {
 
     this.currentStep += 1;
     if (this.questions.length - 1 !== this.currentStep && this.currentStep < this.questions.length) {
-      this.time = 20;
-      this.nextQuestion();
+      // this.time = 20;
+      // this.nextQuestion();
     } else {
       console.log('finis---------------------')
       this.fiinishNew = true;
@@ -159,7 +158,13 @@ export class TestComponent implements OnInit {
 
   answerSave(docId, i, answer) {
     let check = true;
-    this.currentStep = i;
+    if(!this.template.isExamTemplate){
+      if (this.questions.length - 1 !== this.currentStep && this.currentStep < this.questions.length) {
+        this.currentStep += 1;
+
+      }
+
+    }
     for (let j = 0; j < this.answers.length; j++) {
       if (this.answers[j].docId == docId) {
         this.answers[j].answer = answer;
@@ -175,9 +180,11 @@ export class TestComponent implements OnInit {
         point: this.questions[i].point
       });
     }
+
     if (this.answers.length == this.questions.length) {
       this.saveAns = false;
     }
+
     console.log(JSON.stringify(this.answers))
   }
 
@@ -200,6 +207,7 @@ export class TestComponent implements OnInit {
         }
       }
       this.dataForResult.score = this.pointTotal + '';
+      this.dataForResult.scoreMust = this.pointMust+ '';
       this.dataForResult.mistake = misCount + '';
       this.dataForResult.correct = correctCount + '';
       this.dataForResult.isTest = !this.template.isExamTemplate;

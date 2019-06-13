@@ -36,8 +36,8 @@
   <div *ngFor="let exam of examList; trackBy: trackByFn" style="padding-top: 10px;">
     <mat-card class="example-card" style="border:1px solid black;">
       <div>
-        <span style="float: left">{{getNameFromCategory(exam.categoryId)}}</span>
-        <span style="float: right">{{exam.address}}</span>
+        <span style="float: left">{{getNameFromCategory(exam.categoryId)}}
+        </span>
       </div>
       <br>
       <mat-card-content style="text-align: center; padding: 30px 0;">
@@ -47,15 +47,18 @@
         <p class="mat-caption">{{getNameFromSection(exam.sectionId)}}</p>
         <p class="mat-caption">{{getFormattedDate(exam.date)}}</p>
         <p class="mat-caption">{{exam.startTime}}</p>
+        <p class="mat-caption">{{exam.address}}</p>
       </mat-card-content>
       <mat-card-actions>
-        <div fxFlex="100" fxLayoutAlign="center center">
+        <div fxFlex="100" fxLayoutAlign="space-between center">
           <button mat-raised-button class="mat-primary"
                   [routerLink]="'/exam-setting/'+exam.id"
                   *ngIf="userRole === 'admin' || (exam.examinatorUserId === userId && userRole === 'staff')">
             Настройка
           </button>
           <div>
+            <b *ngIf="exam.participantList">Заявки {{getSize(exam.participantList)}}</b>
+            <b *ngIf="!exam.participantList">Заявки 0</b>
             <button mat-raised-button class="mat-accent"
                     *ngIf="!existInExam(exam)"
                     (click)="participate(exam.id,exam.participantList)">

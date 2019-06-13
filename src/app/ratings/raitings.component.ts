@@ -97,8 +97,9 @@ export class RaitingsComponent implements OnInit {
         this.ratingResult = new Rating();
         this.ratingResult.count = 1;
         this.ratingResult.scoreTotal = this.results[i].score;
+        this.ratingResult.scoreMust = this.results[i].scoreMust;
         this.ratingResult.userId = this.results[i].userId;
-        this.ratingResult.username = this.results[i].username ;
+        this.ratingResult.username = this.results[i].username;
         console.log('=-=-=-=-=-=-================================')
         console.log(this.ratingResult)
         console.log('=-=-=-=-=-=-================================')
@@ -122,6 +123,7 @@ export class RaitingsComponent implements OnInit {
       for (let j = i + 1; j < this.results.length; j++) {
         if (this.results[j].isTest && this.ratingResult.userId === this.results[j].userId) {
           this.ratingResult.scoreTotal += this.results[j].score;
+          this.ratingResult.scoreMust += this.results[j].scoreMust;
           this.ratingResult.count += 1;
         } else {
           continue;
@@ -148,6 +150,7 @@ export class RaitingsComponent implements OnInit {
 
 class Rating {
   scoreTotal: number;
+  scoreMust:number;
   count: number;
   userId: string;
   username: string;

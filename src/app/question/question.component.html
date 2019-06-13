@@ -68,6 +68,6 @@
     <mat-form-field>
       <input type="number" matInput placeholder="Вес ответа" formControlName="point" required>
     </mat-form-field>
-    <button mat-raised-button color="primary" [disabled]="questionForm.invalid">Добавить</button>
+    <button mat-raised-button color="primary" [disabled]="questionForm.invalid || disableSave">Добавить</button>
   </form>
 </section>

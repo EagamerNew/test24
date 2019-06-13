@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {CookieService} from "ngx-cookie-service";
-import * as firebase from "firebase";
 import {Router} from "@angular/router";
 import {CommonService} from "../shared/common.service";
+import {MatSnackBar} from "@angular/material";
 
 @Component({
   selector: 'app-menu',
@@ -14,22 +14,31 @@ export class MenuComponent implements OnInit {
   userRole: string;
   userDocId: string;
   userPrivilegeList: any = [];
-  privilegeLoaded = false;
+  isOperation: boolean = false;
+  snackBarRef: any;
 
   constructor(public cookie: CookieService,
               private router: Router,
-              private commonService: CommonService) {
+              private commonService: CommonService,
+              private matSnackBar: MatSnackBar) {
   }
 
   ngOnInit() {
     this.userDocId = this.cookie.get('userId');
     this.userRole = this.cookie.get('role');
+    let firstly = this.cookie.get('firstly');
+
     if (this.userDocId) {
       this.getUserPrivilegeList();
     } else {
       let userRole = "anonymous";
       this.cookie.set('role', userRole);
       this.userRole = userRole;
+    }
+    if(firstly && firstly === '1'){
+    }else{
+      this.cookie.set('firstly', '1');
+      this.router.navigateByUrl('demo-list');
     }
   }
 
@@ -106,7 +115,7 @@ export class MenuComponent implements OnInit {
           }
           break;
         case 'exam-list':
-          if (this.userRole === 'user' || this.userPrivilegeList.includes('exam-list') ) {
+          if (this.userRole === 'user'|| this.userRole === 'anonymous' || this.userRole === 'staff' || this.userRole === 'author' || this.userPrivilegeList.includes('exam-list') ) {
             result = true;
           }
           break;
@@ -124,6 +133,15 @@ export class MenuComponent implements OnInit {
     }
 
     return result;
+  }
+
+
+  showOperations() {
+    this.isOperation = true;
+  }
+
+  hideOperations() {
+    this.isOperation = false;
   }
 
 

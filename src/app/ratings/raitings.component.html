@@ -6,7 +6,7 @@
           <b style="float: left">{{res.username}}</b> &nbsp;&nbsp;
         <b style="float: right">
           /&nbsp;&nbsp;Общ. баллл:
-          <span *ngIf="res.count >= 5">{{(res.scoreTotal / res.count)| number : '1.2-2'}}</span>
+          <span *ngIf="res.count >= 5">{{(res.scoreTotal / res.scoreMust * 100)| number : '1.2-2'}}% ({{(res.scoreTotal / res.count)| number : '1.2-2'}})</span>
           <span *ngIf="res.count < 5" style="color:red;">*</span>
         </b>
       </h4>

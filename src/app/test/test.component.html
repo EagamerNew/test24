@@ -8,9 +8,11 @@
 <div *ngIf="template">
   <div *ngIf="template.isExamTemplate" layout="row" style="text-align: center">
     <b>00:{{time}}</b>
+    <br>
   </div>
+  <b>Вопрос {{currentStep+1}} из {{questions.length}}</b>
   <mat-horizontal-stepper *ngIf="questions" labelPosition="bottom"
-                          fxLayout="column" fxLayoutAlign="center center"
+                          fxLayout="column" fxLayoutAlign="center start"
                           [selectedIndex]="currentStep" #stepper  linear>
     <mat-step [editable]="false" *ngFor="let question of questions;let i = index;">
       <p>{{question.description}}</p>
@@ -33,5 +35,5 @@
     </mat-step>
   </mat-horizontal-stepper>
 
-  <app-test-result [data]="dataForResult" *ngIf="finish"></app-test-result>
+  <app-test-result [data]="dataForResult" [companyId]="template.companyId" *ngIf="finish"></app-test-result>
 </div>

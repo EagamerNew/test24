@@ -48,6 +48,7 @@ import {NgxMaterialTimepickerModule} from "ngx-material-timepicker";
 import {ExamSettingComponent} from "./examination/exam-setting/exam-setting.component";
 import {SpecialityComponent} from "./speciality/speciality.component";
 import {StaffComponent} from "./staff/staff.component";
+import {CreatePasswordComponent} from "./create-password/create-password.component";
 
 @NgModule({
   declarations: [
@@ -78,7 +79,8 @@ import {StaffComponent} from "./staff/staff.component";
     ExamListComponent,
     ExamSettingComponent,
     SpecialityComponent,
-    StaffComponent
+    StaffComponent,
+    CreatePasswordComponent
   ],
   imports: [
     BrowserModule,

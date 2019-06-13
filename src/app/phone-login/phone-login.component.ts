@@ -26,6 +26,7 @@ export class PhoneLoginComponent implements OnInit {
   password: string;
 
   disableButton = false;
+  snackBarRef: any;
 
   constructor(private win: WindowService,
               public snackBar: MatSnackBar,
@@ -94,7 +95,7 @@ export class PhoneLoginComponent implements OnInit {
 
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
-      duration: 2000,
+      duration: 1000,
     });
   }
 
@@ -112,8 +113,10 @@ export class PhoneLoginComponent implements OnInit {
 
             let reUser: any = res[0];
             this.user = result.user;
-            console.log("res: ", res[0], " this.user.uid: " + this.user.uid);
-            if(this.user['companyId'] !== undefined && this.user['companyId'] !== null){
+            if (this.user['companyId']
+                && this.user['companyId'] !== undefined
+                && this.user['companyId'] !== null
+                && this.user.companyId) {
               this.cookieService.set('companyId', this.user.companyId);
             }
             this.windowRef.confirmationResult = null;
@@ -122,12 +125,24 @@ export class PhoneLoginComponent implements OnInit {
                 this.cookieService.set('userId', reUser.id, expiredDate);
                 this.cookieService.set('role', reUser.role, expiredDate);
                 this.openSnackBar('Вы успешно авторизовались', '');
+
+                this.snackBarRef = this.snackBar.open('Рекомендуем изменить ваш пароль', 'Изменить', {duration: 2000});
+
+                this.snackBarRef.afterDismissed().subscribe(() => {
+                  this.router.navigateByUrl('create-password');
+                });
                 this.router.navigateByUrl('');
               });
             } else {
               this.cookieService.set('userId', reUser.id, expiredDate);
               this.cookieService.set('role', reUser.role, expiredDate);
               this.openSnackBar('Вы успешно авторизовались', '');
+
+              this.snackBarRef = this.snackBar.open('Рекомендуем изменить ваш пароль', 'Изменить', {duration: 2000});
+
+              this.snackBarRef.afterDismissed().subscribe(() => {
+                this.router.navigateByUrl('create-password');
+              });
               this.router.navigateByUrl('');
             }
           } else {
@@ -156,9 +171,10 @@ export class PhoneLoginComponent implements OnInit {
       if (res && res.length > 0) {
         console.log(tempUser);
 
-        if(tempUser['companyId'] !== undefined && tempUser['companyId'] !== null) {
+        if (tempUser['companyId'] !== undefined && tempUser['companyId'] !== null) {
           this.cookieService.set('companyId', tempUser.companyId, expiredDate);
-        }this.cookieService.set('userId', tempUser.id, expiredDate);
+        }
+        this.cookieService.set('userId', tempUser.id, expiredDate);
         this.cookieService.set('role', tempUser.role, expiredDate);
         this.openSnackBar('Вы успешно авторизовались', '');
         this.router.navigateByUrl('');

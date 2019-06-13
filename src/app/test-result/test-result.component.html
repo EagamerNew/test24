@@ -1,6 +1,6 @@
 <!--<br>-->
 <!--<div fxFlexAlign="row" fxLayout="center center">-->
-  <!--<button (click)="captureScreen()" mat-raised-button class="mat-primary">Скачать результат как pdf</button>-->
+<!--<button (click)="captureScreen()" mat-raised-button class="mat-primary">Скачать результат как pdf</button>-->
 <!--</div>-->
 <br>
 <!--to download as pdf-->
@@ -9,7 +9,12 @@
             [style.color]="data.isTest? 'blue': 'green'"
             [style.border]="data.isTest ? '1px solid blue' : '1px solid green'">
     <div>
-      <span style="float: left">{{data.title}}</span>
+      <span style="float: left">
+        {{data.title}}
+        <br>
+        {{companyName}}
+      </span>
+      <!--<span style="float: left"></span>-->
       <span style="float: right" *ngIf="data.isTest">Тест</span>
       <span style="float: right" *ngIf="!data.isTest">Экзамен</span>
     </div>

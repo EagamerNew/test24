@@ -16,21 +16,24 @@
 <div *ngIf="isFiltering">
   <mat-form-field class="example-full-width">
     <mat-select placeholder="Компания" [(ngModel)]="filterTemplate.companyId">
+      <mat-option [value]="''">Все</mat-option>
       <mat-option *ngFor="let company of companyList" [value]="company.id">
         {{company.name}}
       </mat-option>
     </mat-select>
   </mat-form-field>
   <mat-form-field class="example-full-width">
-    <mat-select placeholder="Категория" [(ngModel)]="filterTemplate.categoryId" required
+    <mat-select placeholder="Категория" [(ngModel)]="filterTemplate.categoryId"
                 (selectionChange)="getSectionsByCategory($event)">
+      <mat-option [value]="''">Все</mat-option>
       <mat-option *ngFor="let category of categoryList" [value]="category.id">
         {{category.name}}
       </mat-option>
     </mat-select>
   </mat-form-field>
   <mat-form-field class="example-full-width">
-    <mat-select placeholder="Раздел" [(ngModel)]="filterTemplate.sectionId" [disabled]="sectionSelectDisable">
+    <mat-select placeholder="Раздел" [(ngModel)]="filterTemplate.sectionId" [disabled]="sectionSelectDisable || filterTemplate.categoryId === ''">
+      <mat-option [value]="''">Все</mat-option>
       <mat-option *ngFor="let section of categorySectionList" [value]="section.id">
         {{section.name}}
       </mat-option>
@@ -53,24 +56,21 @@
       <div *ngIf="categoryList && sectionList">
         <p style="float: left;line-height: 0.1px;" class="mat-caption">{{getNameFromCategory(template.categoryId)}}</p>
         <br>
-        <p style="clear:both;float: left;line-height: 0.1px;" class="mat-caption">{{getNameFromSection(template.sectionId)}}</p>
+        <p style="clear:both;float: left;line-height: 0.1px;" class="mat-caption">{{getNameFromCompany(template.companyId)}}</p>
         <!--<span style="float: right" *ngIf="!data.isTest">{{template.section}}</span>-->
       </div>
       <br>
       <mat-card-content style="text-align: center; padding: 30px 0;">
+        <h2>{{getNameFromSection(template.sectionId)}}</h2>
         <h2>
           {{template.name}}
         </h2>
         <p >{{template.questionIdList.length}} вопросов</p>
       </mat-card-content>
-      <div style="margin-bottom:36px;">
-        <!--<span style="float: left">-->
-        <!--<span>{{data.correct}}</span> - -->
-        <!--<span style="color:red">{{data.mistake}}</span>-->
-        <!--</span>-->
+      <div fxLayout="row" fxLayoutAlign="space-between center">
+        <span style="float: left">{{getCountForTemplateResult(template.id)}}</span>
         <span style="float: left"><button  *ngIf="cookieService.get('role') === 'admin'" (click)="deleteTemplateById(template.id)" mat-button>Удалить шаблон</button></span>
         <span style="float: right"><button [routerLink]="'/test/' + template.id" mat-button>Сдать тест</button></span>
-
       </div>
     </mat-card>
 
