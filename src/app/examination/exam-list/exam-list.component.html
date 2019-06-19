@@ -37,13 +37,18 @@
     <mat-card class="example-card" style="border:1px solid black;">
       <div>
         <span style="float: left">{{getNameFromCategory(exam.categoryId)}}
+          <br>
+          <span class="custom-text">{{getCompanyNameById(exam.companyId)}}</span>
         </span>
       </div>
       <br>
       <mat-card-content style="text-align: center; padding: 30px 0;">
         <h2 *ngIf="shortTemplateList.length > 0">
-          {{getTemplateNameById(exam.templateId)}}
+          <span class="custom-text">{{getTemplateNameById(exam.templateId)}}</span>
         </h2>
+        <p class="mat-caption custom-text" *ngIf="shortTemplateList.length > 0" style="font-size: 1.2em">
+          {{getTemplateQuestionLengthById(exam.templateId)}} вопросов
+        </p>
         <p class="mat-caption">{{getNameFromSection(exam.sectionId)}}</p>
         <p class="mat-caption">{{getFormattedDate(exam.date)}}</p>
         <p class="mat-caption">{{exam.startTime}}</p>
@@ -51,14 +56,9 @@
       </mat-card-content>
       <mat-card-actions>
         <div fxFlex="100" fxLayoutAlign="space-between center">
-          <button mat-raised-button class="mat-primary"
-                  [routerLink]="'/exam-setting/'+exam.id"
-                  *ngIf="userRole === 'admin' || (exam.examinatorUserId === userId && userRole === 'staff')">
-            Настройка
-          </button>
           <div>
-            <b *ngIf="exam.participantList">Заявки {{getSize(exam.participantList)}}</b>
-            <b *ngIf="!exam.participantList">Заявки 0</b>
+            <b *ngIf="exam.participantList" class="custom-text">Заявки {{getSize(exam.participantList)}}</b>
+            <b *ngIf="!exam.participantList" class="custom-text">Заявки 0</b>
             <button mat-raised-button class="mat-accent"
                     *ngIf="!existInExam(exam)"
                     (click)="participate(exam.id,exam.participantList)">
@@ -72,6 +72,12 @@
               Начать
             </button>
           </div>
+
+          <button mat-raised-button class="mat-primary"
+                  [routerLink]="'/exam-setting/'+exam.id"
+                  *ngIf="userRole === 'admin' || (exam.examinatorUserId === userId && userRole === 'staff')">
+            Настройка
+          </button>
         </div>
       </mat-card-actions>
     </mat-card>

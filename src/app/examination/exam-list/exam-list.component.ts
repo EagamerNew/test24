@@ -23,6 +23,7 @@ export class ExamListComponent implements OnInit {
   sectionList: any[] = [];
 
   templateIdList: string[] = [];
+  companyIdList: string[] = [];
   shortTemplateList: any[] = [];
 
   sectionSelectDisable: boolean = true;
@@ -45,6 +46,14 @@ export class ExamListComponent implements OnInit {
     this.getExamTemplateList();
   }
 
+  getCompanyNameById(id){
+    for (let i = 0; i < this.companyList.length; i++) {
+      if(id === this.companyList[i].id){
+        return this.companyList[i].name;
+      }
+    }
+    return "Компания не найдена"
+  }
 
   getSectionsByCategory(event) {
     const categoryId: string = event.value;
@@ -111,10 +120,20 @@ export class ExamListComponent implements OnInit {
   }
 
   getTemplateNameById(id: string): string {
-    let name = "";
+    let name = "Шаблон не найден";
     for (let i = 0; i < this.templateIdList.length; i++) {
       if (this.shortTemplateList[i].id === id) {
         name = this.shortTemplateList[i].name;
+        break;
+      }
+    }
+    return name;
+  }
+  getTemplateQuestionLengthById(id: string): string {
+    let name = "Шаблон не найден";
+    for (let i = 0; i < this.templateIdList.length; i++) {
+      if (this.shortTemplateList[i].id === id) {
+        name = this.shortTemplateList[i].questionIdList.length;
         break;
       }
     }

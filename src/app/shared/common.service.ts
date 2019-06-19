@@ -219,7 +219,7 @@ export class CommonService {
     }
     temp = temp.substring(0, temp.length - 1);
     console.log('temp to search: ', temp)
-    return this.fireSQL.query(`SELECT DISTINCT __name__ as id, name FROM template WHERE __name__ IN (${temp})`)
+    return this.fireSQL.query(`SELECT DISTINCT __name__ as id, name , questionIdList FROM template WHERE __name__ IN (${temp})`)
   }
 
   getSubsidiaryListByListIdn(idList: string[]) {
@@ -420,7 +420,7 @@ export class CommonService {
 
   getUserList() {
     return this.fireSQL.query(`SELECT __name__ as id, idn,role ,privilegeList,lastname,firstname, birthdate, 
-          gender, city, phoneNumber, status
+          gender, city, phoneNumber, password , status, companyId
         FROM user`);
   }
 

@@ -38,10 +38,10 @@
         Модерация вопросов
       </button>
       <button mat-button *ngIf="this.cookie.get('userId') && checkToAccess('questions-list-section')" [routerLink]="['questions-list-section']"> <!--questionPR, staffRL, authorRL -->
-        Список вопросов
+        Вопросы
       </button>
       <button mat-button *ngIf="checkToAccess('demo-list')" [routerLink]="['demo-list']"><!--staffRL, question-templatePL -->
-        Список шаблон теста
+        Тесты
       </button>
       <!--<button mat-button [routerLink]="['test']">-->
       <!--Сдать тест-->
@@ -50,16 +50,16 @@
         Список городов
       </button>
       <button mat-button *ngIf="this.cookie.get('userId') &&  checkToAccess('company-list')" [routerLink]="['company-list']"><!--staffRL, question-templatePL -->
-        Список компаний
+        Компании
       </button>
       <button mat-button *ngIf="this.cookie.get('userId') &&  checkToAccess('subsidiary')" [routerLink]="['subsidiary']"><!--staffRL, question-templatePL -->
         Список филиалов
       </button>
       <button mat-button *ngIf="this.cookie.get('userId') && checkToAccess('users')" [routerLink]="['users']"><!-- usersPL-->
-        Список пользователей
+        Пользователи
       </button>
       <button mat-button *ngIf="checkToAccess('exam-list')"  [routerLink]="['exam-list']">
-        Список экзаменов
+        Экзамены
       </button>
       <button mat-button *ngIf="this.cookie.get('userId')"  [routerLink]="['ratings']">
         Рейтинг

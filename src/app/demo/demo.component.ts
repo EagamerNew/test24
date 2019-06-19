@@ -88,11 +88,10 @@ export class DemoComponent implements OnInit {
   getQuestionIdListBySectionId(event) {
     this.sectionId = event.value;
     console.log('sectionId: ', event.value);
-    let query = `SELECT __name__ as docId FROM question WHERE section = "` + event.value + `" AND status='accepted'`;
-    if (this.isExamTemplate) {
-      query = `SELECT __name__ as docId FROM question WHERE section = "` + event.value + `" AND status='accepted' 
+    let query = `SELECT __name__ as docId FROM question WHERE section = "` + event.value + `" AND status='accepted' 
       AND isExamQuestion = ` + this.isExamTemplate + ``;
-    }
+
+    console.log(query);
     query += ` AND company='${this.companyId}'`;
     this.fireSQL.query(query).then(result => {
       this.countAvailable = result.length;

@@ -34,6 +34,7 @@ export class QuestionComponent implements OnInit {
   companyList: any[] = [];
   specialityList: any[] = [];
   disableSave = false;
+  hasCompany = true;
 
   constructor(private fb: FormBuilder,
               public snackBar: MatSnackBar,
@@ -62,8 +63,14 @@ export class QuestionComponent implements OnInit {
     this.commonService.getUserByDocId(this.cookieService.get("userId")).then(res=>{
       console.log('user data:', res);
       if(!res[0].companyId){
-        this.disableSave = true;
-        this.openSnackBar('Вы не состоите в компании для создание вопроса!','');
+        if(res[0].role === 'admin'){
+          this.disableSave = false;
+          this.hasCompany = true;
+        }else{
+          this.disableSave = true;
+          this.hasCompany = false;
+          this.openSnackBar('Вы не состоите в компании для создание вопроса!','', 2000);
+        }
       }
       this.questionForm = this.fb.group({
         company: new FormControl(res[0].companyId),
@@ -189,9 +196,9 @@ export class QuestionComponent implements OnInit {
 
   }
 
-  openSnackBar(message: string, action: string) {
+  openSnackBar(message: string, action: string, duration = 2000) {
     this.snackBar.open(message, action, {
-      duration: 2000,
+      duration: duration,
     });
   }
 

@@ -30,7 +30,7 @@ export class StaffComponent implements OnInit {
   getSubsidiaryList() {
     console.log('-------------', this.tempVal.company);
 
-    this.commonService.getSubsidiaryListByListIdn(this.tempVal.company.subsidiary).then(res => {
+    this.commonService.getSubsidiaryListByCompanyId(this.tempVal.company.id).then(res => {
       console.log(res)
       this.subsidiaryList = res.map(result => {
         return {
