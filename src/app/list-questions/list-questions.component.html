@@ -44,7 +44,7 @@
       </mat-select>
     </mat-form-field>
     <mat-form-field class="example-full-width">
-      <mat-select placeholder="Раздел" [(ngModel)]="question.sectionId" [disabled]="sectionSelectDisable">
+      <mat-select placeholder="Раздел" [(ngModel)]="question.section" [disabled]="!question.category">
         <mat-option *ngFor="let section of sections" [value]="section.id">
           {{section.name}}
         </mat-option>
@@ -60,9 +60,9 @@
       <input matInput placeholder="point" [(ngModel)]="question.point">
     </mat-form-field>
     <mat-form-field class="example-full-width">
-      <input *ngIf="question.questionTypeCode !== 'two_answer'" matInput placeholder="questionTypeCode"
+      <input *ngIf="question.answers.length === 4" matInput placeholder="questionTypeCode"
              value="Четыре варианта" disabled>
-      <input *ngIf="question.questionTypeCode === 'two_answer'" matInput placeholder="questionTypeCode"
+      <input *ngIf="question.answers.length === 2" matInput placeholder="questionTypeCode"
              value="Два варианта" disabled>
     </mat-form-field>
 

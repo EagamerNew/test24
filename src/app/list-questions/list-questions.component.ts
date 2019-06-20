@@ -244,12 +244,13 @@ export class ListQuestionsComponent implements OnInit {
   }
 
   getCategories() {
-    this.serviceCategory.getCotegories().subscribe(
+    this.serviceCategory.getCategories().subscribe(
       list => {
         this.categories = [];
         list.map(item => {
           this.categories.push(new QuestionCategory(item.payload.doc.id, item.payload.doc.get('name')))
         })
+        console.log('categories: ', this.categories);
       }
     )
   }

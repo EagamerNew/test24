@@ -10,6 +10,7 @@ export class QuestionList {
   id?: string;
   point?: string;
   questionTypeCode?: string;
+  questionType?: string;
   sectionId?: string;
   section?: string;
   status?: string;
