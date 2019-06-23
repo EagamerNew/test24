@@ -114,4 +114,16 @@ export class UserComponent implements OnInit {
       });
     }
   }
+
+  roleChanged(user: any) {
+    if(user.role === 'user'){
+      for (let i = 0; i < this.userList.length; i++) {
+        if(user.id === this.userList[i].id){
+          this.userList[i].privilegeList = [];
+          this.userList[i].companyId = '';
+          break;
+        }
+      }
+    }
+  }
 }

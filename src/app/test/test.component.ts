@@ -34,6 +34,8 @@ export class TestComponent implements OnInit {
     username:''
   };
 
+  selectedAnswer: number = -1;
+
   constructor(private questionService: QuestionService,
               private route: ActivatedRoute,
               public snackBar: MatSnackBar,
@@ -115,6 +117,7 @@ export class TestComponent implements OnInit {
   }
 
   nextQ() {
+    this.selectedAnswer = -1;
     this.time = 1;
   }
 
@@ -157,11 +160,12 @@ export class TestComponent implements OnInit {
   }
 
   answerSave(docId, i, answer) {
+    this.selectedAnswer = answer;
     let check = true;
     if(!this.template.isExamTemplate){
       if (this.questions.length - 1 !== this.currentStep && this.currentStep < this.questions.length) {
         this.currentStep += 1;
-
+        this.selectedAnswer = -1;
       }
 
     }

@@ -10,18 +10,50 @@
     <b>00:{{time}}</b>
     <br>
   </div>
-  <b>Вопрос {{currentStep+1}} из {{questions.length}}</b>
+
+  <b *ngIf="questions && !finish">Вопрос {{currentStep + 1}} из {{questions.length}}</b>
   <mat-horizontal-stepper *ngIf="questions" labelPosition="bottom"
                           fxLayout="column" fxLayoutAlign="center start"
-                          [selectedIndex]="currentStep" #stepper  linear>
+                          [selectedIndex]="currentStep" #stepper linear>
     <mat-step [editable]="false" *ngFor="let question of questions;let i = index;">
-      <p>{{question.description}}</p>
+      <p style="color: #107ECC;" *ngIf="!finish ">{{question.description}}</p>
       <mat-form-field *ngIf="false"><input matInput></mat-form-field>
-      <mat-radio-group [disabled]="finish" name="{{question.docId}}"
-                       *ngFor="let answer of question.answers;let j = index" required>
-        <mat-radio-button (change)="answerSave(question.docId,i,j)" value="{{j}}">{{answer.answer}}</mat-radio-button>
-        <br>
-      </mat-radio-group>
+      <!--<mat-radio-group [disabled]="finish" name="{{question.docId}}"-->
+      <!--*ngFor="let answer of question.answers;let j = index" required>-->
+      <!--<mat-radio-button (change)="answerSave(question.docId,i,j)" value="{{j}}">{{answer.answer}}</mat-radio-button>-->
+      <!--<br>-->
+      <!--</mat-radio-group>-->
+
+      <div fxLayout="row" fxLayoutAlign="space-around center" *ngIf="question.answers.length === 2">
+        <div *ngFor="let answer of question.answers; let j = index">
+          <button mat-raised-button [disabled]="finish"
+                  (click)="answerSave(question.docId, i, j)" class="mat-warn"
+                  [ngClass]="{activecust: j === 0, selectedcust: selectedAnswer == j}">{{answer.answer}}</button>
+        </div>
+      </div>
+
+      <div fxLayout="column" fxLayoutAlign="space-around start" *ngIf="question.answers.length === 4 && !finish">
+        <div *ngFor="let answer of question.answers; let j = index"
+             style="margin-top: 10px; border: 1px solid gray ; width: 99%; cursor: pointer;"
+             [ngClass]="{selectedcustborder: selectedAnswer == j}"
+             (click)="answerSave(question.docId, i, j)">
+          <div style="margin: 17px auto">
+            &nbsp;&nbsp;{{j + 1}}.{{answer.answer}}
+          </div>
+        </div>
+      </div>
+
+      <div fxLayout="column" fxLayoutAlign="space-around start">
+        <div
+          [ngClass]="{not_full: saveAns || finish}"
+          (click)="save()"
+          style="margin-top: 10px; background: #107ECC; width: 99%; cursor: pointer;color: white; text-align: center;">
+          <div style="margin: 13px auto">
+            Сохранить
+          </div>
+        </div>
+      </div>
+
       <button *ngIf="i !== (questions.length - 1) && template.isExamTemplate" mat-button (click)="nextQ()"
               style="float:right;" mat-raised-button class="mat-primary">Следующий вопрос
       </button>
@@ -29,7 +61,7 @@
         <div *ngIf="finish">
           Вы набрали {{pointTotal}} баллов из {{pointMust}}.
         </div>
-        <button mat-button [disabled]="saveAns || finish" (click)="save()" style="float:right;">Сохранить</button>
+        <!--<button mat-button [disabled]="saveAns || finish" (click)="save()" style="float:right;">Сохранить</button>-->
 
       </div>
     </mat-step>

@@ -64,16 +64,16 @@
   </mat-form-field>
 
   <mat-form-field class="example-full-width">
-    <mat-select placeholder="Роль" [(ngModel)]="user.role">
+    <mat-select placeholder="Роль" [(ngModel)]="user.role" (selectionChange)="roleChanged(user)">
       <mat-option *ngFor="let role of roleList" [value]="role.code">
         {{role.name}}
       </mat-option>
     </mat-select>
   </mat-form-field>
 
-  <mat-form-field class="example-full-width">
+  <mat-form-field class="example-full-width" [matTooltip]="user.role === 'user' ? 'Вы не можете добавить привилегии для user': ''">
     <mat-label>Привилегии</mat-label>
-    <mat-select multiple [(ngModel)]="user.privilegeList">
+    <mat-select multiple [(ngModel)]="user.privilegeList" [disabled]="user.role === 'user'">
       <button (click)="selectAll(user.id)" mat-raised-button class="mat-accent">{{privilegeTitle}}</button>
       <mat-option *ngFor="let privelege of privilegeList" [value]="privelege.code"
                   matTooltip="{{privelege.description}}">{{privelege.name}}</mat-option>

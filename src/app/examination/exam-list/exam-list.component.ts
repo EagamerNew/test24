@@ -30,6 +30,7 @@ export class ExamListComponent implements OnInit {
   filterTemplate: any = new Object();
   categorySectionList = [];
   companyList: any = [];
+  cityList: any = [];
   loading:boolean = true;
 
   constructor(public cookieService: CookieService,
@@ -42,6 +43,7 @@ export class ExamListComponent implements OnInit {
     this.userId = this.cookieService.get('userId');
     this.userRole = this.cookieService.get('role');
     this.getCategoryAndSectionList();
+    this.getCityList();
     this.getCompanyList();
     this.getExamTemplateList();
   }
@@ -229,6 +231,13 @@ export class ExamListComponent implements OnInit {
     });
   }
 
+  private getCityList() {
+    this.commonService.getCityList().then(res => {
+        this.cityList = res;
+      }
+    )
+  }
+
   getNameFromSection(id): string {
     let res;
     if (res = this.sectionList.find(value => value.id === id)) {
@@ -244,6 +253,15 @@ export class ExamListComponent implements OnInit {
       return res.name;
     } else {
       return "Категория не найдена";
+    }
+  }
+
+  getNameFromCity(id): string {
+    let res;
+    if (res = this.cityList.find(value => value.id === id)) {
+      return res.name;
+    } else {
+      return "Город не найден";
     }
   }
 

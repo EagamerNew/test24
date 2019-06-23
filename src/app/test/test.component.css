@@ -34,3 +34,23 @@
  ::ng-deep .mat-horizontal-stepper-header-container{
    display: none !important;
  }
+::ng-deep .mat-horizontal-content-container{
+  width: 100%;
+}
+.activecust{
+  color: white!important;
+  background: #107ECC;
+}
+.selectedcust{
+  background: lightseagreen;
+}
+.selectedcustborder{
+  border: 1px solid #107ECC!important;
+  color: #107ECC;
+  
+}
+.not_full{
+  display: none;
+  background: grey !important;
+  cursor: default!important;
+}

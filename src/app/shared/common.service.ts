@@ -157,7 +157,7 @@ export class CommonService {
   }
 
   getUserByIdn(idn) {
-    return this.fireSQL.query(`SELECT __name__ as id, companyId from user WHERE idn = '${idn}'`);
+    return this.fireSQL.query(`SELECT __name__ as id, companyId from user WHERE idn = '${idn}' AND role = 'staff'`);
   }
 
   archiveExam(examId: string) {

@@ -49,10 +49,11 @@
         <p class="mat-caption custom-text" *ngIf="shortTemplateList.length > 0" style="font-size: 1.2em">
           {{getTemplateQuestionLengthById(exam.templateId)}} вопросов
         </p>
-        <p class="mat-caption">{{getNameFromSection(exam.sectionId)}}</p>
-        <p class="mat-caption">{{getFormattedDate(exam.date)}}</p>
-        <p class="mat-caption">{{exam.startTime}}</p>
-        <p class="mat-caption">{{exam.address}}</p>
+        <p class="mat-caption hell" >{{getNameFromSection(exam.sectionId)}}</p>
+        <p class="mat-caption hell">{{getFormattedDate(exam.date)}}</p>
+        <p class="mat-caption hell">{{exam.startTime}}</p>
+        <p class="mat-caption hell">{{getNameFromCity(exam.cityId)}}</p>
+        <p class="mat-caption hell">{{exam.address}}</p>
       </mat-card-content>
       <mat-card-actions>
         <div fxFlex="100" fxLayoutAlign="space-between center">
