@@ -269,7 +269,7 @@ export class CommonService {
   }
 
   getResultList(cased?: string) {
-    let query = `SELECT __name__ as id, isTest,correct,mistake,score,category,section,title,userId,username 
+    let query = `SELECT __name__ as id, isTest,correct,mistake,scoreMust,score,category,section,title,userId,username 
       FROM result `;
     if (cased && cased === 'ratings') {
       if (this.cookieService.get('role') !== 'admin') {

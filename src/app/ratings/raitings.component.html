@@ -1,21 +1,28 @@
-<div *ngFor="let res of ratingResults" style="padding-bottom:7%;">
+<div *ngFor="let res of ratingResultsNew" style="padding-bottom:7%;">
   <mat-card class="example-card">
     <mat-card-header>
       <mat-card-subtitle>
         <h4>
           <b style="float: left">{{res.username}}</b> &nbsp;&nbsp;
-        <b style="float: right">
-          /&nbsp;&nbsp;Общ. баллл:
-          <span *ngIf="res.count >= 5">{{(res.scoreTotal / res.scoreMust * 100)| number : '1.2-2'}}% ({{(res.scoreTotal / res.count)| number : '1.2-2'}})</span>
-          <span *ngIf="res.count < 5" style="color:red;">*</span>
-        </b>
-      </h4>
+          <b style="float: right">
+            /&nbsp;&nbsp;Общ. баллл:
+            <span
+              *ngIf="res.count >= 5 && res.scoreMust >= res.scoreTotal ">{{(res.scoreTotal / res.scoreMust * 100)| number : '1.2-2'}}
+              % </span>
+            <span
+              *ngIf="res.count >= 5 && res.scoreMust < res.scoreTotal">{{(res.scoreTotal / res.count)| number : '1.2-2'}}</span>
+            <span *ngIf="res.count < 5" style="color:red;">*</span>
+          </b>
+        </h4>
       </mat-card-subtitle>
     </mat-card-header>
     <mat-card-content *ngFor="let res2 of sortingResulsts">
       <p *ngIf="res.userId == res2.userId">{{res2.category}} -
         &nbsp;
-        <span *ngIf="res2.count >= 5">{{res2.score / res2.count| number : '1.2-2'}}</span>
+        <span *ngIf="res2.count >= 5 && res2.scoreMust >=res2.score">{{res2.score / res2.scoreMust| number : '1.2-2'}}
+          %</span>
+        <span
+          *ngIf="res2.count >= 5 && res2.scoreMust <res2.score">{{res2.score / res2.count| number : '1.2-2'}}</span>
         <span *ngIf="res2.count < 5" style="color:red;font-weight: bold;">*</span>
       </p>
 

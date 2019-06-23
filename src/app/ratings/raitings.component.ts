@@ -19,6 +19,7 @@ export class RaitingsComponent implements OnInit {
   result: any;
   sortingResulsts: any[] = [];
   ratingResults: Rating[] = [];
+  ratingResultsNew: Rating[] = [];
   ratingResult: Rating = new Rating();
 
 
@@ -36,6 +37,7 @@ export class RaitingsComponent implements OnInit {
           isTest: result.isTest,
           correct: result.correct,
           mistake: result.mistake,
+          scoreMust: parseInt(result.scoreMust),
           score: parseInt(result.score),
           category: result.category,
           section: result.section,
@@ -44,8 +46,6 @@ export class RaitingsComponent implements OnInit {
           username: result.username
         }
       });
-      console.log('resuls', JSON.stringify(this.results));
-      this.getRatingGroupByUser()
       this.getResultsGroupByUserAndSection()
     })
   }
@@ -55,6 +55,7 @@ export class RaitingsComponent implements OnInit {
       this.result = new Object();
       this.result.count = 0;
       this.result.score = 0;
+      this.result.scoreMust = 0;
       let check = false;
       for (let j = 0; j < this.sortingResulsts.length; j++) {
         if (this.results[i].userId == this.sortingResulsts[j].userId &&
@@ -66,14 +67,13 @@ export class RaitingsComponent implements OnInit {
       if (check) {
         continue;
       }
-      console.log('------------------------------++++++++++++++++++++++++++++++')
       for (let j = i; j < this.results.length; j++) {
         if (this.results[i].userId == this.results[j].userId && this.results[i].category == this.results[j].category) {
-          console.log(JSON.stringify(this.results[j]))
           this.result.score += this.results[j].score;
+          if(this.results[j].scoreMust){
+            this.result.scoreMust += this.results[j].scoreMust;
+          }
           this.result.count += 1;
-          console.log('====-----------=====')
-          console.log(this.sortingResulsts)
         }
       }
       this.result.id = this.results[i].id;
@@ -87,8 +87,35 @@ export class RaitingsComponent implements OnInit {
       this.result.username = this.results[i].username;
       this.sortingResulsts.push(this.result);
     }
-    console.log('==========================================')
     console.log(this.sortingResulsts);
+    this.getRaitingNEW();
+  }
+
+  getRaitingNEW(): void {
+    for (let i = 0; i < this.sortingResulsts.length; i++) {
+      let check = false;
+      for (let e = 0; e < this.ratingResultsNew.length; e++) {
+        if (this.ratingResultsNew[e].userId === this.sortingResulsts[i].userId) {
+          check = true;
+          break;
+        }
+      }
+      if (!check) {
+        for (let j = i; j < this.sortingResulsts.length; j++) {
+          if (this.sortingResulsts[j].count >= 5) {
+            this.ratingResult = new Rating();
+            this.ratingResult.userId = this.sortingResulsts[j].userId;
+            this.ratingResult.count = this.sortingResulsts[j].count;
+            this.ratingResult.username = this.sortingResulsts[j].username;
+            this.ratingResult.scoreTotal = this.sortingResulsts[j].score;
+            this.ratingResult.scoreMust = this.sortingResulsts[j].scoreMust;
+            this.ratingResultsNew.push(this.ratingResult);
+            console.log(this.ratingResultsNew)
+          }
+
+        }
+      }
+    }
   }
 
   getRatingGroupByUser(): void {
@@ -100,9 +127,6 @@ export class RaitingsComponent implements OnInit {
         this.ratingResult.scoreMust = this.results[i].scoreMust;
         this.ratingResult.userId = this.results[i].userId;
         this.ratingResult.username = this.results[i].username;
-        console.log('=-=-=-=-=-=-================================')
-        console.log(this.ratingResult)
-        console.log('=-=-=-=-=-=-================================')
 
       } else {
         continue;
@@ -113,8 +137,6 @@ export class RaitingsComponent implements OnInit {
         if (this.ratingResults[j].userId === this.ratingResult.userId) {
           check = true;
           break;
-        } else {
-
         }
       }
       if (check) {
@@ -132,6 +154,7 @@ export class RaitingsComponent implements OnInit {
       this.ratingResults.push(this.ratingResult);
 
     }
+
     for (let j = 0; j < this.ratingResults.length; j++) {
       for (let k = j; k < this.ratingResults.length; k++) {
         if (this.ratingResults[j].scoreTotal / this.ratingResults[j].count <
@@ -144,13 +167,21 @@ export class RaitingsComponent implements OnInit {
       }
     }
     console.log('-----------------------');
+
     console.log(JSON.stringify(this.ratingResults));
+
+    console.log('-----------------------');
+    this.getResultsGroupByUserAndSection();
+    console.log(JSON.stringify(this.ratingResults));
+
+    console.log('-----------------------');
+
   }
 }
 
 class Rating {
   scoreTotal: number;
-  scoreMust:number;
+  scoreMust: number;
   count: number;
   userId: string;
   username: string;
