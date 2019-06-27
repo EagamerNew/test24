@@ -46,6 +46,20 @@ export class QuestionService {
       .collection('template').doc(id).snapshotChanges();
   }
 
+  getAvailableQuetionIdList(template:any){
+    const sectionId = template.sectionId;
+    const companyId = template.companyId;
+    const isExamTemplate = template.isExamTemplate;
+
+    let query = `SELECT __name__ as docId FROM question WHERE section = '${sectionId}' AND status='accepted' 
+      AND isExamQuestion = ` + isExamTemplate;
+    query += ` AND company='${companyId}'` ;
+
+    console.log('query: ', query);
+
+    return this.fireSQL.query(query);
+  }
+
   getAllQuestions() {
     return this.firebase.collection('question').snapshotChanges()
   }

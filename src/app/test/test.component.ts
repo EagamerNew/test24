@@ -60,23 +60,47 @@ export class TestComponent implements OnInit {
       if (this.templateId) {
         this.questionService.getTemplateById(this.templateId).subscribe(res => {
           this.template = res.payload.data();
-          console.log('template:', this.template.questionIdList);
-          // $(".mat-horizontal-stepper-header-container").addClass('displaying');
-          this.questionService.getQuestionListByIdIn(this.template.questionIdList).then(res => {
-            this.questions = res;
-            if (this.template.isExamTemplate) {
-              this.examId = params['examId'];
-              this.nextQuestion();
+          console.log('template:', this.template);
+          this.questionService.getAvailableQuetionIdList(this.template).then(qst=>{
+            const questionAvailableIdList = qst.map(res => {
+              return res.docId;
+            });
+            console.log('questionAvailableIdList: ', questionAvailableIdList);
+            let idList = [];
+            let randomList = [];
+            for (let i = 0; i < questionAvailableIdList.length; i++) {
+              randomList.push(i);
             }
-            console.log('questionList: ', this.questions);
-            if (this.questions.length === 0 || !this.questions) {
-              this.openSnackBar('Вопросы не найдены!', '');
+
+            randomList = this.shuffle(randomList);
+            for (let i = 0; i < this.template.questionIdList.length; i++) {
+              idList.push(questionAvailableIdList[randomList[i]])
             }
+            console.log('idList: ', idList);
+            this.questionService.getQuestionListByIdIn(idList).then(res => {
+              this.questions = res;
+              if (this.template.isExamTemplate) {
+                this.examId = params['examId'];
+                this.nextQuestion();
+              }
+              console.log('questionList: ', this.questions);
+              if (this.questions.length === 0 || !this.questions) {
+                this.openSnackBar('Вопросы не найдены!', '');
+              }
+            });
           });
         });
       }
     });
 
+  }
+
+  shuffle(arr) {
+    return arr.map(function (val, i) {
+      return [Math.random(), i];
+    }).sort().map(function (val) {
+      return val[1];
+    });
   }
 
   //.mat-stepper-label-position-bottom .mat-horizontal-stepper-header-container
