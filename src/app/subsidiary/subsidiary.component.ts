@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {CommonService} from "../shared/common.service";
 import {City} from "../city/city.component";
 import {ActivatedRoute} from "@angular/router";
+import {MatSnackBar} from '@angular/material';
+import {CookieService} from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-subsidiary',
@@ -16,11 +18,13 @@ export class SubsidiaryComponent implements OnInit {
   tempCompanyId: string;
   companyList: any[];
   constructor(private _service: CommonService,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private cookieService: CookieService) {
 
   }
 
   ngOnInit() {
+    this.cookieService.set('title', 'Филиалы');
     if(this.route.snapshot.params['id']){
       this.subsidiary.companyId = this.route.snapshot.params['id'];
     }

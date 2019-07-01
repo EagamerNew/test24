@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {MatSnackBar} from "@angular/material";
-import {CommonService} from "../shared/common.service";
-import {CookieService} from "ngx-cookie-service";
-import {CITIES, GENDER, USER_PRIVILEGES, USER_ROLE_LIST, USER_STATUS} from "../shared/default-constant";
+import {MatSnackBar} from '@angular/material';
+import {CommonService} from '../shared/common.service';
+import {CookieService} from 'ngx-cookie-service';
+import {CITIES, GENDER, USER_PRIVILEGES, USER_ROLE_LIST, USER_STATUS} from '../shared/default-constant';
 
 @Component({
   selector: 'app-user',
@@ -28,6 +28,7 @@ export class UserComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.cookie.set('title', 'Пользователи');
     this.getUserList();
   }
 
@@ -59,7 +60,7 @@ export class UserComponent implements OnInit {
     this.commonService.getUserList().then(res => {
       this.userList = res;
       this.allUserList = res;
-    })
+    });
   }
 
   updateUserByUserDocId(user: any): void {
@@ -67,18 +68,18 @@ export class UserComponent implements OnInit {
     let trust = false;
 
     for (let i = 0; i < user.privilegeList.length; i++) {
-      if(user.privilegeList[i] === 'examination'){
+      if (user.privilegeList[i] === 'examination') {
         trust = true;
       }
-      if(user.privilegeList[i] === 'question'){
+      if (user.privilegeList[i] === 'question') {
         trust = false;
       }
     }
-    if(trust){
+    if (trust) {
       user.privilegeList.push('question');
     }
     // to remove duplicated elements
-    user.privilegeList = user.privilegeList.filter((el,i,a) => i === a.indexOf(el));
+    user.privilegeList = user.privilegeList.filter((el, i, a) => i === a.indexOf(el));
     this.commonService.updateUserByDocId(user.id, user).then(res => {
       this.openSnackBar('Пользователь успешно обновлен', '');
       this.getUserList();
@@ -116,9 +117,9 @@ export class UserComponent implements OnInit {
   }
 
   roleChanged(user: any) {
-    if(user.role === 'user'){
+    if (user.role === 'user') {
       for (let i = 0; i < this.userList.length; i++) {
-        if(user.id === this.userList[i].id){
+        if (user.id === this.userList[i].id) {
           this.userList[i].privilegeList = [];
           this.userList[i].companyId = '';
           break;

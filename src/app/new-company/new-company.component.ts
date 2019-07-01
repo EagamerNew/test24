@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonService} from '../shared/common.service';
 import {MatSnackBar} from '@angular/material';
+import {CookieService} from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-new-company',
@@ -11,10 +12,12 @@ export class NewCompanyComponent implements OnInit {
   company: Company = new Company();
 
   constructor(private _service: CommonService,
-              public snackBar: MatSnackBar) {
+              public snackBar: MatSnackBar,
+              private cookieService: CookieService) {
   }
 
   ngOnInit(): void {
+    this.cookieService.set('title', 'Компании');
   }
 
   setCompany(): void {

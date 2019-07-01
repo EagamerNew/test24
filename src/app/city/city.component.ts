@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {CommonService} from '../shared/common.service';
 import {MatSnackBar} from '@angular/material';
+import {CookieService} from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-city',
@@ -11,9 +12,11 @@ export class CityComponent implements OnInit {
   city: City = new City();
   cities: City[] = [];
   constructor(private _service: CommonService,
-              public snackBar: MatSnackBar) { }
+              public snackBar: MatSnackBar,
+              private cookieService: CookieService) { }
 
   ngOnInit() {
+    this.cookieService.set('title', 'Города');
     this.getCityList();
     this.city.name = '';
     this.city.code = '';

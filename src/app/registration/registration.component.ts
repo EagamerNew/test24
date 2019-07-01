@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
-import {MatSnackBar} from "@angular/material";
-import {User} from "../shared/model/user";
-import {CommonService} from "../shared/common.service";
-import {CITIES, GENDER, USER_PRIVILEGES_SHORT, USER_STATUS} from "../shared/default-constant";
+import {ActivatedRoute} from '@angular/router';
+import {MatSnackBar} from '@angular/material';
+import {User} from '../shared/model/user';
+import {CommonService} from '../shared/common.service';
+import {CITIES, GENDER, USER_PRIVILEGES_SHORT, USER_STATUS} from '../shared/default-constant';
+import {CookieService} from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-registration',
@@ -14,16 +15,16 @@ export class RegistrationComponent implements OnInit {
 
   userId: string;
   user: any = {
-    idn: "",
-    lastname: "",
-    firstname: "",
-    gender: "",
+    idn: '',
+    lastname: '',
+    firstname: '',
+    gender: '',
     birthdate: new Date('1990-01-01T00:00:00'),
-    phoneNumber: "",
-    city: "",
-    userId: "",
-    status: "created",
-    role: "user",
+    phoneNumber: '',
+    city: '',
+    userId: '',
+    status: 'created',
+    role: 'user',
     privilegeList: []
   };
   gender = GENDER;
@@ -32,11 +33,13 @@ export class RegistrationComponent implements OnInit {
 
   constructor(private router: ActivatedRoute,
               public snackBar: MatSnackBar,
-              private commonService: CommonService) {
+              private commonService: CommonService,
+              private cookieService: CookieService) {
   }
 
   ngOnInit() {
-    
+
+    this.cookieService.set('title', 'Регистрация');
   }
 
   save() {
@@ -48,23 +51,24 @@ export class RegistrationComponent implements OnInit {
         this.user.privilegeList.push(USER_PRIVILEGES_SHORT.EXAM_LIST.toString());
         this.commonService.saveUser(this.user).then(res => {
           this.user = {
-            idn: "",
-            lastname: "",
-            firstname: "",
-            gender: "",
+            idn: '',
+            lastname: '',
+            firstname: '',
+            gender: '',
             birthdate: new Date(),
-            phoneNumber: "",
-            city: "",
-            userId: "",
-            status: "created",
-            role: "user",
+            phoneNumber: '',
+            city: '',
+            userId: '',
+            status: 'created',
+            role: 'user',
             privilegeList: []
           };
           this.openSnackBar('Пользователь создан', '');
         });
-      } else
+      } else {
         this.openSnackBar('Пользователь с таким номером уже зарегестрирован', '');
-    })
+      }
+    });
   }
 
   openSnackBar(message: string, action: string) {

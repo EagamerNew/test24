@@ -31,6 +31,7 @@ export class QuestionModerationComponent implements OnInit {
   * */
 
   ngOnInit(): void {
+    this.cookieService.set('title', 'Модерация вопросов');
     this.getAllQuestions();
   }
 

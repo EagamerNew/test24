@@ -36,6 +36,7 @@ export class PhoneLoginComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.cookieService.set('title', 'Вход');
     this.windowRef = this.win.windowRef;
     this.windowRef.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
       'size': 'invisible',

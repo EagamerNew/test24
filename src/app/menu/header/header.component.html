@@ -3,5 +3,6 @@
     <mat-icon>menu</mat-icon>
   </button>
   <span fxFlex='20'></span>
-  <h3>Меню</h3>
+  <h3 *ngIf="cookieService.get('title') != null">{{cookieService.get('title')}}</h3>
+  <h3 *ngIf="cookieService.get('title') == null">Меню</h3>
 </div>

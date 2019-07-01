@@ -23,6 +23,7 @@ export class StaffComponent implements OnInit {
     userIdn: ""
   }
   ngOnInit() {
+    this.cookieService.set('title', 'Сотрудники');
     this.getCompanyList();
   }
 

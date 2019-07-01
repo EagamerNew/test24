@@ -54,6 +54,7 @@ export class TestComponent implements OnInit {
   userId: string = "";
 
   ngOnInit() {
+    this.cookieService.set('title', 'Тест');
     this.userId = this.cookieService.get('userId');
     this.route.params.subscribe(params => {
       this.templateId = params['id'];
