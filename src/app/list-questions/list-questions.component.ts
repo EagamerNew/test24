@@ -158,6 +158,10 @@ export class ListQuestionsComponent implements OnInit {
     )
   }
 
+  trackByFn(index, item) {
+    return index; // or item.id
+  }
+
   getQuestions() {
     this.page = 1;
     this.loading = true;

@@ -95,6 +95,10 @@ export class TestComponent implements OnInit {
 
   }
 
+  trackByFn(index, item) {
+    return index; // or item.id
+  }
+
   shuffle(arr) {
     return arr.map(function (val, i) {
       return [Math.random(), i];

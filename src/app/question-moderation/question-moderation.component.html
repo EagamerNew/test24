@@ -22,7 +22,7 @@
   <mat-spinner diameter="40"></mat-spinner>
 </div>
 
-<div *ngFor="let question of questionList" style="padding-bottom:7%;">
+<div *ngFor="let question of questionList; trackBy: trackByFn" style="padding-bottom:7%;">
   <mat-card class="example-card">
     <mat-card-header>
       <mat-card-subtitle>Id: {{question.docId}}</mat-card-subtitle>

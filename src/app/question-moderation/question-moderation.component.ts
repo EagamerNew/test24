@@ -74,6 +74,10 @@ export class QuestionModerationComponent implements OnInit {
     this.save(question);
   }
 
+  trackByFn(index, item) {
+    return index; // or item.id
+  }
+
   save(question): void {
     this.service.updateQuestion(question).then(
       res => {

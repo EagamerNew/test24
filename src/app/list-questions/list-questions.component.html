@@ -8,7 +8,7 @@
   <div *ngIf="loading" fxLayoutAlign="center center" fxLayout="row">
     <mat-spinner diameter="40"></mat-spinner>
   </div>
-  <mat-expansion-panel *ngFor="let question of questions"
+  <mat-expansion-panel *ngFor="let question of questions; trackBy: trackByFn"
                        (opened)="docId && question.docId === docId">
     <mat-expansion-panel-header>
       <mat-panel-title>
