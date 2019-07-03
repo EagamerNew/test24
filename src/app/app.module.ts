@@ -49,6 +49,8 @@ import {ExamSettingComponent} from './examination/exam-setting/exam-setting.comp
 import {SpecialityComponent} from './speciality/speciality.component';
 import {StaffComponent} from './staff/staff.component';
 import {CreatePasswordComponent} from './create-password/create-password.component';
+import {ResultComponent} from "./result/result.component";
+import {CacheService} from "./shared/cache.service";
 
 @NgModule({
   declarations: [
@@ -80,7 +82,8 @@ import {CreatePasswordComponent} from './create-password/create-password.compone
     ExamSettingComponent,
     SpecialityComponent,
     StaffComponent,
-    CreatePasswordComponent
+    CreatePasswordComponent,
+    ResultComponent
   ],
   imports: [
     BrowserModule,
@@ -97,6 +100,7 @@ import {CreatePasswordComponent} from './create-password/create-password.compone
   providers: [QuestionService,
     CookieService,
     SectionService,
+    CacheService,
     CategoryService, {provide: FirestoreSettingsToken, useValue: {}}, CommonService
   ],
   bootstrap: [AppComponent]

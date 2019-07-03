@@ -6,6 +6,8 @@ import {MatSnackBar, MatStepper} from "@angular/material";
 import {CommonService} from "../shared/common.service";
 import {CookieService} from "ngx-cookie-service";
 import {RESULT_CODE_LIST} from "../shared/default-constant";
+import {CacheService} from "../shared/cache.service";
+
 @Component({
   selector: 'app-test',
   templateUrl: './test.component.html',
@@ -31,7 +33,8 @@ export class TestComponent implements OnInit {
     userId: "",
     templateId: "",
     status: '',
-    username:''
+    username: '',
+    companyName: ''
   };
 
   selectedAnswer: number = -1;
@@ -40,6 +43,7 @@ export class TestComponent implements OnInit {
               private route: ActivatedRoute,
               public snackBar: MatSnackBar,
               private commonService: CommonService,
+              private cacheService: CacheService,
               private cookieService: CookieService) {
   }
 
@@ -62,7 +66,7 @@ export class TestComponent implements OnInit {
         this.questionService.getTemplateById(this.templateId).subscribe(res => {
           this.template = res.payload.data();
           console.log('template:', this.template);
-          this.questionService.getAvailableQuetionIdList(this.template).then(qst=>{
+          this.questionService.getAvailableQuetionIdList(this.template).then(qst => {
             const questionAvailableIdList = qst.map(res => {
               return res.docId;
             });
@@ -191,7 +195,7 @@ export class TestComponent implements OnInit {
   answerSave(docId, i, answer) {
     this.selectedAnswer = answer;
     let check = true;
-    if(!this.template.isExamTemplate){
+    if (!this.template.isExamTemplate) {
       if (this.questions.length - 1 !== this.currentStep && this.currentStep < this.questions.length) {
         this.currentStep += 1;
         this.selectedAnswer = -1;
@@ -240,7 +244,7 @@ export class TestComponent implements OnInit {
         }
       }
       this.dataForResult.score = this.pointTotal + '';
-      this.dataForResult.scoreMust = this.pointMust+ '';
+      this.dataForResult.scoreMust = this.pointMust + '';
       this.dataForResult.mistake = misCount + '';
       this.dataForResult.correct = correctCount + '';
       this.dataForResult.isTest = !this.template.isExamTemplate;
@@ -248,29 +252,44 @@ export class TestComponent implements OnInit {
       this.dataForResult.userId = 'anonymous';
       this.dataForResult.templateId = this.templateId;
       this.dataForResult.status = RESULT_CODE_LIST.DONE.toString().toLowerCase();
-
-      this.questionService.getCategoryNameById(this.template.categoryId).subscribe(res => {
-        let result: any = res.payload.data();
-        this.dataForResult.category = 'Категория не найдена';
-        if (result) {
-          this.dataForResult.category = result.name + '';
+      this.commonService.getCompanyById(this.template.companyId).then(com =>{
+        this.dataForResult.companyName = 'Компания не найдена';
+        let coms: any = com[0];
+        if(coms){
+          this.dataForResult.companyName = coms.name;
         }
-        this.questionService.getSectionNameById(this.template.sectionId).subscribe(res => {
+        this.questionService.getCategoryNameById(this.template.categoryId).subscribe(res => {
           let result: any = res.payload.data();
-          this.dataForResult.section = 'Раздел не найден';
+          this.dataForResult.category = 'Категория не найдена';
           if (result) {
-            this.dataForResult.section = result.name + '';
+            this.dataForResult.category = result.name + '';
           }
-          console.log('data for result ', this.dataForResult);
+          this.questionService.getSectionNameById(this.template.sectionId).subscribe(res => {
+            let result: any = res.payload.data();
+            this.dataForResult.section = 'Раздел не найден';
+            if (result) {
+              this.dataForResult.section = result.name + '';
+            }
+            console.log('data for result ', this.dataForResult);
+            console.log('trust: ', this.cookieService.get("userId"));
 
-          if (this.cookieService.get("userId")) {
-            this.dataForResult.userId = this.cookieService.get("userId");
-            this.commonService.getUserByDocId(this.dataForResult.userId).then(res=>{
-              this.dataForResult.username = res[0].lastname + ' ' + res[0].firstname;
-              this.saveResult(this.dataForResult);
-            });
-          }
-          this.finish = true;
+            if (this.cookieService.get("userId")) {
+              this.dataForResult.userId = this.cookieService.get("userId");
+              this.commonService.getUserByDocId(this.dataForResult.userId).then(res => {
+                this.dataForResult.username = res[0].lastname + ' ' + res[0].firstname;
+                this.saveResult(this.dataForResult);
+              });
+            } else {
+              let results: any = this.cacheService.get('results');
+              if(!results){
+                results = [];
+              }
+              results.push(this.dataForResult);
+              this.cacheService.set('results', results);
+              console.log('results: ', results);
+            }
+            this.finish = true;
+          });
         });
       });
     }
@@ -279,8 +298,8 @@ export class TestComponent implements OnInit {
   saveResult(data): void {
     this.commonService.saveResult(data).then(res => {
       console.log('saveResult is success: ', res.id);
-      if(this.examId){
-        this.commonService.saveExamParticipant(res.id,this.userId,this.examId);
+      if (this.examId) {
+        this.commonService.saveExamParticipant(res.id, this.userId, this.examId);
       }
     })
   }

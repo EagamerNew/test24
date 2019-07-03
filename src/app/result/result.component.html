@@ -1,0 +1,45 @@
+<div *ngIf="actionCode !== 'notfound'">
+  <div *ngFor="let data of results" >
+    <mat-card class="example-card"
+              style="margin-top: 15px"
+              [style.color]="data.isTest? '#107ECC': 'green'"
+              [style.border]="data.isTest ? '1px solid #107ECC' : '1px solid green'">
+      <div>
+      <span style="float: left">
+        {{data.title}}
+        <br>
+        <span class="cust-grey" *ngIf="data.companyName">{{data.companyName}}</span>
+        <span class="cust-grey" *ngIf="!data.companyName">Компания не доступна</span>
+      </span>
+        <!--<span style="float: left"></span>-->
+        <span style="float: right" class="cust-grey" *ngIf="data.isTest">Тест</span>
+        <span style="float: right" *ngIf="!data.isTest">Экзамен</span>
+      </div>
+      <br>
+      <mat-card-content style="text-align: center; padding: 30px 0 0;">
+        <h2>
+          <span *ngIf="actionCode === 'db'">{{data.username}}</span>
+          <span *ngIf="actionCode === 'cache'">Ваш результат</span>
+          <br>
+          {{calculatePercent(data.correct, data.mistake)}}%
+        </h2>
+        <p class="mat-caption cust-grey" >{{data.category}}</p>
+        <p class="mat-caption cust-grey">{{data.section}}</p>
+      </mat-card-content>
+      <div style="margin-bottom:36px;">
+    <span style="float: left">
+      <span>{{data.correct}}</span> -
+      <span style="color:red">{{data.mistake}}</span>
+    </span>
+        <span style="float: right">{{data.score}} балл</span>
+      </div>
+    </mat-card>
+  </div>
+
+</div>
+
+
+<div *ngIf="actionCode === 'notfound'">
+  <br>
+  <i>Данные не найдены</i>
+</div>

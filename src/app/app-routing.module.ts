@@ -26,6 +26,7 @@ import {ExamSettingComponent} from "./examination/exam-setting/exam-setting.comp
 import {SpecialityComponent} from "./speciality/speciality.component";
 import {StaffComponent} from "./staff/staff.component";
 import {CreatePasswordComponent} from "./create-password/create-password.component";
+import {ResultComponent} from "./result/result.component";
 
 const routes: Routes = [
   {path: '', component: MenuComponent},
@@ -56,7 +57,8 @@ const routes: Routes = [
   {path: 'exam-setting/:id', component: ExamSettingComponent},
   {path: 'speciality', component: SpecialityComponent},
   {path: 'staff', component: StaffComponent},
-  {path: 'create-password', component: CreatePasswordComponent}
+  {path: 'create-password', component: CreatePasswordComponent},
+  {path: 'result', component: ResultComponent}
 ];
 
 @NgModule({

@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {CommonService} from "../shared/common.service";
 import * as jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
+import {CookieService} from "ngx-cookie-service";
 
 @Component({
   selector: 'app-test-result',
@@ -15,7 +16,6 @@ export class TestResultComponent implements OnInit {
   companyName: string = 'Компания не найдена';
 
   percent: string = '';
-
   constructor(private commonService: CommonService) {
   }
 
@@ -32,10 +32,11 @@ export class TestResultComponent implements OnInit {
         title: '',
         userDocId: '',
         templateId: '',
-        username: ''
+        username: '',
+        companyName: ''
       }
     }
-    if(this.companyId){
+    if(this.companyId && !this.data.companyName){
       this.commonService.getCompanyById(this.companyId).then(res=> {
           if (res) {
             this.companyName = res[0].name;
@@ -45,7 +46,7 @@ export class TestResultComponent implements OnInit {
     }
     // For find percent of correct answer
     const all: number = parseInt(this.data.correct) + parseInt(this.data.mistake);
-    this.percent = ((this.data.correct*100)/(all)).toFixed();
+    this.percent =  ((this.data.correct * 100) / (all)).toFixed();
   }
   public captureScreen()
   {
