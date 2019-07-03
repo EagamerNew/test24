@@ -22,6 +22,7 @@ export class CreatePasswordComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.cookieService.set('title', 'Создать пароль');
     this.docUserId = this.cookieService.get('userId');
   }
 

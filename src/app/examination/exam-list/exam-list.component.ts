@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {CommonService} from "../../shared/common.service";
-import {CookieService} from "ngx-cookie-service";
-import {DatePipe} from "@angular/common";
-import {Template} from "../../shared/model/template";
-import {Router} from "@angular/router";
-import {MatSnackBar} from "@angular/material";
+import {CommonService} from '../../shared/common.service';
+import {CookieService} from 'ngx-cookie-service';
+import {DatePipe} from '@angular/common';
+import {Template} from '../../shared/model/template';
+import {Router} from '@angular/router';
+import {MatSnackBar} from '@angular/material';
 
 @Component({
   selector: 'app-exam-list',
@@ -31,7 +31,8 @@ export class ExamListComponent implements OnInit {
   categorySectionList = [];
   companyList: any = [];
   cityList: any = [];
-  loading:boolean = true;
+  loading: boolean = true;
+  main = true;
 
   constructor(public cookieService: CookieService,
               private router: Router,
@@ -40,6 +41,7 @@ export class ExamListComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.cookieService.set('title', 'Экзамены');
     this.userId = this.cookieService.get('userId');
     this.userRole = this.cookieService.get('role');
     this.getCategoryAndSectionList();
@@ -48,13 +50,13 @@ export class ExamListComponent implements OnInit {
     this.getExamTemplateList();
   }
 
-  getCompanyNameById(id){
+  getCompanyNameById(id) {
     for (let i = 0; i < this.companyList.length; i++) {
-      if(id === this.companyList[i].id){
+      if (id === this.companyList[i].id) {
         return this.companyList[i].name;
       }
     }
-    return "Компания не найдена"
+    return 'Компания не найдена';
   }
 
   getSectionsByCategory(event) {
@@ -69,23 +71,26 @@ export class ExamListComponent implements OnInit {
   }
 
   participate(examId: string, participantList: any) {
-    if(!this.userId){
-      this.matSnackBar.open("Вы не вошли", '',{
-        duration: 1000
-      })
-      this.router.navigateByUrl('login-phone');
-    }
-    if (!participantList) {
-      participantList = {};
+    this.main = false;
+    if (this.userId) {
+      // this.matSnackBar.open('Вы не вошли', '', {
+      //   duration: 1000
+      // });
+      // this.router.navigateByUrl('login-phone');
 
+      if (!participantList) {
+        participantList = {};
+
+      }
+      participantList[this.userId] = {
+        status: 'pending',
+        resultId: ''
+      };
+      this.commonService.updateExamParticipantList(examId, participantList).then(res => {
+        // this.getExamTemplateList();
+        console.log('succes');
+      });
     }
-    participantList[this.userId] = {
-      status: 'pending',
-      resultId: ''
-    };
-    this.commonService.updateExamParticipantList(examId, participantList).then(res => {
-      this.getExamTemplateList();
-    });
   }
 
   existInExam(exam): boolean {
@@ -105,8 +110,8 @@ export class ExamListComponent implements OnInit {
       var datePipe = new DatePipe('en-US');
       return datePipe.transform(new Date(date), 'dd/MM/yyyy');
     } catch (e) {
-      console.log("error with formatting date")
-      return "";
+      console.log('error with formatting date');
+      return '';
     }
   }
 
@@ -122,7 +127,7 @@ export class ExamListComponent implements OnInit {
   }
 
   getTemplateNameById(id: string): string {
-    let name = "Шаблон не найден";
+    let name = 'Шаблон не найден';
     for (let i = 0; i < this.templateIdList.length; i++) {
       if (this.shortTemplateList[i].id === id) {
         name = this.shortTemplateList[i].name;
@@ -131,8 +136,9 @@ export class ExamListComponent implements OnInit {
     }
     return name;
   }
+
   getTemplateQuestionLengthById(id: string): string {
-    let name = "Шаблон не найден";
+    let name = 'Шаблон не найден';
     for (let i = 0; i < this.templateIdList.length; i++) {
       if (this.shortTemplateList[i].id === id) {
         name = this.shortTemplateList[i].questionIdList.length;
@@ -147,18 +153,18 @@ export class ExamListComponent implements OnInit {
       try {
         return exam.participantList[this.userId].status;
       } catch (e) {
-        console.log("IHAVE AN ERROR")
-        return "";
+        console.log('IHAVE AN ERROR');
+        return '';
       }
     }
   }
 
-  getFilteredExamTemplateList(){
+  getFilteredExamTemplateList() {
     this.loading = true;
-    this.commonService.filterExamination(this.filterTemplate).then(res =>{
+    this.commonService.filterExamination(this.filterTemplate).then(res => {
       this.loading = false;
       this.examList = res;
-      console.log(this.examList)
+      console.log(this.examList);
       this.templateIdList = this.examList.map((res, index) => {
         let now = new Date();
         if (now > new Date(res.date)) {
@@ -174,9 +180,10 @@ export class ExamListComponent implements OnInit {
       if (this.examList && this.examList.length > 0) {
         this.getShortTemplateList();
       }
-    })
+    });
   }
-  getSize(obj){
+
+  getSize(obj) {
     return Object.keys(obj).length;
   }
 
@@ -207,19 +214,19 @@ export class ExamListComponent implements OnInit {
       if (this.examList && this.examList.length > 0) {
         this.getShortTemplateList();
       }
-    })
+    });
   }
 
   getCompanyList() {
     this.commonService.getActiveCompanyList().then(res => {
       this.companyList = res;
-    })
+    });
   }
 
   archiveExam(examId: string, index) {
     this.commonService.archiveExam(examId).then(res => {
       this.examList.splice(index, 1);
-    })
+    });
   }
 
   getCategoryAndSectionList() {
@@ -235,7 +242,7 @@ export class ExamListComponent implements OnInit {
     this.commonService.getCityList().then(res => {
         this.cityList = res;
       }
-    )
+    );
   }
 
   getNameFromSection(id): string {
@@ -243,7 +250,7 @@ export class ExamListComponent implements OnInit {
     if (res = this.sectionList.find(value => value.id === id)) {
       return res.name;
     } else {
-      return "Раздел не найден";
+      return 'Раздел не найден';
     }
   }
 
@@ -252,7 +259,7 @@ export class ExamListComponent implements OnInit {
     if (res = this.categoryList.find(value => value.id === id)) {
       return res.name;
     } else {
-      return "Категория не найдена";
+      return 'Категория не найдена';
     }
   }
 
@@ -261,7 +268,7 @@ export class ExamListComponent implements OnInit {
     if (res = this.cityList.find(value => value.id === id)) {
       return res.name;
     } else {
-      return "Город не найден";
+      return 'Город не найден';
     }
   }
 

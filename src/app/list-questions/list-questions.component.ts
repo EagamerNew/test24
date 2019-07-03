@@ -46,6 +46,7 @@ export class ListQuestionsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.cookieService.set('title', 'Вопросы');
     this.loading = true;
     this.getCompanyList();
     this.getSpecialityList();

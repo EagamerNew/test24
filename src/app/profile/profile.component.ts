@@ -27,6 +27,7 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.cookieService.set('title', 'Мой профиль');
     if (this.docUserId = this.cookieService.get('userId')) {
       this.getUserByDocId();
       this.getExamHistory();

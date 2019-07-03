@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {CommonService} from '../shared/common.service';
 import {MatSnackBar} from '@angular/material';
+import {CookieService} from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-position',
@@ -11,9 +12,11 @@ export class PositionComponent implements OnInit {
   position: Position = new Position();
   positions: Position[] = [];
   constructor(private _service: CommonService,
-              public snackBar: MatSnackBar) { }
+              public snackBar: MatSnackBar,
+              private cookieService: CookieService) { }
 
   ngOnInit() {
+    this.cookieService.set('title', 'Должность');
     this.getpositionList();
     this.position.name = '';
     this.position.code = '';

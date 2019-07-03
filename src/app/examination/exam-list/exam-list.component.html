@@ -1,89 +1,99 @@
-
-<div>
-  <mat-form-field class="example-full-width">
-    <mat-select placeholder="Компания" [(ngModel)]="filterTemplate.companyId">
-      <mat-option *ngFor="let company of companyList" [value]="company.id">
-        {{company.name}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <mat-form-field class="example-full-width">
-    <mat-select placeholder="Категория" [(ngModel)]="filterTemplate.categoryId" required
-                (selectionChange)="getSectionsByCategory($event)">
-      <mat-option *ngFor="let category of categoryList" [value]="category.id">
-        {{category.name}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <mat-form-field class="example-full-width">
-    <mat-select placeholder="Раздел" [(ngModel)]="filterTemplate.sectionId" [disabled]="sectionSelectDisable">
-      <mat-option *ngFor="let section of categorySectionList" [value]="section.id">
-        {{section.name}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <div fxLayoutAlign="center center" fxLayout="row">
-    <button mat-raised-button class="mat-accent" (click)="getFilteredExamTemplateList()">Показать результаты</button>
-    <button mat-icon-button (click)="handleRestoreFilter()" matTooltip="Сбросить"><mat-icon>settings_backup_restore</mat-icon></button>
+<div *ngIf="main">
+  <div>
+    <mat-form-field class="example-full-width">
+      <mat-select placeholder="Компания" [(ngModel)]="filterTemplate.companyId">
+        <mat-option *ngFor="let company of companyList" [value]="company.id">
+          {{company.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <mat-select placeholder="Категория" [(ngModel)]="filterTemplate.categoryId" required
+                  (selectionChange)="getSectionsByCategory($event)">
+        <mat-option *ngFor="let category of categoryList" [value]="category.id">
+          {{category.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <mat-select placeholder="Раздел" [(ngModel)]="filterTemplate.sectionId" [disabled]="sectionSelectDisable">
+        <mat-option *ngFor="let section of categorySectionList" [value]="section.id">
+          {{section.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div fxLayoutAlign="center center" fxLayout="row">
+      <button mat-raised-button class="mat-accent" (click)="getFilteredExamTemplateList()">Показать результаты</button>
+      <button mat-icon-button (click)="handleRestoreFilter()" matTooltip="Сбросить">
+        <mat-icon>settings_backup_restore</mat-icon>
+      </button>
+    </div>
   </div>
-</div>
 
-<div *ngIf="loading" fxLayoutAlign="center center" fxLayout="row">
-  <mat-spinner diameter="40"></mat-spinner>
-</div>
+  <div *ngIf="loading" fxLayoutAlign="center center" fxLayout="row">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
 
-<div *ngIf="examList && examList.length > 0">
-  <div *ngFor="let exam of examList; trackBy: trackByFn" style="padding-top: 10px;">
-    <mat-card class="example-card" style="border:1px solid black;">
-      <div>
+  <div *ngIf="examList && examList.length > 0">
+    <div *ngFor="let exam of examList; trackBy: trackByFn" style="padding-top: 10px;">
+      <mat-card class="example-card" style="border:1px solid black;">
+        <div>
         <span style="float: left">{{getNameFromCategory(exam.categoryId)}}
           <br>
           <span class="custom-text">{{getCompanyNameById(exam.companyId)}}</span>
         </span>
-      </div>
-      <br>
-      <mat-card-content style="text-align: center; padding: 30px 0;">
-        <h2 *ngIf="shortTemplateList.length > 0">
-          <span class="custom-text">{{getTemplateNameById(exam.templateId)}}</span>
-        </h2>
-        <p class="mat-caption custom-text" *ngIf="shortTemplateList.length > 0" style="font-size: 1.2em">
-          {{getTemplateQuestionLengthById(exam.templateId)}} вопросов
-        </p>
-        <p class="mat-caption hell" >{{getNameFromSection(exam.sectionId)}}</p>
-        <p class="mat-caption hell">{{getFormattedDate(exam.date)}}</p>
-        <p class="mat-caption hell">{{exam.startTime}}</p>
-        <p class="mat-caption hell">{{getNameFromCity(exam.cityId)}}</p>
-        <p class="mat-caption hell">{{exam.address}}</p>
-      </mat-card-content>
-      <mat-card-actions>
-        <div fxFlex="100" fxLayoutAlign="space-between center">
-          <div>
-            <b *ngIf="exam.participantList" class="custom-text">Заявки {{getSize(exam.participantList)}}</b>
-            <b *ngIf="!exam.participantList" class="custom-text">Заявки 0</b>
-            <button mat-raised-button class="mat-accent"
-                    *ngIf="!existInExam(exam)"
-                    (click)="participate(exam.id,exam.participantList)">
-              Записаться
-            </button>
-            <span *ngIf="existInExam(exam)
+        </div>
+        <br>
+        <mat-card-content style="text-align: center; padding: 30px 0;">
+          <h2 *ngIf="shortTemplateList.length > 0">
+            <span class="custom-text">{{getTemplateNameById(exam.templateId)}}</span>
+          </h2>
+          <p class="mat-caption custom-text" *ngIf="shortTemplateList.length > 0" style="font-size: 1.2em">
+            {{getTemplateQuestionLengthById(exam.templateId)}} вопросов
+          </p>
+          <p class="mat-caption hell">{{getNameFromSection(exam.sectionId)}}</p>
+          <p class="mat-caption hell">{{getFormattedDate(exam.date)}}</p>
+          <p class="mat-caption hell">{{exam.startTime}}</p>
+          <p class="mat-caption hell">{{getNameFromCity(exam.cityId)}}</p>
+          <p class="mat-caption hell">{{exam.address}}</p>
+        </mat-card-content>
+        <mat-card-actions>
+          <div fxFlex="100" fxLayoutAlign="space-between center">
+            <div>
+              <b *ngIf="exam.participantList" class="custom-text">Заявки {{getSize(exam.participantList)}}</b>
+              <b *ngIf="!exam.participantList" class="custom-text">Заявки 0</b>
+              <button mat-raised-button class="mat-accent"
+                      *ngIf="!existInExam(exam)"
+                      (click)="participate(exam.id,exam.participantList)">
+                Записаться
+              </button>
+              <span *ngIf="existInExam(exam)
                       && getStatus(exam) === 'pending'">Заявка на рассмотрении</span>
-            <button mat-raised-button class="mat-warn"
-                    [routerLink]="'/test/'+exam.templateId+'/'+exam.id"
-                    *ngIf="existInExam(exam) && getStatus(exam) === 'active'">
-              Начать
+              <button mat-raised-button class="mat-warn"
+                      [routerLink]="'/test/'+exam.templateId+'/'+exam.id"
+                      *ngIf="existInExam(exam) && getStatus(exam) === 'active'">
+                Начать
+              </button>
+            </div>
+
+            <button mat-raised-button class="mat-primary"
+                    [routerLink]="'/exam-setting/'+exam.id"
+                    *ngIf="userRole === 'admin' || (exam.examinatorUserId === userId && userRole === 'staff')">
+              Настройка
             </button>
           </div>
-
-          <button mat-raised-button class="mat-primary"
-                  [routerLink]="'/exam-setting/'+exam.id"
-                  *ngIf="userRole === 'admin' || (exam.examinatorUserId === userId && userRole === 'staff')">
-            Настройка
-          </button>
-        </div>
-      </mat-card-actions>
-    </mat-card>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+  <div *ngIf="!examList || examList.length === 0" fxLayout="row" fxLayoutAlign="center center">
+    Список пуст
   </div>
 </div>
-<div *ngIf="!examList || examList.length === 0" fxLayout="row" fxLayoutAlign="center center">
-  Список пуст
+
+<div *ngIf="!main">
+  <div fxLayout="row" fxLayoutAlign="center center" style="text-align: center">
+    <h4 *ngIf="this.userId" style="color: #107ECC;">Вы записаны на экзамен!</h4>
+    <h3 *ngIf="!this.userId">На экзамен могут записаться только зарегистрированные пользователи. Регистрация проходит в учебных центрах.</h3>
+  </div>
 </div>

@@ -6,6 +6,7 @@ import * as firebase from 'firebase';
 import {MatSnackBar} from "@angular/material";
 import {Router} from "@angular/router";
 import {CommonService} from "../shared/common.service";
+import {CookieService} from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-examination',
@@ -35,9 +36,11 @@ export class ExaminationComponent implements OnInit {
 
   constructor(public snackBar: MatSnackBar,
               private router: Router,
-              private commonService: CommonService) { }
+              private commonService: CommonService,
+              private cookieService: CookieService) { }
 
   ngOnInit(): void {
+    this.cookieService.set('title', 'Экзамены');
     this.fireSQL = new FireSQL(firebase.firestore());
     this.getCompanyList();
     this.getCategories();

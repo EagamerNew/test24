@@ -1,4 +1,4 @@
-<div *ngIf="!isFiltering">
+<div *ngIf="!isFiltering" style="margin-bottom:15px;">
   <mat-form-field class="example-full-width" >
     <input type="text" matInput placeholder="Поиск..."
            autocomplete="off" [(ngModel)]="searchText" [matTooltip]="'По названию категории, компании, категории и секции'">
@@ -52,18 +52,18 @@
 <div *ngIf="!isFiltering || showFilterResult">
   <div *ngFor="let template of templateList" >
     <mat-card class="example-card"
-              style="color:blue; border: 1px solid blue;margin-bottom: 15px;">
+              style="color: #107ECC; border: 1px solid #107ECC;margin-bottom: 15px;">
       <div *ngIf="categoryList && sectionList">
-        <p style="float: left;line-height: 0.1px;" class="mat-caption">{{getNameFromCategory(template.categoryId)}}</p>
+        <p style="float: left;line-height: 0.1px;" class="mat-caption">{{template.name}}</p>
         <br>
         <p style="clear:both;float: left;line-height: 0.1px;" class="mat-caption">{{getNameFromCompany(template.companyId)}}</p>
         <!--<span style="float: right" *ngIf="!data.isTest">{{template.section}}</span>-->
       </div>
       <br>
       <mat-card-content style="text-align: center; padding: 30px 0;">
-        <h2>{{getNameFromSection(template.sectionId)}}</h2>
+        <h2>{{getNameFromCategory(template.categoryId)}}</h2>
         <h2>
-          {{template.name}}
+          {{getNameFromSection(template.sectionId)}}
         </h2>
         <p >{{template.questionIdList.length}} вопросов</p>
       </mat-card-content>

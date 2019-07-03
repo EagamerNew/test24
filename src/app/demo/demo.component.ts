@@ -45,6 +45,7 @@ export class DemoComponent implements OnInit {
   disableAll: boolean = false;
 
   ngOnInit() {
+    this.cookieService.set('title', 'Тесты');
     this.fireSQL = new FireSQL(firebase.firestore());
     this.role = this.cookieService.get('role');
     this.companyId = this.cookieService.get('companyId');

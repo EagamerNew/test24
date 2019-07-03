@@ -48,6 +48,7 @@ export class QuestionComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.cookieService.set('title', 'Вопросы');
     this.role = this.cookieService.get('role');
     this.getUserAndLoadData();
   }

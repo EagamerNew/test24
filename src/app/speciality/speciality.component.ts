@@ -3,6 +3,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {CommonService} from "../shared/common.service";
 import {QuestionCategory} from "../question/category/question-category.model";
 import {MatSnackBar} from "@angular/material";
+import {CookieService} from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-speciality',
@@ -15,10 +16,12 @@ export class SpecialityComponent implements OnInit {
   btnTitle = "Добавить";
 
   constructor(private commonService: CommonService,
-              private snackBar: MatSnackBar) {
+              private snackBar: MatSnackBar,
+              private cookieService: CookieService) {
   }
 
   ngOnInit() {
+    this.cookieService.set('title', 'Специальности');
     this.getSpecialityList();
     this.resetSpecialityForm();
   }

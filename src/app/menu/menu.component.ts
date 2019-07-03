@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {CookieService} from "ngx-cookie-service";
-import {Router} from "@angular/router";
-import {CommonService} from "../shared/common.service";
-import {MatSnackBar} from "@angular/material";
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {CookieService} from 'ngx-cookie-service';
+import {Router} from '@angular/router';
+import {CommonService} from '../shared/common.service';
+import {MatSnackBar} from '@angular/material';
 
 @Component({
   selector: 'app-menu',
@@ -24,6 +24,7 @@ export class MenuComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.cookie.set('title', 'Меню');
     this.userDocId = this.cookie.get('userId');
     this.userRole = this.cookie.get('role');
     let firstly = this.cookie.get('firstly');
@@ -31,12 +32,12 @@ export class MenuComponent implements OnInit {
     if (this.userDocId) {
       this.getUserPrivilegeList();
     } else {
-      let userRole = "anonymous";
+      let userRole = 'anonymous';
       this.cookie.set('role', userRole);
       this.userRole = userRole;
     }
-    if(firstly && firstly === '1'){
-    }else{
+    if (firstly && firstly === '1') {
+    } else {
       this.cookie.set('firstly', '1');
       this.router.navigateByUrl('demo-list');
     }
@@ -50,14 +51,14 @@ export class MenuComponent implements OnInit {
         console.log(res[0]);
         this.userPrivilegeList = res[0].privilegeList;
       }
-    })
+    });
   }
 
   logout() {
     // firebase.auth().signOut().then(function() {
     // Sign-out successful.
     this.cookie.deleteAll();
-    console.log("success logout");
+    console.log('success logout');
     this.router.navigateByUrl('');
     // }).catch(function(error) {
     //   console.log("error with logout")
@@ -110,12 +111,12 @@ export class MenuComponent implements OnInit {
           }
           break;
         case 'demo-list':
-          if (this.userRole === 'staff' || this.userRole === 'user'  || this.userRole === 'anonymous' || this.userPrivilegeList.includes('question-template') ) {
+          if (this.userRole === 'staff' || this.userRole === 'user' || this.userRole === 'anonymous' || this.userPrivilegeList.includes('question-template')) {
             result = true;
           }
           break;
         case 'exam-list':
-          if (this.userRole === 'user'|| this.userRole === 'anonymous' || this.userRole === 'staff' || this.userRole === 'author' || this.userPrivilegeList.includes('exam-list') ) {
+          if (this.userRole === 'user' || this.userRole === 'anonymous' || this.userRole === 'staff' || this.userRole === 'author' || this.userPrivilegeList.includes('exam-list')) {
             result = true;
           }
           break;

@@ -3,6 +3,7 @@ import {QuestionService} from "../shared/question.service";
 import {QuestionSection} from "../question/section/question-section.model";
 import {QuestionList} from "../list-questions/question-list";
 import {CommonService} from "../shared/common.service";
+import {CookieService} from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-raitings',
@@ -12,7 +13,8 @@ import {CommonService} from "../shared/common.service";
 export class RaitingsComponent implements OnInit {
 
   constructor(private service: QuestionService,
-              private _serviceCommon: CommonService) {
+              private _serviceCommon: CommonService,
+              private cookieService: CookieService) {
   }
 
   results: any[] = [];
@@ -24,6 +26,7 @@ export class RaitingsComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.cookieService.set('title', 'Рейтинг');
     this.getResultList();
   }
 
