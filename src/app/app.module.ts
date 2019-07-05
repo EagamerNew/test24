@@ -51,6 +51,7 @@ import {StaffComponent} from './staff/staff.component';
 import {CreatePasswordComponent} from './create-password/create-password.component';
 import {ResultComponent} from "./result/result.component";
 import {CacheService} from "./shared/cache.service";
+import {DatePipe} from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -101,6 +102,7 @@ import {CacheService} from "./shared/cache.service";
     CookieService,
     SectionService,
     CacheService,
+    DatePipe,
     CategoryService, {provide: FirestoreSettingsToken, useValue: {}}, CommonService
   ],
   bootstrap: [AppComponent]

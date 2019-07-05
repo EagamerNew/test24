@@ -25,6 +25,12 @@ export class CommonService {
     this.fireSQL = new FireSQL(this.fireDB);
   }
 
+  findUserFioByExamId(examId: string): Promise<DocumentData[]>{
+    this.fireSQL.query(`SELECT examinatorUserId FROM examination WHERE __name__ = '${examId}'`).then(res=>{
+      return this.getUserNameAndIdn(res[0].examinatorUserId);
+    });
+  }
+
   filterExamination(filterTemplate: any): Promise<DocumentData[]>{
 
     let globalQuery = `SELECT categoryId, address, cityId, sectionId, startTime,
@@ -165,7 +171,7 @@ export class CommonService {
   }
 
   getExamHistoryByUserId(userId: string) {
-    return this.fireSQL.query(`SELECT __name__ as id, category,title,score,mistake,correct,section,isTest FROM result 
+    return this.fireSQL.query(`SELECT __name__ as id, category,title,score,mistake,correct,section,isTest,time,date,fio FROM result 
       WHERE status='done' AND userId='${userId}'`);
   }
 

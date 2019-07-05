@@ -59,7 +59,7 @@ export class ResultComponent implements OnInit {
   getExamHistory() {
     this.commonService.getExamHistoryByUserId(this.cookieService.get('userId')).then(res => {
       this.results = res;
-    })
+    });
   }
 
   getCompanyName(id: string) {

@@ -1,12 +1,13 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {QuestionService} from "../shared/question.service";
-import {QuestionList} from "../list-questions/question-list";
-import {ActivatedRoute} from "@angular/router";
-import {MatSnackBar, MatStepper} from "@angular/material";
-import {CommonService} from "../shared/common.service";
-import {CookieService} from "ngx-cookie-service";
-import {RESULT_CODE_LIST} from "../shared/default-constant";
-import {CacheService} from "../shared/cache.service";
+import {QuestionService} from '../shared/question.service';
+import {QuestionList} from '../list-questions/question-list';
+import {ActivatedRoute} from '@angular/router';
+import {MatSnackBar, MatStepper} from '@angular/material';
+import {CommonService} from '../shared/common.service';
+import {CookieService} from 'ngx-cookie-service';
+import {RESULT_CODE_LIST} from '../shared/default-constant';
+import {CacheService} from '../shared/cache.service';
+import {DatePipe} from '@angular/common';
 
 @Component({
   selector: 'app-test',
@@ -20,6 +21,7 @@ export class TestComponent implements OnInit {
   answer = new answer();
   saveAns = true;
   finish = false;
+  examId = '';
   questions: QuestionList[];
   dataForResult = {
     isTest: true,
@@ -27,14 +29,17 @@ export class TestComponent implements OnInit {
     mistake: '',
     score: '',
     scoreMust: '',
-    category: "",
-    section: "",
-    title: "",
-    userId: "",
-    templateId: "",
+    category: '',
+    section: '',
+    title: '',
+    userId: '',
+    templateId: '',
     status: '',
     username: '',
-    companyName: ''
+    date: '',
+    time: '',
+    companyName: '',
+    fio: ''
   };
 
   selectedAnswer: number = -1;
@@ -44,6 +49,7 @@ export class TestComponent implements OnInit {
               public snackBar: MatSnackBar,
               private commonService: CommonService,
               private cacheService: CacheService,
+              private datePipe: DatePipe,
               private cookieService: CookieService) {
   }
 
@@ -54,14 +60,15 @@ export class TestComponent implements OnInit {
   time = 20;
   fiinishNew = false;
   saved = false;
-  examId: string = "";
-  userId: string = "";
+  examId: string = '';
+  userId: string = '';
 
   ngOnInit() {
     this.cookieService.set('title', 'Тест');
     this.userId = this.cookieService.get('userId');
     this.route.params.subscribe(params => {
       this.templateId = params['id'];
+      this.examId = params['examId'];
       if (this.templateId) {
         this.questionService.getTemplateById(this.templateId).subscribe(res => {
           this.template = res.payload.data();
@@ -79,7 +86,7 @@ export class TestComponent implements OnInit {
 
             randomList = this.shuffle(randomList);
             for (let i = 0; i < this.template.questionIdList.length; i++) {
-              idList.push(questionAvailableIdList[randomList[i]])
+              idList.push(questionAvailableIdList[randomList[i]]);
             }
             console.log('idList: ', idList);
             this.questionService.getQuestionListByIdIn(idList).then(res => {
@@ -94,6 +101,14 @@ export class TestComponent implements OnInit {
               }
             });
           });
+          // examinator fio
+          if (this.examId) {
+            this.commonService.findUserFioByExamId(this.examId).then(result => {
+              if (result[0]) {
+                this.dataForResult.fio = result[0].lastname + ' ' + result[0].firstname;
+              }
+            });
+          }
         });
       }
     });
@@ -124,17 +139,17 @@ export class TestComponent implements OnInit {
         this.time = 0;
         return null;
       }
-      console.log(this.currentStep, "   ", this.time)
+      console.log(this.currentStep, '   ', this.time);
       if (this.time == 0) {
         this.next();
       } else {
-        this.nextQuestion()
+        this.nextQuestion();
       }
-    }, 1000)
+    }, 1000);
   }
 
   next() {
-    console.log(JSON.stringify(this.questions[this.currentStep]))
+    console.log(JSON.stringify(this.questions[this.currentStep]));
     this.check();
 
     this.currentStep += 1;
@@ -142,7 +157,7 @@ export class TestComponent implements OnInit {
       // this.time = 20;
       // this.nextQuestion();
     } else {
-      console.log('finis---------------------')
+      console.log('finis---------------------');
       this.fiinishNew = true;
       this.time = 20;
       this.end();
@@ -159,19 +174,19 @@ export class TestComponent implements OnInit {
     for (let i = 0; i < this.answers.length; i++) {
       if (this.answers[i].docId === this.questions[this.currentStep].docId) {
         check = false;
-        break
+        break;
       }
     }
     if (check) {
-      console.log("++++++++++++", this.questions[this.currentStep].description)
+      console.log('++++++++++++', this.questions[this.currentStep].description);
       this.answerSave(this.questions[this.currentStep].docId, this.currentStep, -1);
 
     }
-    console.log(JSON.stringify(this.answers))
+    console.log(JSON.stringify(this.answers));
   }
 
   end() {
-    console.log('finis========================--------------------')
+    console.log('finis========================--------------------');
 
     setTimeout(s => {
       this.time -= 1;
@@ -180,15 +195,15 @@ export class TestComponent implements OnInit {
         return null;
       }
       if (this.time <= 0) {
-        console.log(JSON.stringify(this.questions[this.currentStep]))
-        this.check()
-        console.log('finish')
+        console.log(JSON.stringify(this.questions[this.currentStep]));
+        this.check();
+        console.log('finish');
         this.save();
       } else {
-        this.end()
+        this.end();
 
       }
-    }, 1000)
+    }, 1000);
 
   }
 
@@ -222,14 +237,14 @@ export class TestComponent implements OnInit {
       this.saveAns = false;
     }
 
-    console.log(JSON.stringify(this.answers))
+    console.log(JSON.stringify(this.answers));
   }
 
 
   save() {
     if (!this.saved) {
       this.saved = true;
-      this.time = 1
+      this.time = 1;
       let correctCount = 0;
       let misCount = 0;
       for (let i = 0; i < this.answers.length; i++) {
@@ -243,6 +258,7 @@ export class TestComponent implements OnInit {
           // console.log("in correct",i+1)
         }
       }
+      const startDate = new Date();
       this.dataForResult.score = this.pointTotal + '';
       this.dataForResult.scoreMust = this.pointMust + '';
       this.dataForResult.mistake = misCount + '';
@@ -251,11 +267,13 @@ export class TestComponent implements OnInit {
       this.dataForResult.title = this.template.name;
       this.dataForResult.userId = 'anonymous';
       this.dataForResult.templateId = this.templateId;
+      this.dataForResult.date = this.datePipe.transform(startDate, 'dd-MM-yyyy');
+      this.dataForResult.time = startDate.getHours() + ':' + startDate.getMinutes();
       this.dataForResult.status = RESULT_CODE_LIST.DONE.toString().toLowerCase();
-      this.commonService.getCompanyById(this.template.companyId).then(com =>{
+      this.commonService.getCompanyById(this.template.companyId).then(com => {
         this.dataForResult.companyName = 'Компания не найдена';
         let coms: any = com[0];
-        if(coms){
+        if (coms) {
           this.dataForResult.companyName = coms.name;
         }
         this.questionService.getCategoryNameById(this.template.categoryId).subscribe(res => {
@@ -271,17 +289,17 @@ export class TestComponent implements OnInit {
               this.dataForResult.section = result.name + '';
             }
             console.log('data for result ', this.dataForResult);
-            console.log('trust: ', this.cookieService.get("userId"));
+            console.log('trust: ', this.cookieService.get('userId'));
 
-            if (this.cookieService.get("userId")) {
-              this.dataForResult.userId = this.cookieService.get("userId");
+            if (this.cookieService.get('userId')) {
+              this.dataForResult.userId = this.cookieService.get('userId');
               this.commonService.getUserByDocId(this.dataForResult.userId).then(res => {
                 this.dataForResult.username = res[0].lastname + ' ' + res[0].firstname;
                 this.saveResult(this.dataForResult);
               });
             } else {
               let results: any = this.cacheService.get('results');
-              if(!results){
+              if (!results) {
                 results = [];
               }
               results.push(this.dataForResult);
@@ -301,7 +319,7 @@ export class TestComponent implements OnInit {
       if (this.examId) {
         this.commonService.saveExamParticipant(res.id, this.userId, this.examId);
       }
-    })
+    });
   }
 
   openSnackBar(message: string, action: string) {

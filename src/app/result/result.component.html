@@ -1,7 +1,13 @@
 <div *ngIf="actionCode !== 'notfound'">
   <div *ngFor="let data of results" >
+
+    <div style="margin-top: 15px">
+      <div fxFlex="row" fxLayoutAlign="space-between center">
+        <div *ngIf="data.time && data.date" class="cust-grey">{{data.time}}</div>
+        <div *ngIf="data.fio">{{data.fio}}</div>
+      </div>
+    </div>
     <mat-card class="example-card"
-              style="margin-top: 15px"
               [style.color]="data.isTest? '#107ECC': 'green'"
               [style.border]="data.isTest ? '1px solid #107ECC' : '1px solid green'">
       <div>
