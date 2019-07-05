@@ -58,7 +58,7 @@ export class SectionComponent implements OnInit {
   }
 
   getCategories() {
-    this.serviceCategory.getCotegories().subscribe(
+    this.serviceCategory.getCategories().subscribe(
       list => {
         this.categories = []
         list.map(item => {

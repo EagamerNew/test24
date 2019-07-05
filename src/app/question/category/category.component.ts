@@ -34,7 +34,7 @@ export class CategoryComponent implements OnInit {
   };
 
   getCategories(): void{
-    this.service.getCotegories().subscribe(
+    this.service.getCategories().subscribe(
       list => {
 
         this.categories = list.map(item => {
