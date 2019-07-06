@@ -21,7 +21,6 @@ export class TestComponent implements OnInit {
   answer = new answer();
   saveAns = true;
   finish = false;
-  examId = '';
   questions: QuestionList[];
   dataForResult = {
     isTest: true,
@@ -39,7 +38,7 @@ export class TestComponent implements OnInit {
     date: '',
     time: '',
     companyName: '',
-    fio: ''
+    examinatorUserId: ''
   };
 
   selectedAnswer: number = -1;
@@ -102,10 +101,13 @@ export class TestComponent implements OnInit {
             });
           });
           // examinator fio
+          console.log('exmId before: ', this.examId);
           if (this.examId) {
-            this.commonService.findUserFioByExamId(this.examId).then(result => {
+            this.commonService.findExaminatorUseridByExamId(this.examId).then(result => {
+              console.log('findExaminatorUseridByExamId: ', result);
               if (result[0]) {
-                this.dataForResult.fio = result[0].lastname + ' ' + result[0].firstname;
+                this.dataForResult.examinatorUserId = result[0].examinatorUserId ;
+                console.log('findExaminatorUseridByExamId(after): ', this.dataForResult.examinatorUserId);
               }
             });
           }

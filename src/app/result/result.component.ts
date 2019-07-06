@@ -18,6 +18,8 @@ export class ResultComponent implements OnInit {
   // data: any;
   results: any;
   actionCode: string = 'cache' // cache, db, notfound
+  examUserIds: string[] = [];
+  users: any = [];
 
   ngOnInit(): void {
     this.cookieService.set('title', 'Результаты');
@@ -58,18 +60,102 @@ export class ResultComponent implements OnInit {
 
   getExamHistory() {
     this.commonService.getExamHistoryByUserId(this.cookieService.get('userId')).then(res => {
-      this.results = res;
+      console.log('result : ', res);
+      this.results = res.map(mapper => {
+        if (mapper.examinatorUserId) {
+          console.log('mapper success: ', mapper.companyName)
+          this.examUserIds.push(mapper.examinatorUserId);
+        }
+        if (mapper.date) {
+          const date = mapper.date.split('-');
+          mapper['realDate'] = date[0] + ' ' + this.monthInRus(parseInt(date[1])) + ' ' + date[2];
+        }
+        return mapper;
+      });
+      console.log('userIds: ', this.examUserIds);
+      this.getExaminatorUsernameById();
     });
+  }
+
+
+
+  monthInRus(month: number) {
+    switch (month) {
+      case 1:
+        return 'янв';
+        break;
+      case 2:
+        return 'фев';
+        break;
+      case 3:
+        return 'март';
+        break;
+      case 4:
+        return 'апр';
+        break;
+      case 5:
+        return 'май';
+        break;
+      case 6:
+        return 'июнь';
+        break;
+      case 7:
+          return 'июль';
+        break;
+      case 8:
+        return 'авг';
+        break;
+      case 9:
+        return 'сен';
+        break;
+      case 10:
+        return 'окт';
+        break;
+      case 11:
+        return 'ноя';
+        break;
+      case 12:
+        return 'дек';
+        break;
+    }
+  }
+
+
+
+  getExaminatorUsernameById() {
+    this.commonService.getUserFioByIds(this.examUserIds).then(res => {
+      console.log('users found: ', this.users);
+      this.users = res;
+    });
+  }
+
+  trackByFn(index, item) {
+    return index;
   }
 
   getCompanyName(id: string) {
     this.commonService.getCompanyById(id).then(res => {
         if (res) {
           return res[0].name;
-        }else{
+        } else {
           return 'Компания не найдено'
         }
       }
     );
+  }
+
+  getExamUserFio(id: string, index) {
+    if (this.users) {
+      for (let i = 0; i < this.users.length; i++) {
+        if (this.users[i].id === id) {
+          return this.users[i].lastname + ' ' + this.users[i].firstname;
+        }
+      }
+    }
+  }
+
+  calculateRealDate(dateIn){
+    const date = dateIn.split('-');
+    return date[0] + ' ' + this.monthInRus(parseInt(date[1])) + ' ' + date[2];
   }
 }

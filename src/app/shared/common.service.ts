@@ -25,10 +25,56 @@ export class CommonService {
     this.fireSQL = new FireSQL(this.fireDB);
   }
 
-  findUserFioByExamId(examId: string): Promise<DocumentData[]>{
-    this.fireSQL.query(`SELECT examinatorUserId FROM examination WHERE __name__ = '${examId}'`).then(res=>{
-      return this.getUserNameAndIdn(res[0].examinatorUserId);
-    });
+  async searchExamTemplate(searchText: string): Promise<DocumentData[]> {
+    console.log('searchText: ', searchText);
+    // company, section, category, --city
+    let companyIdString: string = '';
+    let categoryIdString: string = '';
+    let sectionIdString: string = '';
+    let globalQuery = `SELECT * FROM examination WHERE status ='active' 
+                AND ( (address LIKE '${searchText.toLowerCase()}%' OR address LIKE '${searchText.charAt(0).toUpperCase() + searchText.slice(1)}%') `;
+    let sectionId = await this.findSectionIdListBySearchText(searchText);
+    console.log('sectionId: ', sectionId);
+    if (sectionId && sectionId.length > 0) {
+      sectionId.map(sectionList => {
+        sectionIdString = sectionIdString + '"' + sectionList.id + '",';
+      });
+      sectionIdString = sectionIdString.substring(0, sectionIdString.length - 1);
+      globalQuery += ` OR sectionId IN (${sectionIdString})`;
+    }
+    console.log('sectionIDS: ', sectionIdString);
+
+    let companyId = await this.findCompanyIdListBySearchText(searchText);
+    console.log('companyId: ', companyId);
+    if (companyId && companyId.length > 0) {
+      companyId.map(companyList => {
+        companyIdString = companyIdString + '"' + companyList.id + '",';
+      });
+      companyIdString = companyIdString.substring(0, companyIdString.length - 1);
+      globalQuery += ` OR companyId IN (${companyIdString})`;
+    }
+    console.log('companyIDS: ', companyIdString);
+
+    let categoryId = await this.findCategoryIdListBySearchText(searchText);
+    console.log('categoryId: ', categoryId);
+    if (categoryId && categoryId.length > 0) {
+      categoryId.map(categoryList => {
+        categoryIdString = categoryIdString + '"' + categoryList.id + '",';
+      });
+      categoryIdString = categoryIdString.substring(0, categoryIdString.length - 1);
+      globalQuery += ` OR categoryId IN (${categoryIdString})`;
+    }
+    console.log('categoryIDS: ', categoryIdString);
+
+    globalQuery += `)`;
+    console.log('globalQuery: ', globalQuery);
+    return this.fireSQL
+      .query(globalQuery, {includeId: 'id'});
+
+  }
+
+  findExaminatorUseridByExamId(examId: string): Promise<DocumentData[]>{
+    return this.fireSQL.query(`SELECT examinatorUserId FROM examination WHERE __name__ = '${examId}'`);
   }
 
   filterExamination(filterTemplate: any): Promise<DocumentData[]>{
@@ -171,7 +217,7 @@ export class CommonService {
   }
 
   getExamHistoryByUserId(userId: string) {
-    return this.fireSQL.query(`SELECT __name__ as id, category,title,score,mistake,correct,section,isTest,time,date,fio FROM result 
+    return this.fireSQL.query(`SELECT __name__ as id, category,title,score,mistake,correct,section,isTest,time,date,examinatorUserId, companyName FROM result 
       WHERE status='done' AND userId='${userId}'`);
   }
 
@@ -493,6 +539,18 @@ export class CommonService {
     temp = temp.substring(0, temp.length - 1);
     console.log('temp to search: ', temp);
     return this.fireSQL.query(`SELECT __name__ as id,templateId FROM result WHERE templateId IN (${temp})`);
+  }
+
+  getUserFioByIds(userIds: string[]){
+    let temp = '';
+    for (let str of userIds) {
+      temp = temp + '"' + str + '",';
+    }
+    temp = temp.substring(0, temp.length - 1);
+    console.log('temp to search: ', temp);
+    const query = `SELECT __name__ as id,firstname, lastname FROM user WHERE __name__ IN (${temp})`;
+    console.log('query: ', query)
+    return this.fireSQL.query(query);
   }
 
   deleteTemplateById(id: string) {

@@ -33,6 +33,11 @@ export class ExamListComponent implements OnInit {
   cityList: any = [];
   loading: boolean = true;
   main = true;
+  searchText = '';
+  searching: boolean = false;
+  isFiltering: boolean = false;
+  showFilterResult: boolean = false;
+  disableReset: boolean = true;
 
   constructor(public cookieService: CookieService,
               private router: Router,
@@ -49,6 +54,64 @@ export class ExamListComponent implements OnInit {
     this.getCompanyList();
     this.getExamTemplateList();
   }
+
+  search(): void {
+    if (this.searchText === ''
+      || this.searchText === null
+      || this.searchText.trim() === ''
+      || this.searchText.trim().length === 0
+      || this.searchText.length === 0) {
+      this.handleSearchString();
+    } else {
+      this.loading = true;
+      this.searching = true;
+      this.disableReset = false;
+      this.examList = [];
+      this.commonService.searchExamTemplate(this.searchText).then(res => {
+        if (res && res.length > 0) {
+          this.examList = res;
+          this.templateIdList = this.examList.map((res, index) => {
+            let now = new Date();
+            if (now > new Date(res.date)) {
+              this.archiveExam(res.id, index);
+            } else {
+              return res.templateId;
+            }
+            return res.templateId;
+          });
+          this.loading = false;
+          console.log('examList:', this.examList);
+          console.log('templateIdlist:', this.templateIdList);
+          if (this.examList && this.examList.length > 0) {
+            this.getShortTemplateList();
+          }
+        }
+        this.loading = false;
+      });
+      // this.allTemplateList.forEach(value => {
+      //   if (value.name.toLowerCase().includes(this.searchText.toLowerCase())) {
+      //     this.templateList.push(value);
+      //   }
+      // });
+    }
+  }
+
+  showFilter() {
+    this.handleSearchString();
+    this.isFiltering = true;
+    this.showFilterResult = false;
+  }
+
+  handleSearchString() {
+    this.disableReset = true;
+    this.searchText = '';
+    this.searching = false;
+    this.examList = this.originExamList;
+    this.filterTemplate = new Object();
+    this.isFiltering = false;
+    this.showFilterResult = false;
+  }
+
 
   getCompanyNameById(id) {
     for (let i = 0; i < this.companyList.length; i++) {
@@ -164,6 +227,9 @@ export class ExamListComponent implements OnInit {
     this.commonService.filterExamination(this.filterTemplate).then(res => {
       this.loading = false;
       this.examList = res;
+      this.isFiltering = false;
+      this.showFilterResult = true;
+      this.disableReset = false;
       console.log(this.examList);
       this.templateIdList = this.examList.map((res, index) => {
         let now = new Date();

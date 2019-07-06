@@ -1,5 +1,16 @@
 <div *ngIf="main">
-  <div>
+  <div *ngIf="!isFiltering" style="margin-bottom:15px;">
+    <mat-form-field class="example-full-width" >
+      <input type="text" matInput placeholder="Поиск..."
+             autocomplete="off" [(ngModel)]="searchText" [matTooltip]="'По адресу, названию компании, категории и секции'">
+      <button mat-icon-button matSuffix (click)="search()" [disabled]="searchText.trim().length === 0 || loading"><mat-icon >search</mat-icon></button>
+      <mat-hint>Нажмите для поиска</mat-hint>
+      <button mat-icon-button matSuffix matTooltip="Показать фильтр" (click)="showFilter()"><mat-icon>filter_list</mat-icon></button>
+      <button mat-icon-button matSuffix (click)="handleSearchString()" [disabled]="disableReset " mattooltip="Сбросить"><mat-icon >clear</mat-icon></button>
+
+    </mat-form-field>
+  </div>
+  <div *ngIf="isFiltering">
     <mat-form-field class="example-full-width">
       <mat-select placeholder="Компания" [(ngModel)]="filterTemplate.companyId">
         <mat-option *ngFor="let company of companyList" [value]="company.id">
