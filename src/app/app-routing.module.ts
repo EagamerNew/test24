@@ -27,6 +27,7 @@ import {SpecialityComponent} from "./speciality/speciality.component";
 import {StaffComponent} from "./staff/staff.component";
 import {CreatePasswordComponent} from "./create-password/create-password.component";
 import {ResultComponent} from "./result/result.component";
+import {StudyCenterComponent} from "./study-center/study-center.component";
 
 const routes: Routes = [
   {path: '', component: MenuComponent},
@@ -58,7 +59,8 @@ const routes: Routes = [
   {path: 'speciality', component: SpecialityComponent},
   {path: 'staff', component: StaffComponent},
   {path: 'create-password', component: CreatePasswordComponent},
-  {path: 'result', component: ResultComponent}
+  {path: 'result', component: ResultComponent},
+  {path: 'study-center', component: StudyCenterComponent}
 ];
 
 @NgModule({

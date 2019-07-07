@@ -105,6 +105,17 @@
 <div *ngIf="!main">
   <div fxLayout="row" fxLayoutAlign="center center" style="text-align: center">
     <h4 *ngIf="this.userId" style="color: #107ECC;">Вы записаны на экзамен!</h4>
-    <h3 *ngIf="!this.userId">На экзамен могут записаться только зарегистрированные пользователи. Регистрация проходит в учебных центрах.</h3>
+    <h3 *ngIf="!this.userId">
+      На экзамен могут записаться только зарегистрированные пользователи. Регистрация проходит в учебных центрах.
+      <div fxLayout="column" fxLayoutAlign="space-around start" style="margin-top: 25px;">
+        <div
+          [routerLink]="'/study-center'"
+          style="margin-top: 10px; background: #107ECC; width: 99%; cursor: pointer;color: white; text-align: center;">
+          <div style="margin: 13px auto">
+            Учебные центры
+          </div>
+        </div>
+      </div>
+    </h3>
   </div>
 </div>

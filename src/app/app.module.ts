@@ -52,6 +52,7 @@ import {CreatePasswordComponent} from './create-password/create-password.compone
 import {ResultComponent} from "./result/result.component";
 import {CacheService} from "./shared/cache.service";
 import {DatePipe} from '@angular/common';
+import {StudyCenterComponent} from "./study-center/study-center.component";
 
 @NgModule({
   declarations: [
@@ -84,7 +85,8 @@ import {DatePipe} from '@angular/common';
     SpecialityComponent,
     StaffComponent,
     CreatePasswordComponent,
-    ResultComponent
+    ResultComponent,
+    StudyCenterComponent
   ],
   imports: [
     BrowserModule,
