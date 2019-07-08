@@ -40,7 +40,8 @@
       <p *ngIf="question.status === 'rejected'" style="color:#f44336;">Отказано. Причина: {{question.note}}</p>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-button *ngIf="question.status === 'accepted'" >В архив</button>
+      <button mat-button (click)="archieveQuestion(question)"
+              *ngIf="question.status === 'accepted'" >В архив</button>
       <mat-form-field *ngIf="question.status === 'in_moderation'">
         <input type="text" matInput placeholder="Причина отказа" autocomplete="off" [(ngModel)]="question.note">
       </mat-form-field>

@@ -54,7 +54,7 @@
       <input matInput placeholder="description" [(ngModel)]="question.description">
     </mat-form-field>
     <mat-form-field class="example-full-width">
-      <input matInput placeholder="correctAnswer" [(ngModel)]="question.correctAnswer" disabled>
+      <input matInput placeholder="correctAnswer" value="{{parserAnswer(question.correctAnswer)}}" disabled>
     </mat-form-field>
     <mat-form-field class="example-full-width">
       <input matInput placeholder="point" [(ngModel)]="question.point">

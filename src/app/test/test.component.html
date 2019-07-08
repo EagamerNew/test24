@@ -29,7 +29,7 @@
           <button mat-raised-button [disabled]="finish"
                   style="width: 125px;height:40px;font-size: 1.2em;"
                   (click)="answerSave(question.docId, i, j)" class="mat-warn"
-                  [ngClass]="{activecust: j === 1, selectedcust: selectedAnswer == j}">{{answer.answer}}</button>
+                  [ngClass]="{activecust: j === 1, selectedcust: selectedAnswer == j,not_selected: selectedAnswer != j && selectedAnswer != -1}">{{answer.answer}}</button>
         </div>
       </div>
 

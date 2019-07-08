@@ -77,6 +77,10 @@ export class ListQuestionsComponent implements OnInit {
 
   }
 
+  parserAnswer(answer: string): number{
+    return parseInt(answer) + 1;
+  }
+
   handleSearchString() {
     this.searchString = "";
     this.searching = false;
