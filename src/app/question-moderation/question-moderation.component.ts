@@ -67,6 +67,7 @@ export class QuestionModerationComponent implements OnInit {
 
   archieveQuestion(question): void {
     question.status = 'in_archive ';
+    console.log('archived!');
     this.save(question);
   }
 

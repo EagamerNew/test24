@@ -145,7 +145,7 @@ export class CommonService {
     let categoryIdString: string = '';
     let sectionIdString: string = '';
     let globalQuery = `SELECT * FROM template WHERE status ='active' AND isExamTemplate = false
-                AND ( (name LIKE '${searchText.toLowerCase()}%' OR name LIKE '${searchText.charAt(0).toUpperCase() + searchText.slice(1)}%') `;
+                AND ( (name LIKE '${searchText.toLowerCase()}%' OR name LIKE '${searchText.toUpperCase()}%') `;
     let sectionId = await this.findSectionIdListBySearchText(searchText);
     console.log('sectionId: ', sectionId);
     if (sectionId && sectionId.length > 0) {

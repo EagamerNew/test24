@@ -53,5 +53,6 @@
   background: grey !important;
   cursor: default!important;
 }
-
-
+.not_selected{
+  background-color: gray!important;
+}
