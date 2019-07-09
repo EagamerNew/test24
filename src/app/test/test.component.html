@@ -6,7 +6,7 @@
 <!--<hr>-->
 <!--</div>-->
 <div *ngIf="template">
-  <div *ngIf="template.isExamTemplate" layout="row" style="text-align: center">
+  <div *ngIf="template.isExamTemplate && !fiinishNew" layout="row" style="text-align: center">
     <b>00:{{time}}</b>
     <br>
   </div>
@@ -44,10 +44,10 @@
         </div>
       </div>
 
-      <div fxLayout="column" fxLayoutAlign="space-around start" style="margin-top: 25px;">
+      <div *ngIf="!template.isExamTemplate" fxLayout="column" fxLayoutAlign="space-around start" style="margin-top: 25px;">
         <div
-          [ngClass]="{not_full: saveAns || finish}"
-          (click)="save()"
+          [ngClass]="{not_full: nextQes}"
+          (click)="nextQESTIONNEW()"
           style="margin-top: 10px; background: #107ECC; width: 99%; cursor: pointer;color: white; text-align: center;">
           <div style="margin: 13px auto">
             Ответить
@@ -58,6 +58,9 @@
       <button *ngIf="i !== (questions.length - 1) && template.isExamTemplate" mat-button (click)="nextQ()"
               style="float:right;" mat-raised-button class="mat-primary">Следующий вопрос
       </button>
+      <!--<button *ngIf="!template.isExamTemplate" mat-button (click)="nextQESTIONNEW()"-->
+              <!--style="float:right;" mat-raised-button class="mat-primary">Следующий вопрос-->
+      <!--</button>-->
       <div *ngIf="i === (questions.length - 1)">
 
         <!--<button mat-button [disabled]="saveAns || finish" (click)="save()" style="float:right;">Сохранить</button>-->

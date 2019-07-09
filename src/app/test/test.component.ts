@@ -20,6 +20,7 @@ export class TestComponent implements OnInit {
   pointMust = 0;
   answer = new answer();
   saveAns = true;
+  nextQes = true;
   finish = false;
   questions: QuestionList[];
   dataForResult = {
@@ -106,7 +107,7 @@ export class TestComponent implements OnInit {
             this.commonService.findExaminatorUseridByExamId(this.examId).then(result => {
               console.log('findExaminatorUseridByExamId: ', result);
               if (result[0]) {
-                this.dataForResult.examinatorUserId = result[0].examinatorUserId ;
+                this.dataForResult.examinatorUserId = result[0].examinatorUserId;
                 console.log('findExaminatorUseridByExamId(after): ', this.dataForResult.examinatorUserId);
               }
             });
@@ -151,13 +152,11 @@ export class TestComponent implements OnInit {
   }
 
   next() {
-    console.log(JSON.stringify(this.questions[this.currentStep]));
     this.check();
-
-    this.currentStep += 1;
     if (this.questions.length - 1 !== this.currentStep && this.currentStep < this.questions.length) {
-      // this.time = 20;
-      // this.nextQuestion();
+      this.currentStep += 1;
+      this.time = 20;
+      this.nextQuestion();
     } else {
       console.log('finis---------------------');
       this.fiinishNew = true;
@@ -180,45 +179,39 @@ export class TestComponent implements OnInit {
       }
     }
     if (check) {
-      console.log('++++++++++++', this.questions[this.currentStep].description);
       this.answerSave(this.questions[this.currentStep].docId, this.currentStep, -1);
-
     }
-    console.log(JSON.stringify(this.answers));
   }
 
   end() {
     console.log('finis========================--------------------');
+    this.save();
+  }
 
-    setTimeout(s => {
-      this.time -= 1;
-      if (this.time < 0) {
-        this.time = 0;
-        return null;
-      }
-      if (this.time <= 0) {
-        console.log(JSON.stringify(this.questions[this.currentStep]));
-        this.check();
-        console.log('finish');
-        this.save();
+  nextQESTIONNEW() {
+    if (!this.template.isExamTemplate && !this.nextQes) {
+      if (this.questions.length - 1 !== this.currentStep && this.currentStep < this.questions.length) {
+        this.currentStep += 1;
+        this.selectedAnswer = -1;
+        this.nextQes = true;
       } else {
-        this.end();
-
+        this.save();
       }
-    }, 1000);
 
+    }
   }
 
   answerSave(docId, i, answer) {
     this.selectedAnswer = answer;
     let check = true;
-    if (!this.template.isExamTemplate) {
-      if (this.questions.length - 1 !== this.currentStep && this.currentStep < this.questions.length) {
-        this.currentStep += 1;
-        this.selectedAnswer = -1;
-      }
-
-    }
+    this.nextQes = false;
+    // if (!this.template.isExamTemplate) {
+    //   if (this.questions.length - 1 !== this.currentStep && this.currentStep < this.questions.length) {
+    //     this.currentStep += 1;
+    //     this.selectedAnswer = -1;
+    //   }
+    //
+    // }
     for (let j = 0; j < this.answers.length; j++) {
       if (this.answers[j].docId == docId) {
         this.answers[j].answer = answer;
@@ -238,7 +231,9 @@ export class TestComponent implements OnInit {
     if (this.answers.length == this.questions.length) {
       this.saveAns = false;
     }
-
+    if (this.template.isExamTemplate) {
+      this.nextQ();
+    }
     console.log(JSON.stringify(this.answers));
   }
 

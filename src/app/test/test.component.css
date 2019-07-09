@@ -50,7 +50,6 @@
   
 }
 .not_full{
-  display: none;
   background: grey !important;
   cursor: default!important;
 }
