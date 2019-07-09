@@ -64,11 +64,15 @@ export class TestComponent implements OnInit {
   userId: string = '';
 
   ngOnInit() {
-    this.cookieService.set('title', 'Тест');
     this.userId = this.cookieService.get('userId');
     this.route.params.subscribe(params => {
       this.templateId = params['id'];
       this.examId = params['examId'];
+      if(this.examId){
+        this.cookieService.set('title', 'Экзамен');
+      }else{
+        this.cookieService.set('title', 'Тест');
+      }
       if (this.templateId) {
         this.questionService.getTemplateById(this.templateId).subscribe(res => {
           this.template = res.payload.data();

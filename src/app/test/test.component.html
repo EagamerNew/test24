@@ -39,7 +39,7 @@
              [ngClass]="{selectedcustborder: selectedAnswer == j}"
              (click)="answerSave(question.docId, i, j)">
           <div style="margin: 17px auto">
-            &nbsp;&nbsp;{{j + 1}}.{{answer.answer}}
+            &nbsp;&nbsp;<b>{{j + 1}}</b>. &nbsp;{{answer.answer}}
           </div>
         </div>
       </div>

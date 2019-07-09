@@ -7,3 +7,7 @@
 .example-full-width {
   width: 100%;
 }
+::ng-deep .mat-expansion-panel-body{
+  padding-right: 1px!important;
+  padding-left: 1px!important;;
+}

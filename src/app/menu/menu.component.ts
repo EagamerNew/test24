@@ -79,22 +79,22 @@ export class MenuComponent implements OnInit {
           }
           break;
         case 'question-category':
-          if (this.userRole === 'staff' || this.userPrivilegeList.includes('category')) {
+          if ( this.userPrivilegeList.includes('category')) {
             result = true;
           }
           break;
         case 'question-speciality':
-          if (this.userRole === 'staff' || this.userPrivilegeList.includes('speciality')) {
+          if (this.userPrivilegeList.includes('speciality')) {
             result = true;
           }
           break;
         case 'question-section':
-          if (this.userRole === 'staff' || this.userPrivilegeList.includes('section')) {
+          if (this.userPrivilegeList.includes('section')) {
             result = true;
           }
           break;
         case 'question-moderation':
-          if (this.userRole === 'staff' || this.userPrivilegeList.includes('question-moderation')) {
+          if (this.userPrivilegeList.includes('question-moderation')) {
             result = true;
           }
           break;

@@ -36,8 +36,69 @@ export class ProfileComponent implements OnInit {
 
   getExamHistory(){
     this.commonService.getExamHistoryByUserId(this.docUserId).then(res=>{
-      this.examHistory = res;
+      this.examHistory = res.map(mapper => {
+        if (mapper.date) {
+          const date = mapper.date.split('-');
+          mapper['realDate'] = date[0] + ' ' + this.monthInRus(parseInt(date[1])) + ' ' + date[2];
+        }
+        return mapper;
+      });
     })
+  }
+
+  calculatePercent(correct, mistake) {
+    const all: number = parseInt(correct) + parseInt(mistake);
+    return ((correct * 100) / (all)).toFixed();
+  }
+
+  calculateRealDate(dateIn){
+    const date = dateIn.split('-');
+    return date[0] + ' ' + this.monthInRus(parseInt(date[1])) + ' ' + date[2];
+  }
+
+  trackByFn(index, item) {
+    return index;
+  }
+
+  monthInRus(month: number) {
+    switch (month) {
+      case 1:
+        return 'янв';
+        break;
+      case 2:
+        return 'фев';
+        break;
+      case 3:
+        return 'март';
+        break;
+      case 4:
+        return 'апр';
+        break;
+      case 5:
+        return 'май';
+        break;
+      case 6:
+        return 'июнь';
+        break;
+      case 7:
+        return 'июль';
+        break;
+      case 8:
+        return 'авг';
+        break;
+      case 9:
+        return 'сен';
+        break;
+      case 10:
+        return 'окт';
+        break;
+      case 11:
+        return 'ноя';
+        break;
+      case 12:
+        return 'дек';
+        break;
+    }
   }
 
   getUserByDocId() {

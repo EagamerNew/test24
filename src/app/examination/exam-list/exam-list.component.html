@@ -82,7 +82,7 @@
                       && getStatus(exam) === 'pending'">Заявка на рассмотрении</span>
               <button mat-raised-button class="mat-warn"
                       [routerLink]="'/test/'+exam.templateId+'/'+exam.id"
-                      *ngIf="existInExam(exam) && getStatus(exam) === 'active'">
+                      *ngIf="(existInExam(exam) && getStatus(exam) === 'active') || restartExam(exam)">
                 Начать
               </button>
             </div>

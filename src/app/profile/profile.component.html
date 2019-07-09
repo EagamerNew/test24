@@ -6,20 +6,45 @@
         <!--{{question.description}}-->
       </mat-panel-description>
     </mat-expansion-panel-header>
-    <div *ngFor="let exam of examHistory">
-      <div style="border: 1px solid black; margin-bottom:3%;border-radius:7px;">
-        <div style="margin:7px;">
-          <b>Название шаблона:</b>{{exam.title}}
-          <br>
-          <b>Категория:</b>{{exam.category}}
-          <br>
-          <b>Секция:</b>{{exam.section}}
-          <br>
-          <b>Отвечено:</b><span style="color: green;">{{exam.correct}}</span>/<span style="color:red">{{exam.mistake}}</span>
-          <br>
-          <b>Балл:</b>{{exam.score}}
+    <div *ngFor="let data of examHistory; trackBy: trackByFn; let i = index;" >
+
+      <div style="margin-top: 25px">
+        <div fxFlex="row" fxLayoutAlign="space-between center">
+          <div *ngIf="data.time && data.realDate" class="cust-grey" style="text-align: left">{{data.time}} {{data.realDate}}</div>
         </div>
       </div>
+      <mat-card class="example-card"
+                [style.color]="data.isTest? '#107ECC': 'green'"
+                [style.border]="data.isTest ? '1px solid #107ECC' : '1px solid green'">
+        <div>
+      <span style="float: left">
+        {{data.title}}
+        <br>
+        <span class="cust-grey" *ngIf="data.companyName">{{data.companyName}}</span>
+        <span class="cust-grey" *ngIf="!data.companyName">Компания не доступна</span>
+      </span>
+          <!--<span style="float: left"></span>-->
+          <span style="float: right" class="cust-grey" *ngIf="data.isTest">Тест</span>
+          <span style="float: right" *ngIf="!data.isTest">Экзамен</span>
+        </div>
+        <br>
+        <mat-card-content style="text-align: center; padding: 30px 0 0;">
+          <h2>
+            <span>Ваш результат</span>
+            <br>
+            {{calculatePercent(data.correct, data.mistake)}}%
+          </h2>
+          <p class="mat-caption cust-grey" >{{data.category}}</p>
+          <p class="mat-caption cust-grey">{{data.section}}</p>
+        </mat-card-content>
+        <div style="margin-bottom:36px;">
+    <span style="float: left">
+      <span>{{data.correct}}</span> -
+      <span style="color:red">{{data.mistake}}</span>
+    </span>
+          <span style="float: right">{{data.score}} балл</span>
+        </div>
+      </mat-card>
     </div>
     <br>
   </mat-expansion-panel>

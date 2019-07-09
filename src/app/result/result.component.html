@@ -1,7 +1,15 @@
 <div *ngIf="actionCode !== 'notfound'">
+  <mat-form-field class="example-full-width" *ngIf="actionCode !== 'cache'" >
+    <input type="text" matInput placeholder="Поиск..."
+           autocomplete="off" [(ngModel)]="searchText" [matTooltip]="'По ФИО'">
+    <button mat-icon-button matSuffix (click)="searchQuestion()" [disabled]="searchText.trim().length === 0 || loading"><mat-icon >search</mat-icon></button>
+    <mat-hint>Нажмите для поиска</mat-hint>
+    <button mat-icon-button matSuffix (click)="handleSearchString()" [disabled]="disableReset " mattooltip="Сбросить"><mat-icon >clear</mat-icon></button>
+
+  </mat-form-field>
   <div *ngFor="let data of results; trackBy: trackByFn; let i = index;" >
 
-    <div style="margin-top: 15px">
+    <div style="margin-top: 25px">
       <div fxFlex="row" fxLayoutAlign="space-between center">
         <div *ngIf="data.time && data.realDate && actionCode === 'db'" class="cust-grey" style="text-align: left">{{data.time}} {{data.realDate}}</div>
         <div *ngIf="data.time && data.date && actionCode === 'cache'" class="cust-grey" style="text-align: left">{{data.time}} {{calculateRealDate(data.date)}}</div>

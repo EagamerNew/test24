@@ -9,6 +9,8 @@ import {CookieService} from "ngx-cookie-service";
   styleUrls: ['./result.component.css']
 })
 export class ResultComponent implements OnInit {
+  searchText = '';
+  disableReset = true;
 
   constructor(private cacheService: CacheService,
               private cookieService: CookieService,
@@ -17,6 +19,7 @@ export class ResultComponent implements OnInit {
 
   // data: any;
   results: any;
+  resultsOrigin: any;
   actionCode: string = 'cache' // cache, db, notfound
   examUserIds: string[] = [];
   users: any = [];
@@ -59,7 +62,7 @@ export class ResultComponent implements OnInit {
   }
 
   getExamHistory() {
-    this.commonService.getExamHistoryByUserId(this.cookieService.get('userId')).then(res => {
+    this.commonService.getExamHistoryList().then(res => {
       console.log('result : ', res);
       this.results = res.map(mapper => {
         if (mapper.examinatorUserId) {
@@ -72,12 +75,17 @@ export class ResultComponent implements OnInit {
         }
         return mapper;
       });
+      this.resultsOrigin = this.results;
       console.log('userIds: ', this.examUserIds);
       this.getExaminatorUsernameById();
     });
   }
 
-
+  handleSearchString() {
+    this.searchText = '';
+    this.results = this.resultsOrigin;
+    this.disableReset = true;
+  }
 
   monthInRus(month: number) {
     switch (month) {
@@ -128,6 +136,23 @@ export class ResultComponent implements OnInit {
       this.users = res;
     });
   }
+
+
+  searchQuestion(): void {
+    if (this.searchText === '' || this.searchText === null || this.searchText.length === 0) {
+      this.handleSearchString();
+    } else {
+      this.disableReset = false;
+      console.log(this.searchText);
+      this.results = [];
+      this.resultsOrigin.forEach(value => {
+        if (value.username.toLowerCase().includes(this.searchText.toLowerCase())) {
+          this.results.push(value);
+        }
+      });
+    }
+  }
+
 
   trackByFn(index, item) {
     return index;

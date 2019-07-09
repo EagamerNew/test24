@@ -216,8 +216,21 @@ export class ExamListComponent implements OnInit {
       try {
         return exam.participantList[this.userId].status;
       } catch (e) {
-        console.log('IHAVE AN ERROR');
+        console.log('IHAVE AN ERROR1');
         return '';
+      }
+    }
+  }
+
+  restartExam(exam){
+    if(exam.participantList !== undefined) {
+      try {
+        if(exam.participantList[this.userId].status === 'done'){
+          return true;
+        }
+      } catch (e) {
+        console.log('IHAVE AN ERROR2');
+        return false;
       }
     }
   }
