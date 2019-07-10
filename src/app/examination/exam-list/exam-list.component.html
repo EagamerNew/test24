@@ -74,7 +74,7 @@
               <b *ngIf="exam.participantList" class="custom-text">Заявки {{getSize(exam.participantList)}}</b>
               <b *ngIf="!exam.participantList" class="custom-text">Заявки 0</b>
               <button mat-raised-button class="mat-accent"
-                      *ngIf="!existInExam(exam)"
+                      *ngIf="!existInExam(exam) || restartExam(exam)"
                       (click)="participate(exam.id,exam.participantList)">
                 Записаться
               </button>
@@ -82,7 +82,7 @@
                       && getStatus(exam) === 'pending'">Заявка на рассмотрении</span>
               <button mat-raised-button class="mat-warn"
                       [routerLink]="'/test/'+exam.templateId+'/'+exam.id"
-                      *ngIf="(existInExam(exam) && getStatus(exam) === 'active') || restartExam(exam)">
+                      *ngIf="(existInExam(exam) && getStatus(exam) === 'active') ">
                 Начать
               </button>
             </div>
