@@ -472,7 +472,7 @@ export class CommonService {
   }
 
   getActiveCompanyList() {
-    return this.fireSQL.query(`SELECT __name__ as id, bin,subsidiary, name,phoneNumber,status FROM company WHERE status='active'`);
+    return this.fireSQL.query(`SELECT __name__ as id, bin,subsidiary, name,phoneNumber,status FROM company WHERE status='active' ORDER BY name ASC `);
   }
 
   getUserList() {
@@ -568,5 +568,15 @@ export class CommonService {
       .then(res => {
         return res;
       });
+  }
+
+  getConditionTerms(){
+    return this.fireSQL.query('SELECT __name__ as id, description FROM condition');
+  }
+
+  updateConditionTerms(id,description: string){
+    return this.firestore.collection('condition').doc(id).update({
+      description: description
+    })
   }
 }

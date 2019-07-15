@@ -11,8 +11,8 @@
 
     <div style="margin-top: 25px">
       <div fxFlex="row" fxLayoutAlign="space-between center">
-        <div *ngIf="data.time && data.realDate && actionCode === 'db'" class="cust-grey" style="text-align: left">{{data.time}} {{data.realDate}}</div>
-        <div *ngIf="data.time && data.date && actionCode === 'cache'" class="cust-grey" style="text-align: left">{{data.time}} {{calculateRealDate(data.date)}}</div>
+        <div *ngIf="data.time && data.realDate && actionCode === 'db'" class="cust-grey" style="text-align: left">{{calculateRealTime(data.time)}} {{data.realDate}}</div>
+        <div *ngIf="data.time && data.date && actionCode === 'cache'" class="cust-grey" style="text-align: left">{{calculateRealTime(data.time)}} {{calculateRealDate(data.date)}}</div>
         <div *ngIf="data.examinatorUserId && cookieService.get('role') === 'admin'" style="text-align: right; color:green;">{{getExamUserFio(data.examinatorUserId,i)}}</div>
       </div>
     </div>

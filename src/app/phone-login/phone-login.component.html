@@ -52,6 +52,23 @@
   <!--<button (click)="verifyLoginCode()">Verify</button>-->
   <!--</div>-->
 
+  <div *ngIf="!main">
+    <div fxLayout="row" fxLayoutAlign="center center" style="text-align: center;margin-top: 10px;">
+      <h3>
+        <span style="color: #107ECC;">Пользователь не зарегестрирован! Регистрация проходит в учебных центрах!</span>
+        <div fxLayout="column" fxLayoutAlign="space-around start" style="margin-top: 25px;">
+          <div
+            [routerLink]="'/study-center'"
+            style="margin-top: 10px; background: #107ECC; width: 99%; cursor: pointer;color: white; text-align: center;">
+            <div style="margin: 13px auto">
+              Учебные центры
+            </div>
+          </div>
+        </div>
+      </h3>
+    </div>
+  </div>
+
 </div>
 <!--<div *ngIf="user">-->
 <!--You have successfully logged in with your phone number!-->

@@ -41,6 +41,7 @@ export class TestComponent implements OnInit {
     companyName: '',
     examinatorUserId: ''
   };
+  companyInfo :any;
 
   selectedAnswer: number = -1;
 
@@ -275,6 +276,7 @@ export class TestComponent implements OnInit {
         this.dataForResult.companyName = 'Компания не найдена';
         let coms: any = com[0];
         if (coms) {
+          this.companyInfo = coms;
           this.dataForResult.companyName = coms.name;
         }
         this.questionService.getCategoryNameById(this.template.categoryId).subscribe(res => {

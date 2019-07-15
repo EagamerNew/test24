@@ -183,4 +183,12 @@ export class ResultComponent implements OnInit {
     const date = dateIn.split('-');
     return date[0] + ' ' + this.monthInRus(parseInt(date[1])) + ' ' + date[2];
   }
+
+  calculateRealTime(timeIn){
+    const time:string[] = timeIn.split(':');
+    if(timeIn.length === 4){
+      time[1]  = '0' + time[1];
+    }
+    return time.join(':');
+  }
 }

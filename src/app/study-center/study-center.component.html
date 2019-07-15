@@ -5,12 +5,12 @@
 
 <div *ngFor="let company of companyList;let i = index;"
      fxLayout="row" >
-  <div style="border: 1px solid orange;color:orange; border-radius:7px;width:300px; margin-bottom: 5px;" class="{{company.status}}-company">
+  <div style="border: 1px solid orange;color:orange; border-radius:7px;width:300px; margin-bottom: 15px; font-size: 14px;" class="{{company.status}}-company">
     <div style="margin:7px;">
-      <b>{{i+1}}.{{company.name}}</b>
+      <b>{{company.name}}</b>
       <br>
-      <div style="margin-top:10px;text-decoration: underline;cursor:pointer; color:#107ECC;">
-        <a style="color:#107ECC;" [href]="'tel:' + company.phoneNumber"><span><mat-icon [inline]="true" style="font-size: 15px;">phone</mat-icon></span>&nbsp;{{company.phoneNumber}}</a>
+      <div style="margin-top:10px; color:#107ECC;">
+        <b>&nbsp;+7{{company.phoneNumber}}</b>
       </div>
     </div>
   </div>

@@ -28,6 +28,7 @@ import {StaffComponent} from "./staff/staff.component";
 import {CreatePasswordComponent} from "./create-password/create-password.component";
 import {ResultComponent} from "./result/result.component";
 import {StudyCenterComponent} from "./study-center/study-center.component";
+import {ConditionTermsComponent} from "./condition-terms/condition-terms.component";
 
 const routes: Routes = [
   {path: '', component: MenuComponent},
@@ -60,11 +61,12 @@ const routes: Routes = [
   {path: 'staff', component: StaffComponent},
   {path: 'create-password', component: CreatePasswordComponent},
   {path: 'result', component: ResultComponent},
-  {path: 'study-center', component: StudyCenterComponent}
+  {path: 'study-center', component: StudyCenterComponent},
+  {path: 'condition-terms', component: ConditionTermsComponent}
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { useHash: true })],
   exports: [RouterModule]
 })
 export class AppRoutingModule {

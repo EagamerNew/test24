@@ -15,7 +15,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AngularFireModule} from '@angular/fire';
 import {AngularFirestoreModule} from '@angular/fire/firestore';
 import {environment} from '../environments/environment';
-
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import {CategoryService} from './shared/category.service';
 import {QuestionService} from './shared/question.service';
 import {SectionService} from './shared/section.service';
@@ -53,6 +53,7 @@ import {ResultComponent} from "./result/result.component";
 import {CacheService} from "./shared/cache.service";
 import {DatePipe} from '@angular/common';
 import {StudyCenterComponent} from "./study-center/study-center.component";
+import {ConditionTermsComponent} from "./condition-terms/condition-terms.component";
 
 @NgModule({
   declarations: [
@@ -86,7 +87,8 @@ import {StudyCenterComponent} from "./study-center/study-center.component";
     StaffComponent,
     CreatePasswordComponent,
     ResultComponent,
-    StudyCenterComponent
+    StudyCenterComponent,
+    ConditionTermsComponent
   ],
   imports: [
     BrowserModule,
@@ -105,7 +107,8 @@ import {StudyCenterComponent} from "./study-center/study-center.component";
     SectionService,
     CacheService,
     DatePipe,
-    CategoryService, {provide: FirestoreSettingsToken, useValue: {}}, CommonService
+    CategoryService, {provide: FirestoreSettingsToken, useValue: {}}, CommonService,
+    {provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
   bootstrap: [AppComponent]
 })

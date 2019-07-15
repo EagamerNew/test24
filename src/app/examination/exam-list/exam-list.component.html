@@ -1,12 +1,19 @@
 <div *ngIf="main">
   <div *ngIf="!isFiltering" style="margin-bottom:15px;">
-    <mat-form-field class="example-full-width" >
+    <mat-form-field class="example-full-width">
       <input type="text" matInput placeholder="Поиск..."
-             autocomplete="off" [(ngModel)]="searchText" [matTooltip]="'По адресу, названию компании, категории и секции'">
-      <button mat-icon-button matSuffix (click)="search()" [disabled]="searchText.trim().length === 0 || loading"><mat-icon >search</mat-icon></button>
+             autocomplete="off" [(ngModel)]="searchText"
+             [matTooltip]="'По адресу, названию компании, категории и секции'">
+      <button mat-icon-button matSuffix (click)="search()" [disabled]="searchText.trim().length === 0 || loading">
+        <mat-icon>search</mat-icon>
+      </button>
       <mat-hint>Нажмите для поиска</mat-hint>
-      <button mat-icon-button matSuffix matTooltip="Показать фильтр" (click)="showFilter()"><mat-icon>filter_list</mat-icon></button>
-      <button mat-icon-button matSuffix (click)="handleSearchString()" [disabled]="disableReset " mattooltip="Сбросить"><mat-icon >clear</mat-icon></button>
+      <button mat-icon-button matSuffix matTooltip="Показать фильтр" (click)="showFilter()">
+        <mat-icon>filter_list</mat-icon>
+      </button>
+      <button mat-icon-button matSuffix (click)="handleSearchString()" [disabled]="disableReset " mattooltip="Сбросить">
+        <mat-icon>clear</mat-icon>
+      </button>
 
     </mat-form-field>
   </div>
@@ -46,13 +53,18 @@
   </div>
 
   <div *ngIf="examList && examList.length > 0">
-    <div *ngFor="let exam of examList; trackBy: trackByFn" style="padding-top: 10px;">
+    <div *ngFor="let exam of examList; trackBy: trackByFn;let i = index;" style="padding-top: 10px;">
       <mat-card class="example-card" style="border:1px solid black;">
         <div>
         <span style="float: left">{{getNameFromCategory(exam.categoryId)}}
           <br>
           <span class="custom-text">{{getCompanyNameById(exam.companyId)}}</span>
         </span>
+          <span *ngIf="userRole === 'admin' || (exam.examinatorUserId === userId && userRole === 'staff')"
+                style="float: right;cursor:pointer;" matTooltip="Архивировать"
+                (click)="archiveExam(exam.id,i)">
+            <mat-icon>clear</mat-icon>
+          </span>
         </div>
         <br>
         <mat-card-content style="text-align: center; padding: 30px 0;">

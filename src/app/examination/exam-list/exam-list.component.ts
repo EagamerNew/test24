@@ -222,6 +222,11 @@ export class ExamListComponent implements OnInit {
     }
   }
 
+  archiveExamById(examId){
+
+  }
+
+
   restartExam(exam){
     if(exam.participantList !== undefined) {
       try {

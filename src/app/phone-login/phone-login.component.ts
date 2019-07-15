@@ -27,6 +27,7 @@ export class PhoneLoginComponent implements OnInit {
 
   disableButton = false;
   snackBarRef: any;
+  main = true;
 
   constructor(private win: WindowService,
               public snackBar: MatSnackBar,
@@ -180,7 +181,8 @@ export class PhoneLoginComponent implements OnInit {
         this.openSnackBar('Вы успешно авторизовались', '');
         this.router.navigateByUrl('');
       } else {
-        this.openSnackBar('Номер или пароль не правильный', '');
+        this.main = false;
+        // this.openSnackBar('Номер или пароль не правильный', '');
       }
     });
   }

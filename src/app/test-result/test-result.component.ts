@@ -13,8 +13,8 @@ export class TestResultComponent implements OnInit {
 
   @Input() data: any;
   @Input() companyId: string;
+  @Input() company: any;
   companyName: string = 'Компания не найдена';
-
   percent: string = '';
   constructor(private commonService: CommonService) {
   }
@@ -40,6 +40,7 @@ export class TestResultComponent implements OnInit {
       this.commonService.getCompanyById(this.companyId).then(res=> {
           if (res) {
             this.companyName = res[0].name;
+            this.company = res;
           }
         }
       );
