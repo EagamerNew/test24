@@ -23,7 +23,7 @@ export class QuestionService {
     temp = temp.substring(0, temp.length - 1);
     // console.log(temp);
     return this.fireSQL.query(`SELECT __name__ as docId, answers, author, category, correctAnswer,
-                                    description, point, questionType, section
+                                    description, point, questionType, answersCount,answersCountTotal section
                                      FROM question WHERE __name__ IN (` + temp + `) `);
   }
 
@@ -179,6 +179,13 @@ export class QuestionService {
     delete question.docId;
     console.log('updating question: ', question, '\n docId:', docId);
     return this.firebase.collection('question').doc(docId).set(question);
+  }
+
+  updateQuestionIndex(id,answerCount , answerCountTotal){
+    return this.firebase.collection('question').doc(id).update({
+      answerCount: answerCount,
+      answerCountTotal: answerCountTotal
+    })
   }
 
   deleteQuestion(questionId) {

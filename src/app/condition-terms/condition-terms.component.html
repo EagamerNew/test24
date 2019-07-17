@@ -6,7 +6,7 @@
 <div *ngIf="userRole === 'admin'">
   <div fxLayout="column" fxLayoutAlign="space-evenly center" >
     <mat-form-field>
-      <textarea type="text" maxlength="200" rows="3" matInput placeholder="Текст условия"
+      <textarea type="text" rows="5" matInput placeholder="Текст условия"
                 required [(ngModel)]="condition"></textarea>
     </mat-form-field>
     <button style="margin-top: 20px;background-color: #107ECC;" class="mat-accent" mat-raised-button (click)="saveCondition()">Сохранить</button>

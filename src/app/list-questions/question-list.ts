@@ -1,6 +1,8 @@
 export class QuestionList {
   docId?: string;
   answers ?: string[];
+  answersCount ?: number[];
+  answersCountTotal ?: number;
   author?: string;
   speciality?: string;
   category?: string;

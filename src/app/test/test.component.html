@@ -55,9 +55,16 @@
         </div>
       </div>
 
-      <button *ngIf="i !== (questions.length - 1) && template.isExamTemplate" mat-button (click)="nextQ()"
-              style="float:right;" mat-raised-button class="mat-primary">Следующий вопрос
-      </button>
+      <div *ngIf="i !== (questions.length - 1) && template.isExamTemplate">
+        <div
+          [ngClass]="{not_full: nextQes}"
+          (click)="nextQ()"
+          style="margin-top: 10px; background: #107ECC; width: 99%; cursor: pointer;color: white; text-align: center;">
+          <div style="margin: 13px auto">
+            Ответить
+          </div>
+        </div>
+      </div>
       <!--<button *ngIf="!template.isExamTemplate" mat-button (click)="nextQESTIONNEW()"-->
               <!--style="float:right;" mat-raised-button class="mat-primary">Следующий вопрос-->
       <!--</button>-->

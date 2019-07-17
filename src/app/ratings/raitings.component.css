@@ -8,9 +8,15 @@ p small {
 }
 .mat-card{
   border-style: solid;
-  border-color: coral;
+  border-color: #164bff;
 }
 .right{
   color: lawngreen;
   font-weight: bold;
+}
+::ng-deep .mat-card-header{
+  display: block!important;
+}
+::ng-deep .mat-card-header-text{
+  margin :0px !important;
 }

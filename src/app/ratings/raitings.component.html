@@ -1,36 +1,41 @@
-<div *ngFor="let res of ratingResultsNew" style="padding-bottom:7%;">
+<div *ngFor="let res of ratingResultsNew;let i = index;" style="padding-bottom:7%;">
   <mat-card class="example-card">
     <mat-card-header>
-      <mat-card-subtitle>
-        <h4>
-          <b style="float: left">{{res.username}}</b> &nbsp;&nbsp;
-          <b style="float: right">
-            /&nbsp;&nbsp;Общ. баллл:
+      <mat-card-subtitle (click)="show(i)">
+        <h4 style="color: #164bff;cursor: pointer;">
+          <div fxLayout="column" fxLayoutAlign="start start" fxFlex="80">
+            <b style="float: left">{{i + 1}}. {{res.username}}</b>
+          </div>
+          <div fxLayout="column" fxLayoutAlign="start end" fxFlex="20">
+            <b style="float: right;color: #164bff;cursor: pointer;">
             <span
               *ngIf="res.count >= 5 && res.scoreMust >= res.scoreTotal ">{{(res.scoreTotal / res.scoreMust * 100)| number : '1.2-2'}}
               % </span>
-            <span
-              *ngIf="res.count >= 5 && res.scoreMust < res.scoreTotal">{{(res.scoreTotal / res.count)| number : '1.2-2'}}</span>
-            <span *ngIf="res.count < 5" style="color:red;">*</span>
-          </b>
+              <span
+                *ngIf="res.count >= 5 && res.scoreMust < res.scoreTotal">{{(res.scoreTotal / res.count * 100)| number : '1.2-2'}}</span>
+              <span *ngIf="res.count < 5" style="color:red;">*</span>
+            </b>
+          </div>
         </h4>
       </mat-card-subtitle>
     </mat-card-header>
     <mat-card-content *ngFor="let res2 of sortingResulsts">
-      <p *ngIf="res.userId == res2.userId">{{res2.category}} -
-        &nbsp;
-        <span *ngIf="res2.count >= 5 && res2.scoreMust >=res2.score">{{res2.score / res2.scoreMust| number : '1.2-2'}}
-          %</span>
-        <span
-          *ngIf="res2.count >= 5 && res2.scoreMust <res2.score">{{res2.score / res2.count| number : '1.2-2'}}</span>
-        <span *ngIf="res2.count < 5" style="color:red;font-weight: bold;">*</span>
-      </p>
-
+      <div *ngIf="showList[i]" style="color: #164bff;cursor: pointer;font-style: italic;">
+        <p *ngIf="res.userId == res2.userId">{{res2.category}} -
+          &nbsp;
+          <span
+            *ngIf="res2.count >= 5 && res2.scoreMust >=res2.score">{{res2.score / res2.scoreMust * 100| number : '1.2-2'}}
+            %</span>
+          <span
+            *ngIf="res2.count >= 5 && res2.scoreMust <res2.score">{{res2.score / res2.count * 100| number : '1.2-2'}}</span>
+          <span *ngIf="res2.count < 5" style="color:red;font-weight: bold;">*</span>
+        </p>
+      </div>
     </mat-card-content>
   </mat-card>
 </div>
-<div *ngIf="ratingResults.length === 0">
+<div *ngIf="ratingResultsNew.length === 0">
   Данные не найдено
+  <br>
+  <i>* - Не было сдано 5 и более экзаменов</i>
 </div>
-<br>
-<i>* - Не было сдано 5 и более экзаменов</i>

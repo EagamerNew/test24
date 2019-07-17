@@ -70,7 +70,7 @@
       <button mat-button class="cust-button" *ngIf="this.cookie.get('userId') && checkToAccess('users')" [routerLink]="['users']"><!-- usersPL-->
         Пользователи
       </button>
-      <button mat-button class="cust-button" *ngIf="this.cookie.get('userId')" [routerLink]="['/condition-terms']">
+      <button mat-button class="cust-button"  [routerLink]="['/condition-terms']">
         Условия
       </button>
       <button mat-button class="cust-button" *ngIf="!this.cookie.get('userId')" [routerLink]="['/login-phone']">

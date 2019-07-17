@@ -135,6 +135,10 @@ export class QuestionComponent implements OnInit {
     // console.log(question);
     question.status = 'in_moderation';
     question.author = this.cookieService.get('userId');
+    question.answersCountTotal = 0;
+    question.answersCount = question.answers.map(res=>{
+      return 0;
+    });
     console.log('question: ', question);
     this.firestore.collection('question').add(question);
 

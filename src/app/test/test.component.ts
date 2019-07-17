@@ -41,7 +41,7 @@ export class TestComponent implements OnInit {
     companyName: '',
     examinatorUserId: ''
   };
-  companyInfo :any;
+  companyInfo: any;
 
   selectedAnswer: number = -1;
 
@@ -69,9 +69,9 @@ export class TestComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.templateId = params['id'];
       this.examId = params['examId'];
-      if(this.examId){
+      if (this.examId) {
         this.cookieService.set('title', 'Экзамен');
-      }else{
+      } else {
         this.cookieService.set('title', 'Тест');
       }
       if (this.templateId) {
@@ -229,17 +229,16 @@ export class TestComponent implements OnInit {
         answer: answer,
         correctAnswer: this.questions[i].correctAnswer,
         docId: docId,
-        point: this.questions[i].point
+        point: this.questions[i].point,
+        questionIndex: parseInt(i)
       });
     }
-
     if (this.answers.length == this.questions.length) {
       this.saveAns = false;
     }
     if (this.template.isExamTemplate) {
       this.nextQ();
     }
-    console.log(JSON.stringify(this.answers));
   }
 
 
@@ -252,12 +251,18 @@ export class TestComponent implements OnInit {
       for (let i = 0; i < this.answers.length; i++) {
         if (parseInt(this.answers[i].correctAnswer) === parseInt(this.answers[i].answer)) {
           correctCount += 1;
+          this.questions[this.answers[i].questionIndex].answersCount[this.answers[i].answer] =
+            this.questions[this.answers[i].questionIndex].answersCount[this.answers[i].answer] + 1;
+          this.questionService.updateQuestionIndex(this.questions[this.answers[i].questionIndex].id,
+            this.questions[this.answers[i].questionIndex].answersCount,
+            this.questions[this.answers[i].questionIndex].answersCountTotal).then(res => {
+
+          });
           this.pointTotal += parseInt(this.answers[i].point);
           this.pointMust += parseInt(this.answers[i].point);
         } else {
           misCount += 1;
           this.pointMust += parseInt(this.answers[i].point);
-          // console.log("in correct",i+1)
         }
       }
       const startDate = new Date();
@@ -334,6 +339,7 @@ export class TestComponent implements OnInit {
 
 class answer {
   docId?: string;
+  questionIndex?: number;
   answer?: string;
   point?: string;
   correctAnswer?: string;
