@@ -20,3 +20,6 @@ p small {
 ::ng-deep .mat-card-header-text{
   margin :0px !important;
 }
+.example-full-width {
+  width: 100%;
+}

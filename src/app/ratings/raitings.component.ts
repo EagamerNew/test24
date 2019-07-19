@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {QuestionService} from "../shared/question.service";
-import {QuestionSection} from "../question/section/question-section.model";
-import {QuestionList} from "../list-questions/question-list";
-import {CommonService} from "../shared/common.service";
+import {QuestionService} from '../shared/question.service';
+import {QuestionSection} from '../question/section/question-section.model';
+import {QuestionList} from '../list-questions/question-list';
+import {CommonService} from '../shared/common.service';
 import {CookieService} from 'ngx-cookie-service';
 
 @Component({
@@ -24,8 +24,9 @@ export class RaitingsComponent implements OnInit {
   ratingResults: Rating[] = [];
   ratingResultsNew: Rating[] = [];
   ratingResult: Rating = new Rating();
+  searchText = '';
 
-
+  originResultList  = [];
   ngOnInit(): void {
     this.cookieService.set('title', 'Рейтинг');
     this.getResultList();
@@ -47,10 +48,25 @@ export class RaitingsComponent implements OnInit {
           title: result.title,
           userId: result.userId,
           username: result.username
+        };
+      });
+      this.originResultList = this.results;
+      this.getResultsGroupByUserAndSection();
+    });
+  }
+
+  search(): void {
+    if (this.searchText === '' || this.searchText === null || this.searchText.length === 0) {
+      this.ratingResultsNew = this.originResultList;
+    } else {
+      console.log(this.searchText);
+      this.ratingResultsNew = [];
+      this.originResultList.forEach(value => {
+        if (value.username.toLowerCase().includes(this.searchText.toLowerCase())) {
+          this.ratingResultsNew.push(value);
         }
       });
-      this.getResultsGroupByUserAndSection()
-    })
+    }
   }
 
   getResultsGroupByUserAndSection() {
@@ -113,12 +129,13 @@ export class RaitingsComponent implements OnInit {
             this.ratingResult.scoreMust += this.sortingResulsts[j].scoreMust;
           }
         }
-        if(this.ratingResult.userId){
+        if (this.ratingResult.userId) {
           this.ratingResultsNew.push(this.ratingResult);
           this.showList.push(false);
         }
       }
     }
+    this.originResultList = this.ratingResultsNew;
   }
 
   getRatingGroupByUser(): void {
