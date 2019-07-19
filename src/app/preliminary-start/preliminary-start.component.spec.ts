@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ConditionTermsComponent } from './condition-terms.component';
+import { PreliminaryStartComponent } from './preliminary-start.component';
 
-describe('ConditionTermsComponent', () => {
-  let component: ConditionTermsComponent;
-  let fixture: ComponentFixture<ConditionTermsComponent>;
+describe('PreliminaryStartComponent', () => {
+  let component: PreliminaryStartComponent;
+  let fixture: ComponentFixture<PreliminaryStartComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ConditionTermsComponent ]
+      declarations: [ PreliminaryStartComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ConditionTermsComponent);
+    fixture = TestBed.createComponent(PreliminaryStartComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

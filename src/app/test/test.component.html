@@ -55,7 +55,7 @@
         </div>
       </div>
 
-      <div *ngIf="i !== (questions.length - 1) && template.isExamTemplate">
+      <div *ngIf=" template.isExamTemplate" fxLayout="column" fxLayoutAlign="space-around start" style="margin-top: 25px;">
         <div
           [ngClass]="{not_full: nextQes}"
           (click)="nextQ()"

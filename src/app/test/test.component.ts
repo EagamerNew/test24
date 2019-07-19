@@ -236,9 +236,9 @@ export class TestComponent implements OnInit {
     if (this.answers.length == this.questions.length) {
       this.saveAns = false;
     }
-    if (this.template.isExamTemplate) {
-      this.nextQ();
-    }
+    // if (this.template.isExamTemplate) {
+    //   this.nextQ();
+    // }
   }
 
 
@@ -251,13 +251,15 @@ export class TestComponent implements OnInit {
       for (let i = 0; i < this.answers.length; i++) {
         if (parseInt(this.answers[i].correctAnswer) === parseInt(this.answers[i].answer)) {
           correctCount += 1;
-          this.questions[this.answers[i].questionIndex].answersCount[this.answers[i].answer] =
-            this.questions[this.answers[i].questionIndex].answersCount[this.answers[i].answer] + 1;
-          this.questionService.updateQuestionIndex(this.questions[this.answers[i].questionIndex].id,
-            this.questions[this.answers[i].questionIndex].answersCount,
-            this.questions[this.answers[i].questionIndex].answersCountTotal).then(res => {
+          if (this.questions[this.answers[i].questionIndex]['answerCount'] && this.questions[this.answers[i].questionIndex]['answerCountTotal']) {
+            this.questions[this.answers[i].questionIndex].answersCount[this.answers[i].answer] =
+              this.questions[this.answers[i].questionIndex].answersCount[this.answers[i].answer] + 1;
+            this.questionService.updateQuestionIndex(this.questions[this.answers[i].questionIndex].id,
+              this.questions[this.answers[i].questionIndex].answersCount,
+              this.questions[this.answers[i].questionIndex].answersCountTotal).then(res => {
 
-          });
+            });
+          }
           this.pointTotal += parseInt(this.answers[i].point);
           this.pointMust += parseInt(this.answers[i].point);
         } else {

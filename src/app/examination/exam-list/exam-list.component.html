@@ -82,29 +82,16 @@
         </mat-card-content>
         <mat-card-actions>
           <div fxFlex="100" fxLayoutAlign="space-between center">
-            <div>
-              <b *ngIf="exam.participantList" class="custom-text">Заявки {{getSize(exam.participantList)}}</b>
-              <b *ngIf="!exam.participantList" class="custom-text">Заявки 0</b>
-              <button mat-raised-button class="mat-accent"
-                      *ngIf="!existInExam(exam) || restartExam(exam)"
-                      (click)="participate(exam.id,exam.participantList)">
-                Записаться
-              </button>
-              <span *ngIf="existInExam(exam)
-                      && getStatus(exam) === 'pending'">Заявка на рассмотрении</span>
-              <button mat-raised-button class="mat-warn"
-                      [routerLink]="'/test/'+exam.templateId+'/'+exam.id"
-                      *ngIf="(existInExam(exam) && getStatus(exam) === 'active') ">
-                Начать
-              </button>
-            </div>
+            <b *ngIf="exam.participantList" class="custom-text">Заявки {{getSize(exam.participantList)}}</b>
+            <b *ngIf="!exam.participantList" class="custom-text">Заявки 0</b>
 
-            <button mat-raised-button class="mat-primary"
-                    [routerLink]="'/exam-setting/'+exam.id"
-                    *ngIf="userRole === 'admin' || (exam.examinatorUserId === userId && userRole === 'staff')">
-              Настройка
+            <button mat-icon-button [routerLink]="'/preliminary-start/exam/' + exam.id"
+                    class="custom-text"
+                    matTooltip="Перейти">
+              <mat-icon class="custom-text">redo</mat-icon>
             </button>
           </div>
+
         </mat-card-actions>
       </mat-card>
     </div>

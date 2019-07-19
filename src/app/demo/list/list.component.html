@@ -1,11 +1,18 @@
 <div *ngIf="!isFiltering" style="margin-bottom:15px;">
-  <mat-form-field class="example-full-width" >
+  <mat-form-field class="example-full-width">
     <input type="text" matInput placeholder="Поиск..."
-           autocomplete="off" [(ngModel)]="searchText" [matTooltip]="'По названию категории, компании, категории и секции'">
-    <button mat-icon-button matSuffix (click)="search()" [disabled]="searchText.trim().length === 0 || loading"><mat-icon >search</mat-icon></button>
+           autocomplete="off" [(ngModel)]="searchText"
+           [matTooltip]="'По названию категории, компании, категории и секции'">
+    <button mat-icon-button matSuffix (click)="search()" [disabled]="searchText.trim().length === 0 || loading">
+      <mat-icon>search</mat-icon>
+    </button>
     <mat-hint>Нажмите для поиска</mat-hint>
-    <button mat-icon-button matSuffix matTooltip="Показать фильтр" (click)="showFilter()"><mat-icon>filter_list</mat-icon></button>
-    <button mat-icon-button matSuffix (click)="handleSearchString()" [disabled]="disableReset " mattooltip="Сбросить"><mat-icon >clear</mat-icon></button>
+    <button mat-icon-button matSuffix matTooltip="Показать фильтр" (click)="showFilter()">
+      <mat-icon>filter_list</mat-icon>
+    </button>
+    <button mat-icon-button matSuffix (click)="handleSearchString()" [disabled]="disableReset " mattooltip="Сбросить">
+      <mat-icon>clear</mat-icon>
+    </button>
 
   </mat-form-field>
 </div>
@@ -32,7 +39,8 @@
     </mat-select>
   </mat-form-field>
   <mat-form-field class="example-full-width">
-    <mat-select placeholder="Раздел" [(ngModel)]="filterTemplate.sectionId" [disabled]="sectionSelectDisable || filterTemplate.categoryId === ''">
+    <mat-select placeholder="Раздел" [(ngModel)]="filterTemplate.sectionId"
+                [disabled]="sectionSelectDisable || filterTemplate.categoryId === ''">
       <mat-option [value]="''">Все</mat-option>
       <mat-option *ngFor="let section of categorySectionList" [value]="section.id">
         {{section.name}}
@@ -50,13 +58,14 @@
   <i>Данные не найдены</i>
 </div>
 <div *ngIf="!isFiltering || showFilterResult">
-  <div *ngFor="let template of templateList" >
+  <div *ngFor="let template of templateList">
     <mat-card class="example-card"
               style="color: #107ECC; border: 1px solid #107ECC;margin-bottom: 15px;">
       <div *ngIf="categoryList && sectionList">
         <p style="float: left;line-height: 0.1px;" class="mat-caption">{{template.name}}</p>
         <br>
-        <p style="clear:both;float: left;line-height: 0.1px;" class="mat-caption">{{getNameFromCompany(template.companyId)}}</p>
+        <p style="clear:both;float: left;line-height: 0.1px;"
+           class="mat-caption">{{getNameFromCompany(template.companyId)}}</p>
         <!--<span style="float: right" *ngIf="!data.isTest">{{template.section}}</span>-->
       </div>
       <br>
@@ -65,12 +74,19 @@
         <h2>
           {{getNameFromSection(template.sectionId)}}
         </h2>
-        <p >{{template.questionIdList.length}} вопросов</p>
+        <p>{{template.questionIdList.length}} вопросов</p>
       </mat-card-content>
       <div fxLayout="row" fxLayoutAlign="space-between center">
         <span style="float: left">{{getCountForTemplateResult(template.id)}}</span>
-        <span style="float: left"><button  *ngIf="cookieService.get('role') === 'admin'" (click)="deleteTemplateById(template.id)" mat-button>Удалить шаблон</button></span>
-        <span style="float: right"><button [routerLink]="'/test/' + template.id" mat-button>Сдать тест</button></span>
+        <span style="float: left"><button *ngIf="cookieService.get('role') === 'admin'"
+                                          (click)="deleteTemplateById(template.id)"
+                                          mat-button>Удалить шаблон</button></span>
+        <!--        <span style="float: right"><button [routerLink]="'/test/' + template.id" mat-button>Сдать тест</button></span>-->
+        <button mat-icon-button [routerLink]="'/preliminary-start/test/' + template.id"
+                class="custom-text"
+                matTooltip="Перейти">
+          <mat-icon class="custom-text">redo</mat-icon>
+        </button>
       </div>
     </mat-card>
 

@@ -54,6 +54,7 @@ import {CacheService} from "./shared/cache.service";
 import {DatePipe} from '@angular/common';
 import {StudyCenterComponent} from "./study-center/study-center.component";
 import {ConditionTermsComponent} from "./condition-terms/condition-terms.component";
+import {PreliminaryStartComponent} from './preliminary-start/preliminary-start.component';
 
 @NgModule({
   declarations: [
@@ -88,6 +89,7 @@ import {ConditionTermsComponent} from "./condition-terms/condition-terms.compone
     CreatePasswordComponent,
     ResultComponent,
     StudyCenterComponent,
+    PreliminaryStartComponent,
     ConditionTermsComponent
   ],
   imports: [

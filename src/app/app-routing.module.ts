@@ -29,6 +29,7 @@ import {CreatePasswordComponent} from "./create-password/create-password.compone
 import {ResultComponent} from "./result/result.component";
 import {StudyCenterComponent} from "./study-center/study-center.component";
 import {ConditionTermsComponent} from "./condition-terms/condition-terms.component";
+import {PreliminaryStartComponent} from './preliminary-start/preliminary-start.component';
 
 const routes: Routes = [
   {path: '', component: MenuComponent},
@@ -62,6 +63,7 @@ const routes: Routes = [
   {path: 'create-password', component: CreatePasswordComponent},
   {path: 'result', component: ResultComponent},
   {path: 'study-center', component: StudyCenterComponent},
+  {path: 'preliminary-start/:code/:id', component: PreliminaryStartComponent},
   {path: 'condition-terms', component: ConditionTermsComponent}
 ];
 

@@ -1,14 +1,14 @@
 import {Injectable} from '@angular/core';
-import {AngularFirestore} from "@angular/fire/firestore";
-import * as firebase from "firebase";
-import {FireSQL} from "firesql";
-import {Observable} from "rxjs";
+import {AngularFirestore} from '@angular/fire/firestore';
+import * as firebase from 'firebase';
+import {FireSQL} from 'firesql';
+import {Observable} from 'rxjs';
 import {Template} from './model/template';
-import {User} from "./model/user";
-import {USER_ROLE_LIST} from "./default-constant";
-import {CookieService} from "ngx-cookie-service";
-import {FirebaseListObservable} from "@angular/fire/database-deprecated";
-import {AngularFireDatabase} from "@angular/fire/database";
+import {User} from './model/user';
+import {USER_ROLE_LIST} from './default-constant';
+import {CookieService} from 'ngx-cookie-service';
+import {FirebaseListObservable} from '@angular/fire/database-deprecated';
+import {AngularFireDatabase} from '@angular/fire/database';
 import CollectionReference = firebase.firestore.CollectionReference;
 import {DocumentData} from 'firesql/types/utils';
 
@@ -73,69 +73,69 @@ export class CommonService {
 
   }
 
-  findExaminatorUseridByExamId(examId: string): Promise<DocumentData[]>{
+  findExaminatorUseridByExamId(examId: string): Promise<DocumentData[]> {
     return this.fireSQL.query(`SELECT examinatorUserId FROM examination WHERE __name__ = '${examId}'`);
   }
 
-  filterExamination(filterTemplate: any): Promise<DocumentData[]>{
+  filterExamination(filterTemplate: any): Promise<DocumentData[]> {
 
     let globalQuery = `SELECT categoryId, address, cityId, sectionId, startTime,
           date, examinatorUserId, companyId, templateId, participantList FROM examination WHERE status ='active' `;
     let haved = false;
 
-    if(filterTemplate.companyId){
-      globalQuery += ` AND companyId = '${filterTemplate.companyId}'`
+    if (filterTemplate.companyId) {
+      globalQuery += ` AND companyId = '${filterTemplate.companyId}'`;
       haved = true;
     }
-    if(filterTemplate.categoryId){
-      if(!haved){
+    if (filterTemplate.categoryId) {
+      if (!haved) {
         globalQuery += ' AND ';
-      }else{
+      } else {
         globalQuery += ' OR ';
       }
-      globalQuery += ` categoryId = '${filterTemplate.categoryId}'`
+      globalQuery += ` categoryId = '${filterTemplate.categoryId}'`;
     }
-    if(filterTemplate.sectionId){
+    if (filterTemplate.sectionId) {
 
-      if(!haved){
+      if (!haved) {
         globalQuery += ' AND ';
-      }else{
+      } else {
         globalQuery += ' OR ';
       }
-      globalQuery += ` sectionId = '${filterTemplate.sectionId}'`
+      globalQuery += ` sectionId = '${filterTemplate.sectionId}'`;
     }
     console.log('globalQuery:', globalQuery);
-    return this.fireSQL.query(globalQuery,{includeId:'id'});
+    return this.fireSQL.query(globalQuery, {includeId: 'id'});
   }
 
-  filterTemplate(filterTemplate: any): Promise<DocumentData[]>{
+  filterTemplate(filterTemplate: any): Promise<DocumentData[]> {
 
     let globalQuery = `SELECT * FROM template WHERE status ='active' AND isExamTemplate = false `;
     let haved = false;
 
-    if(filterTemplate.companyId){
-      globalQuery += ` AND companyId = '${filterTemplate.companyId}'`
+    if (filterTemplate.companyId) {
+      globalQuery += ` AND companyId = '${filterTemplate.companyId}'`;
       haved = true;
     }
-    if(filterTemplate.categoryId){
-      if(!haved){
+    if (filterTemplate.categoryId) {
+      if (!haved) {
         globalQuery += ' AND ';
-      }else{
+      } else {
         globalQuery += ' OR ';
       }
-      globalQuery += ` categoryId = '${filterTemplate.categoryId}'`
+      globalQuery += ` categoryId = '${filterTemplate.categoryId}'`;
     }
-    if(filterTemplate.sectionId){
+    if (filterTemplate.sectionId) {
 
-      if(!haved){
+      if (!haved) {
         globalQuery += ' AND ';
-      }else{
+      } else {
         globalQuery += ' OR ';
       }
-      globalQuery += ` sectionId = '${filterTemplate.sectionId}'`
+      globalQuery += ` sectionId = '${filterTemplate.sectionId}'`;
     }
     console.log('globalQuery:', globalQuery);
-    return this.fireSQL.query(globalQuery,{includeId:'id'});
+    return this.fireSQL.query(globalQuery, {includeId: 'id'});
   }
 
   async searchTemplate(searchText: string): Promise<DocumentData[]> {
@@ -182,25 +182,25 @@ export class CommonService {
     globalQuery += `)`;
     console.log('globalQuery: ', globalQuery);
     return this.fireSQL
-            .query(globalQuery, {includeId: 'id'});
+      .query(globalQuery, {includeId: 'id'});
 
   }
 
   findSectionIdListBySearchText(searchText: string): Promise<DocumentData[]> {
     let query = `SELECT __name__ as id FROM section WHERE name LIKE '${searchText}%' OR name LIKE '${searchText.charAt(0).toUpperCase() + searchText.slice(1)}%'`;
-    console.log('query section is:', query)
+    console.log('query section is:', query);
     return this.fireSQL.query(query);
   }
 
   findCategoryIdListBySearchText(searchText: string) {
     let query = `SELECT __name__ as id FROM category WHERE name LIKE '${searchText}%' OR name LIKE '${searchText.charAt(0).toUpperCase() + searchText.slice(1)}%'`;
-    console.log('query category is:', query)
+    console.log('query category is:', query);
     return this.fireSQL.query(query);
   }
 
   findCompanyIdListBySearchText(searchText: string) {
     let query = `SELECT __name__ as id FROM company WHERE name LIKE '${searchText}%' OR name LIKE '${searchText.charAt(0).toUpperCase() + searchText.slice(1)}%'`;
-    console.log('query company is:', query)
+    console.log('query company is:', query);
     return this.fireSQL.query(query);
   }
 
@@ -266,27 +266,27 @@ export class CommonService {
   }
 
   getShortTemplateById(id: string) {
-    return this.fireSQL.query(`SELECT DISTINCT __name__ as id, name FROM template WHERE __name__ = '${id}'`)
+    return this.fireSQL.query(`SELECT DISTINCT __name__ as id, name FROM template WHERE __name__ = '${id}'`);
   }
 
   getShortTemplateList(idList: string[]) {
-    let temp = "";
+    let temp = '';
     for (let str of idList) {
       temp = temp + '"' + str + '",';
     }
     temp = temp.substring(0, temp.length - 1);
-    console.log('temp to search: ', temp)
-    return this.fireSQL.query(`SELECT DISTINCT __name__ as id, name , questionIdList FROM template WHERE __name__ IN (${temp})`)
+    console.log('temp to search: ', temp);
+    return this.fireSQL.query(`SELECT DISTINCT __name__ as id, name , questionIdList FROM template WHERE __name__ IN (${temp})`);
   }
 
   getSubsidiaryListByListIdn(idList: string[]) {
-    let temp = "";
+    let temp = '';
     for (let str of idList) {
       temp = temp + '"' + str + '",';
     }
     temp = temp.substring(0, temp.length - 1);
-    console.log('temp to search: ', temp)
-    return this.fireSQL.query(`SELECT DISTINCT __name__ as id, name FROM subsidiary WHERE __name__ IN (${temp})`)
+    console.log('temp to search: ', temp);
+    return this.fireSQL.query(`SELECT DISTINCT __name__ as id, name FROM subsidiary WHERE __name__ IN (${temp})`);
   }
 
   getResultById(id: string) {
@@ -296,7 +296,7 @@ export class CommonService {
   updateExamParticipantList(examId: string, participantList: any) {
     return this.firestore.collection('examination').doc(examId).update({
       'participantList': participantList
-    })
+    });
   }
 
   getUserNameAndIdn(userId: string) {
@@ -305,8 +305,43 @@ export class CommonService {
   }
 
   getExamTemplateList() {
-    return this.fireSQL.query(`SELECT __name__ as id, name FROM template WHERE status = 'active' 
+    return this.fireSQL.query(`SELECT __name__ as id, name FROM template WHERE status = 'active'  
       AND isExamTemplate = TRUE`);
+  }
+
+  async getPreparedExamTemplateById(id: string) {
+    const examination = await this.getExamTemplateById(id);
+    const company = examination[0].companyId ? await this.getCompanyById(examination[0].companyId) : null;
+    const categoryName = examination[0].categoryId ? await this.getCategoryNameById(examination[0].categoryId) : null;
+    const sectionName = examination[0].sectionId ? await this.getSectionNameById(examination[0].sectionId) : null;
+    const examinatorUser = examination[0].examinatorUserId ? await this.getUserByDocId(examination[0].examinatorUserId) : null;
+    const template = examination[0].templateId ? await this.getTemplateById(examination[0].templateId) : null;
+    const cityName = examination[0].cityId ? await this.getCityNameById(examination[0].cityId) : null;
+
+    return {
+      examination: examination[0],
+      company: company[0],
+      categoryName: categoryName[0],
+      sectionName: sectionName[0],
+      examinatorUser: examinatorUser[0],
+      template: template[0],
+      cityName: cityName[0]
+    };
+  }
+
+  getCityNameById(id: string) {
+    return this.fireSQL.query(`SELECT name FROM city WHERE __name__ = '${id}'`);
+  }
+
+  getTemplateById(id: string) {
+    return this.fireSQL.query(`SELECT __name__ as id, name, categoryId, sectionId,companyId, questionIdList, status FROM 
+      template WHERE __name__ = '${id}'`);
+  }
+
+  getExamTemplateById(id: string) {
+    return this.fireSQL.query(`SELECT __name__ as id, categoryId, address, cityId, sectionId, startTime,
+          date, examinatorUserId, companyId, templateId, participantList
+      FROM examination WHERE status = 'active' AND __name__ = '${id}'`);
   }
 
   getExamList() {
@@ -448,8 +483,8 @@ export class CommonService {
   }
 
   updateCompany(company) {
-    console.log('===================================')
-    console.log(JSON.stringify(company))
+    console.log('===================================');
+    console.log(JSON.stringify(company));
     return this.firestore.collection('company').doc(company.id).set({
       bin: company.bin,
       name: company.name,
@@ -513,19 +548,35 @@ export class CommonService {
   getSectionList() {
     return this.fireSQL.query(`SELECT __name__ as id, name, categoryId FROM section`).then(res => {
       return res;
-    })
+    });
   }
 
   getCategoryList() {
     return this.fireSQL.query(`SELECT __name__ as id, name FROM category`).then(res => {
       return res;
-    })
+    });
   }
 
   getCategoryNameById(id) {
     return this.fireSQL.query(`SELECT name FROM category WHERE __name__ = '` + id + `'`).then(res => {
       return res;
     });
+  }
+
+  async getPreparedTemplateById(id: string) {
+    const template = await this.getTemplateById(id);
+    const company = template[0].companyId ? await this.getCompanyById(template[0].companyId) : null;
+    const categoryName = template[0].categoryId ? await this.getCategoryNameById(template[0].categoryId) : null;
+    const sectionName = template[0].sectionId ? await this.getSectionNameById(template[0].sectionId) : null;
+    const templateResult = template[0].id ? await this.getTemplateResultByTemplateId(template[0].id) : null;
+
+    return {
+      template: template[0],
+      company: company[0],
+      categoryName: categoryName[0],
+      sectionName: sectionName[0],
+      templateResult: templateResult
+    };
   }
 
   getActiveTemplateList() {
@@ -536,8 +587,12 @@ export class CommonService {
       });
   }
 
-  getTemplateResultListByIds(temlateIds: string[]){
-    let temp = "";
+  getTemplateResultByTemplateId(id:string){
+    return this.fireSQL.query(`SELECT __name__ as id,templateId FROM result WHERE templateId = '${id}'`);
+  }
+
+  getTemplateResultListByIds(temlateIds: string[]) {
+    let temp = '';
     for (let str of temlateIds) {
       temp = temp + '"' + str + '",';
     }
@@ -546,7 +601,7 @@ export class CommonService {
     return this.fireSQL.query(`SELECT __name__ as id,templateId FROM result WHERE templateId IN (${temp})`);
   }
 
-  getUserFioByIds(userIds: string[]){
+  getUserFioByIds(userIds: string[]) {
     let temp = '';
     for (let str of userIds) {
       temp = temp + '"' + str + '",';
@@ -554,12 +609,12 @@ export class CommonService {
     temp = temp.substring(0, temp.length - 1);
     console.log('temp to search: ', temp);
     const query = `SELECT __name__ as id,firstname, lastname FROM user WHERE __name__ IN (${temp})`;
-    console.log('query: ', query)
+    console.log('query: ', query);
     return this.fireSQL.query(query);
   }
 
   deleteTemplateById(id: string) {
-    return this.firestore.collection("template").doc(id).delete();
+    return this.firestore.collection('template').doc(id).delete();
   }
 
   getUserPrivilegeListByDocId(userDocId: string) {
@@ -570,13 +625,13 @@ export class CommonService {
       });
   }
 
-  getConditionTerms(){
+  getConditionTerms() {
     return this.fireSQL.query('SELECT __name__ as id, description FROM condition');
   }
 
-  updateConditionTerms(id,description: string){
+  updateConditionTerms(id, description: string) {
     return this.firestore.collection('condition').doc(id).update({
       description: description
-    })
+    });
   }
 }
