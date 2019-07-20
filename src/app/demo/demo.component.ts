@@ -1,18 +1,18 @@
 import {Component, OnInit} from '@angular/core';
-import {FireSQL} from 'firesql'
-import {AngularFireModule} from "@angular/fire";
-import {QuestionCategory} from "../question/category/question-category.model";
-import {QuestionSection} from "../question/section/question-section.model";
-import {CategoryService} from "../shared/category.service";
-import {SectionService} from "../shared/section.service";
-import {QuestionService} from "../shared/question.service";
-import {MatSnackBar} from "@angular/material";
-import {AngularFirestore} from "@angular/fire/firestore";
-import {Template} from "../shared/model/template";
-import {ActivatedRoute, Route, Router} from "@angular/router";
+import {FireSQL} from 'firesql';
+import {AngularFireModule} from '@angular/fire';
+import {QuestionCategory} from '../question/category/question-category.model';
+import {QuestionSection} from '../question/section/question-section.model';
+import {CategoryService} from '../shared/category.service';
+import {SectionService} from '../shared/section.service';
+import {QuestionService} from '../shared/question.service';
+import {MatSnackBar} from '@angular/material';
+import {AngularFirestore} from '@angular/fire/firestore';
+import {Template} from '../shared/model/template';
+import {ActivatedRoute, Route, Router} from '@angular/router';
 import * as firebase from 'firebase';
-import {CookieService} from "ngx-cookie-service";
-import {CommonService} from "../shared/common.service";
+import {CookieService} from 'ngx-cookie-service';
+import {CommonService} from '../shared/common.service';
 
 @Component({
   selector: 'app-demo',
@@ -36,11 +36,11 @@ export class DemoComponent implements OnInit {
   sectionSelectDisable = true;
   countQuestion: number = 0;
   countAvailable: number = -1;
-  templateName: string = "";
+  templateName: string = '';
   isExamTemplate: boolean = false;
   questionIdList: string[] = [];
   companyList: any[] = [];
-  companyId: string = ''
+  companyId: string = '';
   role: string = '';
   disableAll: boolean = false;
 
@@ -61,15 +61,15 @@ export class DemoComponent implements OnInit {
   getCompanyList() {
     this.commonService.getActiveCompanyList().then(res => {
       this.companyList = res;
-    })
+    });
   }
 
   getCategories() {
     this.fireSQL.query(`SELECT __name__ as docId, name FROM category`).then(result => {
       this.categories = result.map(res => {
         return new QuestionCategory(res.docId, res.name);
-      })
-    })
+      });
+    });
   }
 
 
@@ -80,17 +80,22 @@ export class DemoComponent implements OnInit {
     this.fireSQL.query(`SELECT __name__ as docId, name, categoryId FROM section WHERE categoryId = "` + event.value + `"`).then(result => {
         this.sections = result.map(res => {
           return new QuestionSection(res.docId, res.name, res.categoryId);
-        })
+        });
       }
-    )
+    );
     this.sectionSelectDisable = false;
   }
 
   getQuestionIdListBySectionId(event) {
     this.sectionId = event.value;
     console.log('sectionId: ', event.value);
-    let query = `SELECT __name__ as docId FROM question WHERE section = "` + event.value + `" AND status='accepted' 
-      AND isExamQuestion = ` + this.isExamTemplate + ``;
+
+    let query = `SELECT __name__ as docId FROM question WHERE section = "${event.value}" AND status='accepted' `;
+    if (this.isExamTemplate) {
+      query = query + ` AND isExamQuestion = true`;
+    } else{
+      query = query + ` AND (isTestQuestion = true OR isExam)`;
+    }
 
     console.log(query);
     query += ` AND company='${this.companyId}'`;
@@ -101,7 +106,7 @@ export class DemoComponent implements OnInit {
       console.log('available: ', this.countAvailable);
       this.questionIdList = result.map(res => {
         return res.docId;
-      })
+      });
     });
   }
 
@@ -115,18 +120,18 @@ export class DemoComponent implements OnInit {
       randomList = this.shuffle(randomList);
 
       for (let i = 0; i < this.countQuestion; i++) {
-        idList.push(this.questionIdList[randomList[i]])
+        idList.push(this.questionIdList[randomList[i]]);
       }
 
       console.log('To push id: ', idList);
 
       let template: any = {
-        name: "",
-        categoryId: "",
-        sectionId: "",
+        name: '',
+        categoryId: '',
+        sectionId: '',
         questionIdList: [],
-        status: "0",
-        companyId: ""
+        status: '0',
+        companyId: ''
       };
       template.questionIdList = idList;
       template.categoryId = this.categoryId;
@@ -134,7 +139,7 @@ export class DemoComponent implements OnInit {
       template.name = this.templateName;
       template.isExamTemplate = this.isExamTemplate;
       template.companyId = this.companyId;
-      template.status = "active";
+      template.status = 'active';
 
       console.log('template to create: ', template);
 
@@ -173,8 +178,8 @@ export class DemoComponent implements OnInit {
   }
 
   setDefault() {
-    this.categoryId = "";
-    this.sectionId = "";
+    this.categoryId = '';
+    this.sectionId = '';
     this.categories = [];
     this.sections = [];
     this.countAvailable = 0;
