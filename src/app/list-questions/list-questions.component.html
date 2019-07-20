@@ -71,6 +71,10 @@
     </mat-form-field>
     <mat-form-field class="example-full-width">
       <input type="text" matInput [hidden]="true">
+      <mat-checkbox [(ngModel)]="question.isTestQuestion">Этот вопрос для теста</mat-checkbox>
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <input type="text" matInput [hidden]="true">
       <mat-checkbox [(ngModel)]="question.isExamQuestion">Этот вопрос для экзамена</mat-checkbox>
     </mat-form-field>
     <button mat-button (click)="save(question)">Сохранить</button>

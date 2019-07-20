@@ -68,7 +68,14 @@
 
     <mat-form-field>
       <input type="text" matInput [hidden]="true">
-      <mat-checkbox formControlName="isExamQuestion">Этот вопрос для экзамена</mat-checkbox>
+      <mat-checkbox
+                    formControlName="isTestQuestion"
+                    [required]="!questionForm.controls['isExamQuestion'].value">Этот вопрос для теста</mat-checkbox>
+    </mat-form-field>
+    <mat-form-field>
+      <input type="text" matInput [hidden]="true">
+      <mat-checkbox formControlName="isExamQuestion"
+                    [required]="!questionForm.controls['isTestQuestion'].value">Этот вопрос для экзамена</mat-checkbox>
     </mat-form-field>
     <mat-form-field>
       <input type="number" matInput placeholder="Вес ответа" formControlName="point" required>

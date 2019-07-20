@@ -85,6 +85,7 @@ export class QuestionComponent implements OnInit {
         point: new FormControl(''),
         sectionId: new FormControl(''),
         isExamQuestion: new FormControl(false),
+        isTestQuestion: new FormControl(true),
         authorName: new FormControl(res[0].lastname + ' ' + res[0].firstname),
       });
 

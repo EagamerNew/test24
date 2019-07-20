@@ -18,5 +18,6 @@ export class QuestionList {
   status?: string;
   note?: string;
   isExamQuestion?: boolean;
+  isTestQuestion?: boolean;
 }
 
