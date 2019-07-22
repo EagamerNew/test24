@@ -25,6 +25,10 @@ export class CommonService {
     this.fireSQL = new FireSQL(this.fireDB);
   }
 
+  getErrorQuestions(){
+    this.fireSQL.query(`SELECT __name__ as id FROM question WHERE time`)
+  }
+
   async searchExamTemplate(searchText: string): Promise<DocumentData[]> {
     console.log('searchText: ', searchText);
     // company, section, category, --city
@@ -245,7 +249,7 @@ export class CommonService {
   getQuestionListByAuthorId(authorId: string) {
     // TODO USING DOCID
     return this.fireSQL.query(`SELECT __name__ as docId, answers,author, category,correctAnswer, description, point, 
-    questionType, section, company, status FROM question WHERE author='${authorId}'`);
+    questionType, section, company, status, answerCount, answerCountTotal FROM question WHERE author='${authorId}'`);
   }
 
   saveExamParticipant(resultId: string, userId: string, examId: string) {

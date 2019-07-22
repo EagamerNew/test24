@@ -31,7 +31,10 @@
     <mat-card-content>
       <p>{{question.description}}</p>
       <ul *ngFor="let answer of question.answers; let i = index">
-        <li [ngClass]="{right: i == question.correctAnswer}">{{i + 1}}. {{answer.answer}}</li>
+        <li [ngClass]="{right: i == question.correctAnswer}" class="wrong">{{i + 1}}. {{answer.answer}}
+          <span *ngIf="question.answersCount && question.answersCountTotal !== 0">({{(question.answersCount[i]/question.answersCountTotal) * 100 }}%)</span>
+          <span *ngIf="question.answersCount && question.answersCountTotal === 0">({{0}}%)</span>
+        </li>
       </ul>
       <p>Вес: {{question.point}}</p>
       <p *ngIf="question.status === 'accepted'" style="color:#76ff03;">Активен</p>

@@ -11,6 +11,9 @@ p small {
   border-color: coral;
 }
 .right{
-  color: lawngreen;
+  color: lawngreen!important;
   font-weight: bold;
+}
+.wrong{
+  color: red;
 }

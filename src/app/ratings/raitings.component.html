@@ -7,12 +7,12 @@
   <mat-card class="example-card">
     <mat-card-header>
       <mat-card-subtitle (click)="show(i)">
-        <h4 style="color: #164bff;cursor: pointer;">
+        <h4 style="color: #107ECC;cursor: pointer;">
           <div fxLayout="column" fxLayoutAlign="start start" fxFlex="80">
             <b style="float: left">{{i + 1}}. {{res.username}}</b>
           </div>
           <div fxLayout="column" fxLayoutAlign="start end" fxFlex="20">
-            <b style="float: right;color: #164bff;cursor: pointer;">
+            <b style="float: right;color: #107ECC;cursor: pointer;">
             <span
               *ngIf="res.count >= 5 && res.scoreMust >= res.scoreTotal ">{{(res.scoreTotal / res.scoreMust * 100)| number : '1.2-2'}}
               % </span>
@@ -25,7 +25,7 @@
       </mat-card-subtitle>
     </mat-card-header>
     <mat-card-content *ngFor="let res2 of sortingResulsts">
-      <div *ngIf="showList[i]" style="color: #164bff;cursor: pointer;font-style: italic;">
+      <div *ngIf="showList[i]" style="color: #107ECC;cursor: pointer;font-style: italic;">
         <p *ngIf="res.userId == res2.userId">{{res2.category}} -
           &nbsp;
           <span

@@ -268,6 +268,8 @@ export class TestComponent implements OnInit {
         }
       }
       const startDate = new Date();
+      const startMinutes = startDate.getMinutes().toString().length === 1 ? '0' + startDate.getMinutes().toString() : startDate.getMinutes().toString();
+      const startHours = startDate.getHours().toString().length === 1 ? '0' + startDate.getHours().toString() : startDate.getHours().toString();
       this.dataForResult.score = this.pointTotal + '';
       this.dataForResult.scoreMust = this.pointMust + '';
       this.dataForResult.mistake = misCount + '';
@@ -277,7 +279,7 @@ export class TestComponent implements OnInit {
       this.dataForResult.userId = 'anonymous';
       this.dataForResult.templateId = this.templateId;
       this.dataForResult.date = this.datePipe.transform(startDate, 'dd-MM-yyyy');
-      this.dataForResult.time = startDate.getHours() + ':' + startDate.getMinutes();
+      this.dataForResult.time = startHours + ':' + startMinutes;
       this.dataForResult.status = RESULT_CODE_LIST.DONE.toString().toLowerCase();
       this.commonService.getCompanyById(this.template.companyId).then(com => {
         this.dataForResult.companyName = 'Компания не найдена';
