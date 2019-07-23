@@ -35,6 +35,10 @@ export class QuestionModerationComponent implements OnInit {
     this.getAllQuestions();
   }
 
+  parseCustomInt(num:string){
+    return parseInt(num);
+  }
+
   getAllQuestions(): void {
     this.loading = true;
     console.log(this.cookieService.get('userId'));

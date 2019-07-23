@@ -24,7 +24,7 @@ export class ExamListComponent implements OnInit {
 
   templateIdList: string[] = [];
   companyIdList: string[] = [];
-  shortTemplateList: any[] = [];
+  shortTemplateList: any[] ;
 
   sectionSelectDisable: boolean = true;
   filterTemplate: any = new Object();
@@ -82,9 +82,7 @@ export class ExamListComponent implements OnInit {
           this.loading = false;
           console.log('examList:', this.examList);
           console.log('templateIdlist:', this.templateIdList);
-          if (this.examList && this.examList.length > 0) {
-            this.getShortTemplateList();
-          }
+          this.getShortTemplateList();
         }
         this.loading = false;
       });
@@ -222,15 +220,15 @@ export class ExamListComponent implements OnInit {
     }
   }
 
-  archiveExamById(examId){
+  archiveExamById(examId) {
 
   }
 
 
-  restartExam(exam){
-    if(exam.participantList !== undefined) {
+  restartExam(exam) {
+    if (exam.participantList !== undefined) {
       try {
-        if(exam.participantList[this.userId].status === 'done'){
+        if (exam.participantList[this.userId].status === 'done') {
           return true;
         }
       } catch (e) {

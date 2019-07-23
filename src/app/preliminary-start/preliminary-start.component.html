@@ -26,9 +26,9 @@
   <div *ngIf="code === 'exam'">
     <mat-card class="example-card" style="border:1px solid black;" *ngIf="main">
       <div>
-        <span style="float: left">{{data.categoryName.name}}
+        <span style="float: left"><span class="custom-text" *ngIf="data.template">{{data.template.name}}</span>
           <br>
-          <span class="custom-text">{{data.company.name}}</span>
+          <span >{{data.company.name}}</span>
         </span>
 
         <span style="float:right;">
@@ -40,13 +40,13 @@
       </div>
       <br>
       <mat-card-content style="text-align: center; padding: 30px 0;">
-        <h2 *ngIf="data.template">
-          <span class="custom-text">{{data.template.name}}</span>
-        </h2>
+        <p class="mat-caption custom-text" style="font-size: 1.2em">
+          {{data.categoryName.name}}
+        </p>
         <p class="mat-caption custom-text" *ngIf="data.template" style="font-size: 1.2em">
           {{data.template.questionIdList.length}} вопросов
         </p>
-        <p class="mat-caption hell">{{data.sectionName.name}}</p>
+        <p class="mat-caption custom-text" style="font-size: 1.2em">{{data.sectionName.name}}</p>
         <p class="mat-caption hell">{{getFormattedDate(data.examination.date)}}</p>
         <p class="mat-caption hell">{{data.examination.startTime}}</p>
         <p class="mat-caption hell">{{data.cityName.name}}</p>

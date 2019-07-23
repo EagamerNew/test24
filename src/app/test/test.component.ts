@@ -283,7 +283,7 @@ export class TestComponent implements OnInit {
 
         console.log(this.questions[this.answers[i].questionIndex].answersCount);
         console.log(this.questions[this.answers[i].questionIndex].answersCountTotal);
-        
+
         this.questionService.updateQuestionIndex(this.questions[this.answers[i].questionIndex].docId,
           this.questions[this.answers[i].questionIndex].answersCount,
           this.questions[this.answers[i].questionIndex].answersCountTotal).then(res => {
