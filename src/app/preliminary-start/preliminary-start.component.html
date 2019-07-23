@@ -32,7 +32,7 @@
         </span>
 
         <span style="float:right;">
-          <button mat-icon-button [matTooltip]="'Настройка'" [routerLink]="'/test/'+data.examination.templateId+'/'+data.examination.id"
+          <button mat-icon-button [matTooltip]="'Настройка'" [routerLink]="'/exam-setting/'+data.examination.id"
                   *ngIf="userRole === 'admin' || (data.examination.examinatorUserId === userId && userRole === 'staff')">
             <mat-icon>settings</mat-icon>
           </button>

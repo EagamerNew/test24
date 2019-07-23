@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
-import {AngularFirestore} from "@angular/fire/firestore";
-import * as fire from "firebase"
-import {FireSQL} from "firesql";
+import {AngularFirestore} from '@angular/fire/firestore';
+import * as fire from 'firebase';
+import {FireSQL} from 'firesql';
 import FieldPath = fire.firestore.FieldPath;
 
 @Injectable({
@@ -16,14 +16,14 @@ export class QuestionService {
   }
 
   getQuestionListByIdIn(idList: string[]) {
-    let temp = "";
+    let temp = '';
     for (let str of idList) {
       temp = temp + '"' + str + '",';
     }
     temp = temp.substring(0, temp.length - 1);
     // console.log(temp);
     return this.fireSQL.query(`SELECT __name__ as docId, answers, author, category, correctAnswer,
-                                    description, point, questionType, answersCount,answersCountTotal section
+                                    description, point, questionType, answersCount,answersCountTotal, section
                                      FROM question WHERE __name__ IN (` + temp + `) `);
   }
 
@@ -37,7 +37,7 @@ export class QuestionService {
 
   getActiveTemplateList() {
     return this.firebase
-      .collection('template', ref => ref.where("status", "==", "0")
+      .collection('template', ref => ref.where('status', '==', '0')
       ).snapshotChanges();
   }
 
@@ -46,14 +46,14 @@ export class QuestionService {
       .collection('template').doc(id).snapshotChanges();
   }
 
-  getAvailableQuetionIdList(template:any){
+  getAvailableQuetionIdList(template: any) {
     const sectionId = template.sectionId;
     const companyId = template.companyId;
     const isExamTemplate = template.isExamTemplate;
 
     let query = `SELECT __name__ as docId FROM question WHERE section = '${sectionId}' AND status='accepted' 
       AND isExamQuestion = ` + isExamTemplate;
-    query += ` AND company='${companyId}'` ;
+    query += ` AND company='${companyId}'`;
 
     console.log('query: ', query);
 
@@ -61,7 +61,7 @@ export class QuestionService {
   }
 
   getAllQuestions() {
-    return this.firebase.collection('question').snapshotChanges()
+    return this.firebase.collection('question').snapshotChanges();
   }
 
   getQuestionById(docId: string) {
@@ -79,7 +79,7 @@ export class QuestionService {
   getActiveQuestions() {
     return this.firebase
       .collection('question',
-        ref => ref.where("status", "==", "accepted").limit(5)
+        ref => ref.where('status', '==', 'accepted').limit(5)
       ).snapshotChanges();
   }
 
@@ -87,10 +87,10 @@ export class QuestionService {
     return this.firebase
       .collection('question',
         ref => ref
-          .where("status", "==", "accepted")
+          .where('status', '==', 'accepted')
           .orderBy('description')
           .startAt(searchString)
-          .endAt(searchString + "\uf8ff")
+          .endAt(searchString + '\uf8ff')
           .limit(10)
       ).snapshotChanges();
   }
@@ -98,19 +98,19 @@ export class QuestionService {
   getActiveCompanyQuestions(companyId) {
     return this.firebase
       .collection('question',
-        ref => ref.where("status", "==", "accepted")
+        ref => ref.where('status', '==', 'accepted')
           .where('company', '==', companyId).limit(5)
       ).snapshotChanges();
   }
 
-  searchActiveCompanyQuestions(companyId,searchString) {
+  searchActiveCompanyQuestions(companyId, searchString) {
     return this.firebase
       .collection('question',
-        ref => ref.where("status", "==", "accepted")
+        ref => ref.where('status', '==', 'accepted')
           .where('company', '==', companyId)
           .orderBy('description')
           .startAt(searchString)
-          .endAt(searchString + "\uf8ff")
+          .endAt(searchString + '\uf8ff')
           .limit(5)
       ).snapshotChanges();
   }
@@ -118,14 +118,14 @@ export class QuestionService {
   getActiveNextQuestions(id) {
     return this.firebase
       .collection('question',
-        ref => ref.where("status", "==", "accepted").orderBy(FieldPath.documentId()).startAt(id).limit(6)
+        ref => ref.where('status', '==', 'accepted').orderBy(FieldPath.documentId()).startAt(id).limit(6)
       ).snapshotChanges();
   }
 
   getActiveNextCompanyQuestions(id, companyId) {
     return this.firebase
       .collection('question',
-        ref => ref.where("status", "==", "accepted")
+        ref => ref.where('status', '==', 'accepted')
           .where('company', '==', companyId)
           .orderBy(FieldPath.documentId()).startAt(id).limit(6)
       ).snapshotChanges();
@@ -134,14 +134,14 @@ export class QuestionService {
   getActivePrevQuestions(id) {
     return this.firebase
       .collection('question',
-        ref => ref.where("status", "==", "accepted").orderBy(FieldPath.documentId()).startAt(id).limit(5)
+        ref => ref.where('status', '==', 'accepted').orderBy(FieldPath.documentId()).startAt(id).limit(5)
       ).snapshotChanges();
   }
 
   getActivePrevCompanyQuestions(id, company) {
     return this.firebase
       .collection('question',
-        ref => ref.where("status", "==", "accepted")
+        ref => ref.where('status', '==', 'accepted')
           .where('company', '==', company)
           .orderBy(FieldPath.documentId()).startAt(id).limit(5)
       ).snapshotChanges();
@@ -156,21 +156,21 @@ export class QuestionService {
   getRejectedQuestions() {
     return this.firebase
       .collection('question',
-        ref => ref.where("status", "==", "rejected")
+        ref => ref.where('status', '==', 'rejected')
       ).snapshotChanges();
   }
 
   getArchivedQuestions() {
     return this.firebase
       .collection('question',
-        ref => ref.where("status", "==", "in_archive")
+        ref => ref.where('status', '==', 'in_archive')
       ).snapshotChanges();
   }
 
   getModeratingQuestions() {
     return this.firebase
       .collection('question',
-        ref => ref.where("status", "==", "in_moderation")
+        ref => ref.where('status', '==', 'in_moderation')
       ).snapshotChanges();
   }
 
@@ -181,11 +181,11 @@ export class QuestionService {
     return this.firebase.collection('question').doc(docId).set(question);
   }
 
-  updateQuestionIndex(id,answerCount , answerCountTotal){
+  updateQuestionIndex(id, answerCount, answerCountTotal) {
     return this.firebase.collection('question').doc(id).update({
-      answerCount: answerCount,
-      answerCountTotal: answerCountTotal
-    })
+      answersCount: answerCount,
+      answersCountTotal: answerCountTotal
+    });
   }
 
   deleteQuestion(questionId) {

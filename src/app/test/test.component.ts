@@ -251,21 +251,45 @@ export class TestComponent implements OnInit {
       for (let i = 0; i < this.answers.length; i++) {
         if (parseInt(this.answers[i].correctAnswer) === parseInt(this.answers[i].answer)) {
           correctCount += 1;
-          if (this.questions[this.answers[i].questionIndex]['answerCount'] && this.questions[this.answers[i].questionIndex]['answerCountTotal']) {
-            this.questions[this.answers[i].questionIndex].answersCount[this.answers[i].answer] =
-              this.questions[this.answers[i].questionIndex].answersCount[this.answers[i].answer] + 1;
-            this.questionService.updateQuestionIndex(this.questions[this.answers[i].questionIndex].id,
-              this.questions[this.answers[i].questionIndex].answersCount,
-              this.questions[this.answers[i].questionIndex].answersCountTotal).then(res => {
 
-            });
-          }
+
           this.pointTotal += parseInt(this.answers[i].point);
           this.pointMust += parseInt(this.answers[i].point);
         } else {
           misCount += 1;
+
           this.pointMust += parseInt(this.answers[i].point);
         }
+        console.log('-------------------------------------');
+        console.log('this.questions[this.answers[i].questionIndex]: ', this.questions[this.answers[i].questionIndex]);
+        console.log(this.questions[this.answers[i].questionIndex].answersCount);
+        console.log(this.questions[this.answers[i].questionIndex].answersCountTotal);
+        console.log('++++++++++++++++++++++++++++++++++++');
+
+        if (this.questions[this.answers[i].questionIndex].answersCountTotal !== undefined) {
+          this.questions[this.answers[i].questionIndex].answersCount[this.answers[i].answer] += 1;
+          this.questions[this.answers[i].questionIndex].answersCountTotal += 1;
+          console.log('---------------------+++++---------------');
+          console.log('this.questions[this.answers[i].questionIndex]: ', this.questions[this.answers[i].questionIndex]['answersCount']);
+        } else {
+          this.questions[this.answers[i].questionIndex]['answersCountTotal'] = 1;
+          this.questions[this.answers[i].questionIndex]['answersCount'] = this.questions[this.answers[i].questionIndex].answers.map(res => {
+            return 0;
+          });
+          this.questions[this.answers[i].questionIndex].answersCount[this.answers[i].answer] = 1;
+        }
+
+        console.log('for res:');
+
+        console.log(this.questions[this.answers[i].questionIndex].answersCount);
+        console.log(this.questions[this.answers[i].questionIndex].answersCountTotal);
+        
+        this.questionService.updateQuestionIndex(this.questions[this.answers[i].questionIndex].docId,
+          this.questions[this.answers[i].questionIndex].answersCount,
+          this.questions[this.answers[i].questionIndex].answersCountTotal).then(res => {
+          console.log('res:', res);
+          console.log('question:', this.questions[this.answers[i].questionIndex]);
+        });
       }
       const startDate = new Date();
       const startMinutes = startDate.getMinutes().toString().length === 1 ? '0' + startDate.getMinutes().toString() : startDate.getMinutes().toString();
