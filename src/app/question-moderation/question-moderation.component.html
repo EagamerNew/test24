@@ -24,10 +24,22 @@
 
 <div *ngFor="let question of questionList; trackBy: trackByFn" style="padding-bottom:7%;">
   <mat-card class="example-card">
-    <mat-card-header>
-      <mat-card-subtitle>Id: {{question.docId}}</mat-card-subtitle>
-      <!--<mat-card-subtitle>Автор: Админ</mat-card-subtitle>-->
-    </mat-card-header>
+    <div>
+      <span style="float:left;font-size: 12px;" class="grey-color">Id: {{question.docId}}</span>
+      <span style="float:right;font-size: 12px;"> {{question.authorName}}</span>
+    </div>
+    <br>
+    <div style="margin:5px 0px;" class="grey-color">
+      <span *ngIf="question.company">{{getCompanyNameById(question.company)}}</span>
+      <br>
+      <span *ngIf="question.category">{{getCategoryNameById(question.category)}}</span>
+      <br>
+      <span *ngIf="question.section">{{getSectionNameById(question.section)}}</span>
+      <br>
+      <span *ngIf="question.isExamQuestion">Экзамен</span>
+      <br>
+      <span *ngIf="question.isTestQuestion">Тест</span>
+    </div>
     <mat-card-content>
       <p>{{question.description}}</p>
       <ul *ngFor="let answer of question.answers; let i = index">

@@ -71,10 +71,10 @@
           <p class="mat-caption custom-text"  style="font-size: 1.2em">
             {{getNameFromCategory(exam.categoryId)}}
           </p>
+          <p class="mat-caption custom-text" style="font-size: 1.2em">{{getNameFromSection(exam.sectionId)}}</p>
           <p class="mat-caption custom-text" *ngIf="shortTemplateList"  style="font-size: 1.2em">
             {{getTemplateQuestionLengthById(exam.templateId)}} вопросов
           </p>
-          <p class="mat-caption custom-text" style="font-size: 1.2em">{{getNameFromSection(exam.sectionId)}}</p>
           <p class="mat-caption hell">{{getFormattedDate(exam.date)}}</p>
           <p class="mat-caption hell">{{exam.startTime}}</p>
           <p class="mat-caption hell">{{getNameFromCity(exam.cityId)}}</p>

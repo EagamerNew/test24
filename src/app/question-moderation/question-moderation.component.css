@@ -17,3 +17,6 @@ p small {
 .wrong{
   color: red;
 }
+.grey-color{
+  color: rgb(153, 151, 151) !important;
+}

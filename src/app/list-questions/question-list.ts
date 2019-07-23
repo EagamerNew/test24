@@ -4,6 +4,7 @@ export class QuestionList {
   answersCount ?: number[];
   answersCountTotal ?: number;
   author?: string;
+  authorName?: string;
   speciality?: string;
   category?: string;
   company?: string;
@@ -13,7 +14,6 @@ export class QuestionList {
   point?: string;
   questionTypeCode?: string;
   questionType?: string;
-  sectionId?: string;
   section?: string;
   status?: string;
   note?: string;

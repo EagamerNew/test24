@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {QuestionService} from "../shared/question.service";
-import {QuestionSection} from "../question/section/question-section.model";
-import {QuestionList} from "../list-questions/question-list";
-import {CookieService} from "ngx-cookie-service";
-import {CommonService} from "../shared/common.service";
+import {QuestionService} from '../shared/question.service';
+import {QuestionSection} from '../question/section/question-section.model';
+import {QuestionList} from '../list-questions/question-list';
+import {CookieService} from 'ngx-cookie-service';
+import {CommonService} from '../shared/common.service';
 
 @Component({
   selector: 'app-question-moderation',
@@ -19,8 +19,11 @@ export class QuestionModerationComponent implements OnInit {
 
   allQuestionList: QuestionList[] = [];
   questionList: QuestionList[] = [];
-  searchText: string = "";
+  searchText: string = '';
   loading: boolean = true;
+  companyList: any[] = [];
+  categoryList: any[] = [];
+  sectionList: any[] = [];
 
   /*
   * Status of questions:
@@ -33,9 +36,12 @@ export class QuestionModerationComponent implements OnInit {
   ngOnInit(): void {
     this.cookieService.set('title', 'Модерация вопросов');
     this.getAllQuestions();
+    this.getCategoryList();
+    this.getCompanyList();
+    this.getSectionList();
   }
 
-  parseCustomInt(num:string){
+  parseCustomInt(num: string) {
     return parseInt(num);
   }
 
@@ -48,7 +54,7 @@ export class QuestionModerationComponent implements OnInit {
           return {
             docId: item.payload.doc.id,
             ...item.payload.doc.data()
-          }
+          };
         });
         console.log('questionList: ', this.allQuestionList);
         this.questionList = this.allQuestionList;
@@ -62,6 +68,48 @@ export class QuestionModerationComponent implements OnInit {
         this.loading = false;
       });
     }
+  }
+
+  getCompanyNameById(id: string): string {
+    this.companyList.forEach(value => {
+      if (value.id === id) {
+        return value.name;
+      }
+    });
+  }
+
+  getSectionNameById(id: string): string {
+    this.sectionList.forEach(value => {
+      if (value.id === id) {
+        return value.name;
+      }
+    });
+  }
+
+  getCategoryNameById(id: string): string {
+    this.categoryList.forEach(value => {
+      if (value.id === id) {
+        return value.name;
+      }
+    });
+  }
+
+  getCompanyList() {
+    this.commonService.getCompanyList().then(res => {
+      this.companyList = res;
+    });
+  }
+
+  getCategoryList() {
+    this.commonService.getCategoryList().then(res => {
+      this.categoryList = res;
+    });
+  }
+
+  getSectionList() {
+    this.commonService.getCategoryList().then(res => {
+      this.sectionList = res;
+    });
   }
 
   activateQuestion(question): void {
@@ -88,9 +136,9 @@ export class QuestionModerationComponent implements OnInit {
     this.service.updateQuestion(question).then(
       res => {
         this.getAllQuestions();
-        console.log("success", JSON.stringify(res));
+        console.log('success', JSON.stringify(res));
       }
-    )
+    );
   }
 
   displayQuestion(hell: string): void {
@@ -107,7 +155,7 @@ export class QuestionModerationComponent implements OnInit {
   }
 
   handleSearchString() {
-    this.searchText = "";
+    this.searchText = '';
   }
 
   countQuestionList(type: string): number {

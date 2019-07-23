@@ -43,10 +43,10 @@
         <p class="mat-caption custom-text" style="font-size: 1.2em">
           {{data.categoryName.name}}
         </p>
+        <p class="mat-caption custom-text" style="font-size: 1.2em">{{data.sectionName.name}}</p>
         <p class="mat-caption custom-text" *ngIf="data.template" style="font-size: 1.2em">
           {{data.template.questionIdList.length}} вопросов
         </p>
-        <p class="mat-caption custom-text" style="font-size: 1.2em">{{data.sectionName.name}}</p>
         <p class="mat-caption hell">{{getFormattedDate(data.examination.date)}}</p>
         <p class="mat-caption hell">{{data.examination.startTime}}</p>
         <p class="mat-caption hell">{{data.cityName.name}}</p>
