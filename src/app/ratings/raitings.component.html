@@ -33,7 +33,7 @@
             %</span>
           <span
             *ngIf="res2.count >= 5 && res2.scoreMust <res2.score">{{res2.score / res2.count * 100| number : '1.2-2'}}</span>
-          <span *ngIf="res2.count < 5" style="color:red;font-weight: bold;">*</span>
+          <span *ngIf="res2.count   < 5" style="color:red;font-weight: bold;">*</span>
         </p>
       </div>
     </mat-card-content>

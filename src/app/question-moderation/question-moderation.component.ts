@@ -70,7 +70,7 @@ export class QuestionModerationComponent implements OnInit {
     }
   }
 
-  getCompanyNameById(id: string): string {
+  getCompanyNameById(id: string): any {
     this.companyList.forEach(value => {
       if (value.id === id) {
         return value.name;
@@ -78,7 +78,7 @@ export class QuestionModerationComponent implements OnInit {
     });
   }
 
-  getSectionNameById(id: string): string {
+  getSectionNameById(id: string): any {
     this.sectionList.forEach(value => {
       if (value.id === id) {
         return value.name;
@@ -86,7 +86,7 @@ export class QuestionModerationComponent implements OnInit {
     });
   }
 
-  getCategoryNameById(id: string): string {
+  getCategoryNameById(id: string): any {
     this.categoryList.forEach(value => {
       if (value.id === id) {
         return value.name;

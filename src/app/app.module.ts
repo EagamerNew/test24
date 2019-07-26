@@ -55,6 +55,7 @@ import {DatePipe} from '@angular/common';
 import {StudyCenterComponent} from "./study-center/study-center.component";
 import {ConditionTermsComponent} from "./condition-terms/condition-terms.component";
 import {PreliminaryStartComponent} from './preliminary-start/preliminary-start.component';
+import { RatingV2Component } from './rating-v2/rating-v2.component';
 
 @NgModule({
   declarations: [
@@ -90,7 +91,8 @@ import {PreliminaryStartComponent} from './preliminary-start/preliminary-start.c
     ResultComponent,
     StudyCenterComponent,
     PreliminaryStartComponent,
-    ConditionTermsComponent
+    ConditionTermsComponent,
+    RatingV2Component
   ],
   imports: [
     BrowserModule,

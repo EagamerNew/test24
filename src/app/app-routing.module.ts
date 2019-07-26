@@ -30,6 +30,7 @@ import {ResultComponent} from "./result/result.component";
 import {StudyCenterComponent} from "./study-center/study-center.component";
 import {ConditionTermsComponent} from "./condition-terms/condition-terms.component";
 import {PreliminaryStartComponent} from './preliminary-start/preliminary-start.component';
+import {RatingV2Component} from "./rating-v2/rating-v2.component";
 
 const routes: Routes = [
   {path: '', component: MenuComponent},
@@ -54,7 +55,7 @@ const routes: Routes = [
   {path: 'subsidiary', component: SubsidiaryComponent},
   {path: 'subsidiary/:id', component: SubsidiaryComponent},
   {path: 'users', component: UserComponent},
-  {path: 'ratings', component: RaitingsComponent},
+  {path: 'ratings', component: RatingV2Component},
   {path: 'exam', component: ExaminationComponent},
   {path: 'exam-list', component: ExamListComponent},
   {path: 'exam-setting/:id', component: ExamSettingComponent},

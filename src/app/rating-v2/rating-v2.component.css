@@ -1,0 +1,50 @@
+p small {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.mat-form-field-infix {
+  width:300px !important;
+}
+.mat-card{
+  border-style: solid;
+  border-color: #107ECC;
+}
+.right{
+  color: lawngreen;
+  font-weight: bold;
+}
+::ng-deep .mat-card-header{
+  display: block!important;
+}
+::ng-deep .mat-card-header-text{
+  margin :0px !important;
+}
+.example-full-width {
+  width: 100%;
+}
+p small {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.mat-form-field-infix {
+  width:300px !important;
+}
+.mat-card{
+  border-style: solid;
+  border-color: #107ECC;
+}
+.right{
+  color: lawngreen;
+  font-weight: bold;
+}
+::ng-deep .mat-card-header{
+  display: block!important;
+}
+::ng-deep .mat-card-header-text{
+  margin :0px !important;
+}
+.example-full-width {
+  width: 100%;
+}
