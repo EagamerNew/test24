@@ -25,7 +25,7 @@ export class CommonService {
     this.fireSQL = new FireSQL(this.fireDB);
   }
 
-  getErrorQuestions(){
+  getErrorQuestions() {
     this.fireSQL.query(`SELECT __name__ as id FROM question WHERE time`)
   }
 
@@ -313,6 +313,11 @@ export class CommonService {
       AND isExamTemplate = TRUE`);
   }
 
+  getExamTemplateListByCompany(company) {
+    return this.fireSQL.query(`SELECT __name__ as id, name FROM template WHERE status = 'active'  
+      AND isExamTemplate = TRUE AND companyId = '` + company + `'`);
+  }
+
   async getPreparedExamTemplateById(id: string) {
     const examination = await this.getExamTemplateById(id);
     const company = examination[0].companyId ? await this.getCompanyById(examination[0].companyId) : null;
@@ -591,7 +596,7 @@ export class CommonService {
       });
   }
 
-  getTemplateResultByTemplateId(id:string){
+  getTemplateResultByTemplateId(id: string) {
     return this.fireSQL.query(`SELECT __name__ as id,templateId FROM result WHERE templateId = '${id}'`);
   }
 

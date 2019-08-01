@@ -112,7 +112,7 @@ export class RatingV2Component implements OnInit {
             this.categories[i].sections[j].scoreMust * 100;
           this.categories[i].sections[j].show = parseFloat(this.categories[i].sections[j].show.toFixed(2))
         } else {
-          this.categories[i].sections[j].show = '*';
+          this.categories[i].sections[j].show = 0;
         }
       }
       if (this.categories[i].count !== 0) {
@@ -121,9 +121,34 @@ export class RatingV2Component implements OnInit {
         this.categories[i].show = parseFloat(this.categories[i].show.toFixed(2))
 
       } else {
-        this.categories[i].show = '*';
+        this.categories[i].show = 0;
 
       }
+    }
+    this.sorting();
+  }
+
+  sorting() {
+    for (let i = 0; i < this.categories.length; i++) {
+      for (let j = 0; j < this.categories[i].sections.length; j++) {
+        for (let k = 0; k < this.categories[i].sections.length; k++) {
+          if (this.categories[i].sections[j].show > this.categories[i].sections[k].show) {
+            this.section = new Section();
+            this.section = this.categories[i].sections[j];
+            this.categories[i].sections[j] = this.categories[i].sections[k];
+            this.categories[i].sections[k] = this.section;
+          }
+        }
+      }
+      for (let j = 0; j < this.categories.length; j++) {
+        if (this.categories[i].show > this.categories[j].show) {
+          this.category = new Category();
+          this.category = this.categories[i];
+          this.categories[i] = this.categories[j];
+          this.categories[j] = this.category;
+        }
+      }
+
     }
   }
 

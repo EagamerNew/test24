@@ -46,7 +46,7 @@ export class ExaminationComponent implements OnInit {
     this.getCategories();
     this.getCityList();
     // this.getExaminatorList();
-    this.getExamTemplateList();
+    // this.getExamTemplateList();
   }
 
   getCategories() {
@@ -68,6 +68,11 @@ export class ExaminationComponent implements OnInit {
     });
   }
   getExaminatorList(){
+    this.commonService.getExamTemplateListByCompany(this.exam.companyId).then(res=>{
+      this.examTemplateList = res;
+    console.log(res,'222222222222222')
+    });
+
     this.commonService.getExaminatorList(this.exam.companyId).subscribe(res=>{
       console.log('examinatorList:',res);
       if(res.length > 0){

@@ -23,7 +23,7 @@
 </div>
 
 <div *ngFor="let question of questionList; trackBy: trackByFn" style="padding-bottom:7%;">
-  <mat-card class="example-card">
+  <mat-card class="example-card" >
     <div>
       <span style="float:left;font-size: 12px;" class="grey-color">Id: {{question.docId}}</span>
       <span style="float:right;font-size: 12px;"> {{question.authorName}}</span>
@@ -41,15 +41,15 @@
       <span *ngIf="question.isTestQuestion">Тест</span>
     </div>
     <mat-card-content>
-      <p>{{question.description}}</p>
+      <p class="right">{{question.description}}</p>
       <ul *ngFor="let answer of question.answers; let i = index">
         <li [ngClass]="{right: i == question.correctAnswer}" class="wrong">{{i + 1}}. {{answer.answer}}
-          <span *ngIf="question.answersCount && question.answersCountTotal !== 0">({{parseCustomInt(((question.answersCount[i]/question.answersCountTotal) * 100).toString()) }}%)</span>
+          <span *ngIf="question.answersCount && question.answersCountTotal !== 0">{{question.answersCount[i]}}({{parseCustomInt(((question.answersCount[i]/question.answersCountTotal) * 100).toString()) }}%)</span>
           <span *ngIf="question.answersCount && question.answersCountTotal === 0">({{0}}%)</span>
         </li>
       </ul>
       <p>Вес: {{question.point}}</p>
-      <p *ngIf="question.status === 'accepted'" style="color:#76ff03;">Активен</p>
+      <p *ngIf="question.status === 'accepted'" style="color:#32da22;">Активен</p>
       <p *ngIf="question.status === 'in_moderation'" style="color:#ff9800;">В модерации</p>
       <p *ngIf="question.status === 'in_archive'" style="color:#ff9800;">В архиве</p>
       <p *ngIf="question.status === 'rejected'" style="color:#f44336;">Отказано. Причина: {{question.note}}</p>
