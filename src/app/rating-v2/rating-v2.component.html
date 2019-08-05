@@ -1,33 +1,71 @@
-<mat-form-field class="example-full-width" style="margin-bottom:15px;">
-  <input type="text" matInput placeholder="Поиск..."
-         autocomplete="off" [(ngModel)]="searchText" (keyup)="search()">
-  <mat-hint>По ФИО</mat-hint>
-</mat-form-field>
-<div *ngFor="let cat of categories;let i =index" style="padding-bottom:7%;">
-  <mat-card class="example-card">
-    <mat-card-header>
-      <mat-card-subtitle (click)="show(i)">
-        <h4 style="color: #107ECC;cursor: pointer;">
-          <div fxLayout="column" fxLayoutAlign="start start" fxFlex="80">
-            <b style="float: left">{{cat.username}}/{{cat.name}}</b>
-          </div>
-          <div fxLayout="column" fxLayoutAlign="start end" fxFlex="20">
+<div *ngIf="isFiltering">
+  <mat-form-field class="example-full-width">
+    <mat-select placeholder="Компания" [(ngModel)]="filterTemplate.companyId">
+      <!--<mat-option value="''">Все</mat-option>-->
+      <mat-option *ngFor="let company of companyList" [value]="company.id">
+        {{company.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field class="example-full-width">
+    <mat-select placeholder="Категория" [(ngModel)]="filterTemplate.categoryId">
+      <!--<mat-option [value]="''">Все</mat-option>-->
+      <mat-option *ngFor="let category of categoryList" [value]="category.id">
+        {{category.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div fxLayoutAlign="center center" fxLayout="row">
+    <button mat-raised-button class="mat-accent" (click)="getFilteredRatingList()">Показать результаты</button>
+    <button mat-icon-button (click)="handleRestoreFilter()" matTooltip="Сбросить">
+      <mat-icon>settings_backup_restore</mat-icon>
+    </button>
+  </div>
+</div>
+
+<div *ngIf="!isFiltering">
+  <mat-form-field class="example-full-width" style="margin-bottom:15px;">
+    <input type="text" matInput placeholder="Поиск..."
+           autocomplete="off" [(ngModel)]="searchText" (keyup)="search()">
+    <mat-hint>По ФИО</mat-hint>
+    <button mat-icon-button matSuffix matTooltip="Показать фильтр" (click)="showFilter()">
+      <mat-icon>filter_list</mat-icon>
+    </button>
+    <button mat-icon-button matSuffix (click)="handleSearchString()" [disabled]="disableReset " mattooltip="Сбросить">
+      <mat-icon>clear</mat-icon>
+    </button>
+  </mat-form-field>
+
+  <div *ngIf="loading" fxLayoutAlign="center center" fxLayout="row">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+  <div *ngFor="let cat of categories;let i =index" style="padding-bottom:7%;">
+    <mat-card class="example-card">
+      <mat-card-header>
+        <mat-card-subtitle (click)="show(i)">
+          <h4 style="color: #107ECC;cursor: pointer;">
+            <div fxLayout="column" fxLayoutAlign="start start" fxFlex="80">
+              <b style="float: left">{{cat.username}}/{{cat.name}}</b>
+            </div>
+            <div fxLayout="column" fxLayoutAlign="start end" fxFlex="20">
+              <b style="float: right;color: #107ECC;cursor: pointer;">
+                <span style="color:red;">{{cat.show}}</span>
+              </b>
+            </div>
+          </h4>
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content *ngFor="let sect of cat.sections">
+        <div *ngIf="cat.display" style="color: #107ECC;cursor: pointer;font-style: italic;">
+          <p>{{sect.name}}
+            &nbsp;
             <b style="float: right;color: #107ECC;cursor: pointer;">
-              <span style="color:red;">{{cat.show}}</span>
+              <span style="color:red;">{{sect.show}}</span>
             </b>
-          </div>
-        </h4>
-      </mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content *ngFor="let sect of cat.sections">
-      <div *ngIf="cat.display" style="color: #107ECC;cursor: pointer;font-style: italic;">
-        <p>{{sect.name}}
-          &nbsp;
-          <b style="float: right;color: #107ECC;cursor: pointer;">
-            <span style="color:red;">{{sect.show}}</span>
-          </b>
-        </p>
-      </div>
-    </mat-card-content>
-  </mat-card>
+          </p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
 </div>

@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {QuestionService} from "../shared/question.service";
-import {CommonService} from "../shared/common.service";
-import {CookieService} from "ngx-cookie-service";
+import {QuestionService} from '../shared/question.service';
+import {CommonService} from '../shared/common.service';
+import {CookieService} from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-rating-v2',
@@ -10,11 +10,6 @@ import {CookieService} from "ngx-cookie-service";
 })
 export class RatingV2Component implements OnInit {
 
-  constructor(private service: QuestionService,
-              private _serviceCommon: CommonService,
-              private cookieService: CookieService) {
-  }
-
   results: any[] = [];
   result: any;
   searchText = '';
@@ -22,12 +17,102 @@ export class RatingV2Component implements OnInit {
   categories: Category[] = [];
   section: Section;
   originResultList = [];
+  loading = false;
+
+  // For filtering
+  isFiltering = false;
+  showFilterResult = false;
+  disableReset = true;
+  searching = false;
+  sectionSelectDisable = true;
+  filterTemplate: any = new Object();
+  categoryList: any[] = [];
+  companyList: any[] = [];
+
+  constructor(private service: QuestionService,
+              private _serviceCommon: CommonService,
+              private cookieService: CookieService) {
+  }
 
   ngOnInit(): void {
     this.cookieService.set('title', 'Рейтинг');
+    this.restoreFilterTemplate();
+    this.getCompanyList();
+    this.getCategoryList();
     this.getResultList();
   }
 
+  getFilteredRatingList() {
+    this.loading = true;
+    this._serviceCommon.filterRatingList(this.filterTemplate, 'ratings').then(res => {
+      this.loading = false;
+      this.result = res.map(result => {
+        return {
+          id: result.id,
+          isTest: result.isTest,
+          correct: result.correct,
+          mistake: result.mistake,
+          scoreMust: parseInt(result.scoreMust),
+          score: parseInt(result.score),
+          category: result.category,
+          section: result.section,
+          title: result.title,
+          userId: result.userId,
+          username: result.username,
+          status: false
+        };
+      });
+      this.isFiltering = false;
+      this.showFilterResult = true;
+      this.disableReset = false;
+      this.loading = false;
+      this.originResultList = this.results;
+      this.sortingCategoriesByUserAndSection();
+      console.log('results:', this.results);
+    });
+  }
+
+
+  restoreFilterTemplate(): void {
+    this.filterTemplate = new Object();
+    this.filterTemplate['companyId'] = '';
+    this.filterTemplate['categoryId'] = '';
+  }
+
+  search(): void {
+    if (this.searchText === '' || this.searchText === null || this.searchText.length === 0) {
+      this.results = this.originResultList;
+    } else {
+      console.log(this.searchText);
+      this.results = [];
+      this.originResultList.forEach(value => {
+        if (value.username.toLowerCase().includes(this.searchText.toLowerCase())) {
+          this.results.push(value);
+        }
+      });
+    }
+  }
+
+  showFilter() {
+    this.handleSearchString();
+    this.isFiltering = true;
+    this.showFilterResult = false;
+  }
+
+  handleSearchString() {
+    this.disableReset = true;
+    this.searchText = '';
+    this.searching = false;
+    // this.examList = this.originExamList;
+    this.filterTemplate = new Object();
+    this.isFiltering = false;
+    this.showFilterResult = false;
+  }
+
+  handleRestoreFilter() {
+    this.sectionSelectDisable = true;
+    this.restoreFilterTemplate();
+  }
 
   getResultList(): void {
     this._serviceCommon.getResultList('ratings').then(res => {
@@ -98,7 +183,7 @@ export class RatingV2Component implements OnInit {
       }
       this.categories.push(this.category);
     }
-    this.getRatings()
+    this.getRatings();
   }
 
   getRatings() {
@@ -110,7 +195,7 @@ export class RatingV2Component implements OnInit {
           this.categories[i].count += 1;
           this.categories[i].sections[j].show = this.categories[i].sections[j].scoreTotal /
             this.categories[i].sections[j].scoreMust * 100;
-          this.categories[i].sections[j].show = parseFloat(this.categories[i].sections[j].show.toFixed(2))
+          this.categories[i].sections[j].show = parseFloat(this.categories[i].sections[j].show.toFixed(2));
         } else {
           this.categories[i].sections[j].show = 0;
         }
@@ -118,7 +203,7 @@ export class RatingV2Component implements OnInit {
       if (this.categories[i].count !== 0) {
 
         this.categories[i].show = this.categories[i].scoreTotal / this.categories[i].scoreMust * 100;
-        this.categories[i].show = parseFloat(this.categories[i].show.toFixed(2))
+        this.categories[i].show = parseFloat(this.categories[i].show.toFixed(2));
 
       } else {
         this.categories[i].show = 0;
@@ -150,10 +235,23 @@ export class RatingV2Component implements OnInit {
       }
 
     }
+    this.loading = false;
   }
 
   show(i: number) {
     this.categories[i].display = !this.categories[i].display;
+  }
+
+  getCategoryList() {
+    this._serviceCommon.getCategoryList().then(res => {
+      this.categoryList = res;
+    });
+  }
+
+  getCompanyList(): void {
+    this._serviceCommon.getActiveCompanyList().then(res => {
+      this.companyList = res;
+    });
   }
 }
 

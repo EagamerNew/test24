@@ -48,3 +48,8 @@ p small {
 .example-full-width {
   width: 100%;
 }
+
+.mat-accent{
+  background-color: #107ECC !important;
+}
+

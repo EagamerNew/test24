@@ -14,8 +14,8 @@ import {MatSnackBar} from '@angular/material';
 export class ExamListComponent implements OnInit {
 
   template: any = {};
-  userId: string = '';
-  userRole: string = '';
+  userId = '';
+  userRole = '';
 
   examList: any[] = [];
   originExamList: any[] = [];
@@ -24,20 +24,20 @@ export class ExamListComponent implements OnInit {
 
   templateIdList: string[] = [];
   companyIdList: string[] = [];
-  shortTemplateList: any[] ;
+  shortTemplateList: any[];
 
-  sectionSelectDisable: boolean = true;
+  sectionSelectDisable = true;
   filterTemplate: any = new Object();
   categorySectionList = [];
   companyList: any = [];
   cityList: any = [];
-  loading: boolean = true;
+  loading = true;
   main = true;
   searchText = '';
-  searching: boolean = false;
-  isFiltering: boolean = false;
-  showFilterResult: boolean = false;
-  disableReset: boolean = true;
+  searching = false;
+  isFiltering = false;
+  showFilterResult = false;
+  disableReset = true;
 
   constructor(public cookieService: CookieService,
               private router: Router,
@@ -71,7 +71,7 @@ export class ExamListComponent implements OnInit {
         if (res && res.length > 0) {
           this.examList = res;
           this.templateIdList = this.examList.map((res, index) => {
-            let now = new Date();
+            const now = new Date();
             if (now > new Date(res.date)) {
               this.archiveExam(res.id, index);
             } else {
@@ -168,7 +168,7 @@ export class ExamListComponent implements OnInit {
 
   getFormattedDate(date: any) {
     try {
-      var datePipe = new DatePipe('en-US');
+      const datePipe = new DatePipe('en-US');
       return datePipe.transform(new Date(date), 'dd/MM/yyyy');
     } catch (e) {
       console.log('error with formatting date');
@@ -248,7 +248,7 @@ export class ExamListComponent implements OnInit {
       this.disableReset = false;
       console.log(this.examList);
       this.templateIdList = this.examList.map((res, index) => {
-        let now = new Date();
+        const now = new Date();
         if (now > new Date(res.date)) {
           this.archiveExam(res.id, index);
         } else {
@@ -282,7 +282,7 @@ export class ExamListComponent implements OnInit {
       this.examList = res;
       this.originExamList = res;
       this.templateIdList = this.examList.map((res, index) => {
-        let now = new Date();
+        const now = new Date();
         if (now > new Date(res.date)) {
           this.archiveExam(res.id, index);
         } else {
@@ -320,13 +320,6 @@ export class ExamListComponent implements OnInit {
     });
   }
 
-  private getCityList() {
-    this.commonService.getCityList().then(res => {
-        this.cityList = res;
-      }
-    );
-  }
-
   getNameFromSection(id): string {
     let res;
     if (res = this.sectionList.find(value => value.id === id)) {
@@ -352,6 +345,13 @@ export class ExamListComponent implements OnInit {
     } else {
       return 'Город не найден';
     }
+  }
+
+  private getCityList() {
+    this.commonService.getCityList().then(res => {
+        this.cityList = res;
+      }
+    );
   }
 
 }

@@ -26,18 +26,19 @@ export class CommonService {
   }
 
   getErrorQuestions() {
-    this.fireSQL.query(`SELECT __name__ as id FROM question WHERE time`)
+    this.fireSQL.query(`SELECT __name__ as id FROM question WHERE time`);
   }
+
 
   async searchExamTemplate(searchText: string): Promise<DocumentData[]> {
     console.log('searchText: ', searchText);
     // company, section, category, --city
-    let companyIdString: string = '';
-    let categoryIdString: string = '';
-    let sectionIdString: string = '';
-    let globalQuery = `SELECT * FROM examination WHERE status ='active' 
+    let companyIdString = '';
+    let categoryIdString = '';
+    let sectionIdString = '';
+    let globalQuery = `SELECT * FROM examination WHERE status ='active'
                 AND ( (address LIKE '${searchText.toLowerCase()}%' OR address LIKE '${searchText.charAt(0).toUpperCase() + searchText.slice(1)}%') `;
-    let sectionId = await this.findSectionIdListBySearchText(searchText);
+    const sectionId = await this.findSectionIdListBySearchText(searchText);
     console.log('sectionId: ', sectionId);
     if (sectionId && sectionId.length > 0) {
       sectionId.map(sectionList => {
@@ -48,7 +49,7 @@ export class CommonService {
     }
     console.log('sectionIDS: ', sectionIdString);
 
-    let companyId = await this.findCompanyIdListBySearchText(searchText);
+    const companyId = await this.findCompanyIdListBySearchText(searchText);
     console.log('companyId: ', companyId);
     if (companyId && companyId.length > 0) {
       companyId.map(companyList => {
@@ -59,7 +60,7 @@ export class CommonService {
     }
     console.log('companyIDS: ', companyIdString);
 
-    let categoryId = await this.findCategoryIdListBySearchText(searchText);
+    const categoryId = await this.findCategoryIdListBySearchText(searchText);
     console.log('categoryId: ', categoryId);
     if (categoryId && categoryId.length > 0) {
       categoryId.map(categoryList => {
@@ -79,6 +80,34 @@ export class CommonService {
 
   findExaminatorUseridByExamId(examId: string): Promise<DocumentData[]> {
     return this.fireSQL.query(`SELECT examinatorUserId FROM examination WHERE __name__ = '${examId}'`);
+  }
+
+  async filterRatingList(filterTemplate: any, cased: string): Promise<DocumentData[]> {
+    let query = `SELECT __name__ as id, isTest,correct,mistake,scoreMust,score,category,section,title,userId,username
+      FROM result `;
+    if (cased && cased === 'ratings') {
+      if (this.cookieService.get('role') !== 'admin') {
+        query += ` WHERE userId = '${this.cookieService.get('userId')}'`;
+      }
+    }
+
+    const templateIdList = await this.getTemplateListByCompanyIdAndCategoryId(filterTemplate);
+    let templateIdString = '';
+    templateIdList.map(sectionList => {
+      templateIdString = templateIdString + '"' + sectionList.id + '",';
+    });
+    templateIdString = templateIdString.substring(0, templateIdString.length - 1);
+    if (query.length > 0) {
+      query += ` AND templateId IN (${templateIdString})`;
+    }
+    console.log('query:', query);
+    return this.fireSQL.query(query);
+  }
+
+  getTemplateListByCompanyIdAndCategoryId(filterTemplate: any): Promise<DocumentData[]> {
+    return this.fireSQL
+      .query(`SELECT __name__ id FROM template WHERE categoryId = '${filterTemplate.categoryId}'
+                                       AND companyId = '${filterTemplate.companyId}'`);
   }
 
   filterExamination(filterTemplate: any): Promise<DocumentData[]> {
@@ -145,12 +174,12 @@ export class CommonService {
   async searchTemplate(searchText: string): Promise<DocumentData[]> {
     console.log('searchText: ', searchText);
     // company, section, category, --city
-    let companyIdString: string = '';
-    let categoryIdString: string = '';
-    let sectionIdString: string = '';
+    let companyIdString = '';
+    let categoryIdString = '';
+    let sectionIdString = '';
     let globalQuery = `SELECT * FROM template WHERE status ='active' AND isExamTemplate = false
                 AND ( (name LIKE '${searchText.toLowerCase()}%' OR name LIKE '${searchText.toUpperCase()}%') `;
-    let sectionId = await this.findSectionIdListBySearchText(searchText);
+    const sectionId = await this.findSectionIdListBySearchText(searchText);
     console.log('sectionId: ', sectionId);
     if (sectionId && sectionId.length > 0) {
       sectionId.map(sectionList => {
@@ -161,7 +190,7 @@ export class CommonService {
     }
     console.log('sectionIDS: ', sectionIdString);
 
-    let companyId = await this.findCompanyIdListBySearchText(searchText);
+    const companyId = await this.findCompanyIdListBySearchText(searchText);
     console.log('companyId: ', companyId);
     if (companyId && companyId.length > 0) {
       companyId.map(companyList => {
@@ -172,7 +201,7 @@ export class CommonService {
     }
     console.log('companyIDS: ', companyIdString);
 
-    let categoryId = await this.findCategoryIdListBySearchText(searchText);
+    const categoryId = await this.findCategoryIdListBySearchText(searchText);
     console.log('categoryId: ', categoryId);
     if (categoryId && categoryId.length > 0) {
       categoryId.map(categoryList => {
@@ -191,19 +220,19 @@ export class CommonService {
   }
 
   findSectionIdListBySearchText(searchText: string): Promise<DocumentData[]> {
-    let query = `SELECT __name__ as id FROM section WHERE name LIKE '${searchText}%' OR name LIKE '${searchText.charAt(0).toUpperCase() + searchText.slice(1)}%'`;
+    const query = `SELECT __name__ as id FROM section WHERE name LIKE '${searchText}%' OR name LIKE '${searchText.charAt(0).toUpperCase() + searchText.slice(1)}%'`;
     console.log('query section is:', query);
     return this.fireSQL.query(query);
   }
 
   findCategoryIdListBySearchText(searchText: string) {
-    let query = `SELECT __name__ as id FROM category WHERE name LIKE '${searchText}%' OR name LIKE '${searchText.charAt(0).toUpperCase() + searchText.slice(1)}%'`;
+    const query = `SELECT __name__ as id FROM category WHERE name LIKE '${searchText}%' OR name LIKE '${searchText.charAt(0).toUpperCase() + searchText.slice(1)}%'`;
     console.log('query category is:', query);
     return this.fireSQL.query(query);
   }
 
   findCompanyIdListBySearchText(searchText: string) {
-    let query = `SELECT __name__ as id FROM company WHERE name LIKE '${searchText}%' OR name LIKE '${searchText.charAt(0).toUpperCase() + searchText.slice(1)}%'`;
+    const query = `SELECT __name__ as id FROM company WHERE name LIKE '${searchText}%' OR name LIKE '${searchText.charAt(0).toUpperCase() + searchText.slice(1)}%'`;
     console.log('query company is:', query);
     return this.fireSQL.query(query);
   }
@@ -221,12 +250,12 @@ export class CommonService {
   }
 
   getExamHistoryByUserId(userId: string) {
-    return this.fireSQL.query(`SELECT __name__ as id, category,title,score,mistake,correct,section,isTest,time,date,examinatorUserId, companyName FROM result 
+    return this.fireSQL.query(`SELECT __name__ as id, category,title,score,mistake,correct,section,isTest,time,date,examinatorUserId, companyName FROM result
       WHERE status='done' AND userId='${userId}' ORDER BY date DESC,time DESC `);
   }
 
   getExamHistoryList() {
-    return this.fireSQL.query(`SELECT __name__ as id, category,title,score,mistake,correct,section,isTest,time,date,examinatorUserId, companyName,username FROM result 
+    return this.fireSQL.query(`SELECT __name__ as id, category,title,score,mistake,correct,section,isTest,time,date,examinatorUserId, companyName,username FROM result
       WHERE status='done' ORDER BY date DESC,time DESC `);
   }
 
@@ -248,13 +277,13 @@ export class CommonService {
 
   getQuestionListByAuthorId(authorId: string) {
     // TODO USING DOCID
-    return this.fireSQL.query(`SELECT __name__ as docId, answers,author, category,correctAnswer, description, point, 
+    return this.fireSQL.query(`SELECT __name__ as docId, answers,author, category,correctAnswer, description, point,
     questionType, section, company, status, answerCount, answerCountTotal FROM question WHERE author='${authorId}'`);
   }
 
   saveExamParticipant(resultId: string, userId: string, examId: string) {
     this.getExamParticipantList(examId).then(res => {
-      let pList = res[0].participantList;
+      const pList = res[0].participantList;
       console.log('pList: ', res[0].participantList);
       pList[userId].resultId = resultId;
       pList[userId].status = 'done';
@@ -275,7 +304,7 @@ export class CommonService {
 
   getShortTemplateList(idList: string[]) {
     let temp = '';
-    for (let str of idList) {
+    for (const str of idList) {
       temp = temp + '"' + str + '",';
     }
     temp = temp.substring(0, temp.length - 1);
@@ -285,7 +314,7 @@ export class CommonService {
 
   getSubsidiaryListByListIdn(idList: string[]) {
     let temp = '';
-    for (let str of idList) {
+    for (const str of idList) {
       temp = temp + '"' + str + '",';
     }
     temp = temp.substring(0, temp.length - 1);
@@ -304,17 +333,17 @@ export class CommonService {
   }
 
   getUserNameAndIdn(userId: string) {
-    return this.fireSQL.query(`SELECT __name__ as id, lastname, firstname, idn 
+    return this.fireSQL.query(`SELECT __name__ as id, lastname, firstname, idn
     FROM user WHERE __name__ = '` + userId + `'`);
   }
 
   getExamTemplateList() {
-    return this.fireSQL.query(`SELECT __name__ as id, name FROM template WHERE status = 'active'  
+    return this.fireSQL.query(`SELECT __name__ as id, name FROM template WHERE status = 'active'
       AND isExamTemplate = TRUE`);
   }
 
   getExamTemplateListByCompany(company) {
-    return this.fireSQL.query(`SELECT __name__ as id, name FROM template WHERE status = 'active'  
+    return this.fireSQL.query(`SELECT __name__ as id, name FROM template WHERE status = 'active'
       AND isExamTemplate = TRUE AND companyId = '` + company + `'`);
   }
 
@@ -343,7 +372,7 @@ export class CommonService {
   }
 
   getTemplateById(id: string) {
-    return this.fireSQL.query(`SELECT __name__ as id, name, categoryId, sectionId,companyId, questionIdList, status FROM 
+    return this.fireSQL.query(`SELECT __name__ as id, name, categoryId, sectionId,companyId, questionIdList, status FROM
       template WHERE __name__ = '${id}'`);
   }
 
@@ -370,7 +399,7 @@ export class CommonService {
   }
 
   getResultList(cased?: string) {
-    let query = `SELECT __name__ as id, isTest,correct,mistake,scoreMust,score,category,section,title,userId,username 
+    let query = `SELECT __name__ as id, isTest,correct,mistake,scoreMust,score,category,section,title,userId,username
       FROM result `;
     if (cased && cased === 'ratings') {
       if (this.cookieService.get('role') !== 'admin') {
@@ -454,10 +483,10 @@ export class CommonService {
   }
 
   checkPhoneAndPassword(phone, password) {
-    return this.fireSQL.query(`SELECT __name__ as id, idn,role ,privilegeList,lastname,firstname, birthdate, 
+    return this.fireSQL.query(`SELECT __name__ as id, idn,role ,privilegeList,lastname,firstname, birthdate,
           gender, city, phoneNumber, status, companyId
-          FROM user  
-          WHERE phoneNumber = '` + phone + `' 
+          FROM user
+          WHERE phoneNumber = '` + phone + `'
           AND password = '` + password + `'`);
   }
 
@@ -520,13 +549,13 @@ export class CommonService {
   }
 
   getUserList() {
-    return this.fireSQL.query(`SELECT __name__ as id, idn,role ,privilegeList,lastname,firstname, birthdate, 
+    return this.fireSQL.query(`SELECT __name__ as id, idn,role ,privilegeList,lastname,firstname, birthdate,
           gender, city, phoneNumber, password , status, companyId
         FROM user`);
   }
 
   getUserByPhone(phone: string) {
-    return this.fireSQL.query(`SELECT __name__ as id,role, idn,privilegeList, lastname,firstname, birthdate, 
+    return this.fireSQL.query(`SELECT __name__ as id,role, idn,privilegeList, lastname,firstname, birthdate,
           gender, city,phoneNumber, status, companyId
         FROM user WHERE phoneNumber= '` + phone + `'`).then(res => {
       return res;
@@ -534,7 +563,7 @@ export class CommonService {
   }
 
   getUserByDocId(docId: string) {
-    return this.fireSQL.query(`SELECT __name__ as id, idn,role,privilegeList, lastname,firstname, birthdate, 
+    return this.fireSQL.query(`SELECT __name__ as id, idn,role,privilegeList, lastname,firstname, birthdate,
           gender, city,phoneNumber, status, companyId
         FROM user WHERE __name__ = '` + docId + `'`).then(res => {
       return res;
@@ -542,7 +571,7 @@ export class CommonService {
   }
 
   checkUserByPhone(phone: string) {
-    return this.fireSQL.query(`SELECT __name__ 
+    return this.fireSQL.query(`SELECT __name__
         FROM user WHERE phoneNumber= '` + phone + `'`).then(res => {
       return res;
     });
@@ -589,7 +618,7 @@ export class CommonService {
   }
 
   getActiveTemplateList() {
-    return this.fireSQL.query(`SELECT __name__ as id, name, categoryId, sectionId,companyId, questionIdList, status 
+    return this.fireSQL.query(`SELECT __name__ as id, name, categoryId, sectionId,companyId, questionIdList, status
       FROM template WHERE status ='active' AND isExamTemplate = false`)
       .then(res => {
         return res;
@@ -602,7 +631,7 @@ export class CommonService {
 
   getTemplateResultListByIds(temlateIds: string[]) {
     let temp = '';
-    for (let str of temlateIds) {
+    for (const str of temlateIds) {
       temp = temp + '"' + str + '",';
     }
     temp = temp.substring(0, temp.length - 1);
@@ -612,7 +641,7 @@ export class CommonService {
 
   getUserFioByIds(userIds: string[]) {
     let temp = '';
-    for (let str of userIds) {
+    for (const str of userIds) {
       temp = temp + '"' + str + '",';
     }
     temp = temp.substring(0, temp.length - 1);
