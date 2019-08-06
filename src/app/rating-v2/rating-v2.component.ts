@@ -28,7 +28,6 @@ export class RatingV2Component implements OnInit {
   filterTemplate: any = new Object();
   categoryList: any[] = [];
   companyList: any[] = [];
-
   constructor(private service: QuestionService,
               private _serviceCommon: CommonService,
               private cookieService: CookieService) {
@@ -46,7 +45,7 @@ export class RatingV2Component implements OnInit {
     this.loading = true;
     this._serviceCommon.filterRatingList(this.filterTemplate, 'ratings').then(res => {
       this.loading = false;
-      this.result = res.map(result => {
+      this.results = res.map(result => {
         return {
           id: result.id,
           isTest: result.isTest,
@@ -67,7 +66,6 @@ export class RatingV2Component implements OnInit {
       this.showFilterResult = true;
       this.disableReset = false;
       this.loading = false;
-      this.originResultList = this.results;
       this.sortingCategoriesByUserAndSection();
       console.log('results:', this.results);
     });
@@ -108,10 +106,17 @@ export class RatingV2Component implements OnInit {
     this.filterTemplate = new Object();
     this.isFiltering = false;
     this.showFilterResult = false;
+    this.categories = [];
+    this.results = [];
+    this.loading = true;
+    this.results = this.originResultList;
+    console.log('resutls: ', this.results);
+    this.sortingCategoriesByUserAndSection();
   }
 
   handleRestoreFilter() {
     this.sectionSelectDisable = true;
+    this.results = this.originResultList;
     this.restoreFilterTemplate();
   }
 
@@ -140,7 +145,8 @@ export class RatingV2Component implements OnInit {
   }
 
   sortingCategoriesByUserAndSection() {
-
+    this.categories = [];
+    console.log('im here: ', this.results);
     for (let i = 0; i < this.results.length; i++) {
       if (this.results[i].status === true) {
         continue;
@@ -189,6 +195,8 @@ export class RatingV2Component implements OnInit {
   }
 
   getRatings() {
+    console.log('im here2');
+
     for (let i = 0; i < this.categories.length; i++) {
       for (let j = 0; j < this.categories[i].sections.length; j++) {
         if (this.categories[i].sections[j].count >= 5) {
@@ -237,6 +245,9 @@ export class RatingV2Component implements OnInit {
       }
 
     }
+    console.log('im here3: cate', this.categories);
+    console.log('im here3: loading', this.loading);
+
     this.loading = false;
   }
 

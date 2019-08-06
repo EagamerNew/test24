@@ -100,10 +100,8 @@ export class CommonService {
       templateIdString = templateIdString + '"' + sectionList.id + '",';
     });
     templateIdString = templateIdString.substring(0, templateIdString.length - 1);
-    if (templateIdString.length > 0) {
-      query += haveWhere ? ' AND ' : ' WHERE ';
-      query += ` templateId IN (${templateIdString})`;
-    }
+    query += haveWhere ? ' AND ' : ' WHERE ';
+    query += templateIdList.length > 0 ? ` templateId IN (${templateIdString})` :  ` templateId IN ('-1')`;
     console.log('query:', query);
     return this.fireSQL.query(query);
   }
@@ -405,6 +403,7 @@ export class CommonService {
   getResultList(cased?: string) {
     let query = `SELECT __name__ as id, isTest,correct,mistake,scoreMust,score,category,section,title,userId,username,templateId
       FROM result `;
+      // FROM result WHERE templateId IN ('F08wusvGDxh4HcWFb2Wm')`;
     if (cased && cased === 'ratings') {
       if (this.cookieService.get('role') !== 'admin') {
         query += ` WHERE userId = '${this.cookieService.get('userId')}'`;
