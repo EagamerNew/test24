@@ -83,22 +83,26 @@ export class CommonService {
   }
 
   async filterRatingList(filterTemplate: any, cased: string): Promise<DocumentData[]> {
-    let query = `SELECT __name__ as id, isTest,correct,mistake,scoreMust,score,category,section,title,userId,username
+    let query = `SELECT __name__ as id, isTest,correct,mistake,scoreMust,score,category,section,title,userId,username,templateId
       FROM result `;
+    let haveWhere = false;
     if (cased && cased === 'ratings') {
       if (this.cookieService.get('role') !== 'admin') {
         query += ` WHERE userId = '${this.cookieService.get('userId')}'`;
+        haveWhere = true;
       }
     }
 
     const templateIdList = await this.getTemplateListByCompanyIdAndCategoryId(filterTemplate);
+    console.log('templateIdList: ', templateIdList);
     let templateIdString = '';
     templateIdList.map(sectionList => {
       templateIdString = templateIdString + '"' + sectionList.id + '",';
     });
     templateIdString = templateIdString.substring(0, templateIdString.length - 1);
-    if (query.length > 0) {
-      query += ` AND templateId IN (${templateIdString})`;
+    if (templateIdString.length > 0) {
+      query += haveWhere ? ' AND ' : ' WHERE ';
+      query += ` templateId IN (${templateIdString})`;
     }
     console.log('query:', query);
     return this.fireSQL.query(query);
@@ -399,7 +403,7 @@ export class CommonService {
   }
 
   getResultList(cased?: string) {
-    let query = `SELECT __name__ as id, isTest,correct,mistake,scoreMust,score,category,section,title,userId,username
+    let query = `SELECT __name__ as id, isTest,correct,mistake,scoreMust,score,category,section,title,userId,username,templateId
       FROM result `;
     if (cased && cased === 'ratings') {
       if (this.cookieService.get('role') !== 'admin') {

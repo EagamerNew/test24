@@ -59,6 +59,7 @@ export class RatingV2Component implements OnInit {
           title: result.title,
           userId: result.userId,
           username: result.username,
+          templateId: result.templateId,
           status: false
         };
       });
@@ -129,6 +130,7 @@ export class RatingV2Component implements OnInit {
           title: result.title,
           userId: result.userId,
           username: result.username,
+          templateId: result.templateId,
           status: false
         };
       });
