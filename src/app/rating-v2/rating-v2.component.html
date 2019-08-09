@@ -69,3 +69,9 @@
   </div>
 
 </div>
+
+<div *ngIf="categories.length === 0 && !isFiltering && !loading">
+  <br>
+  <i>Данные не найдены</i>
+</div>
+

@@ -28,6 +28,8 @@ export class RatingV2Component implements OnInit {
   filterTemplate: any = new Object();
   categoryList: any[] = [];
   companyList: any[] = [];
+  uniqueUserIdList: any[] = [];
+
   constructor(private service: QuestionService,
               private _serviceCommon: CommonService,
               private cookieService: CookieService) {
@@ -35,6 +37,8 @@ export class RatingV2Component implements OnInit {
 
   ngOnInit(): void {
     this.cookieService.set('title', 'Рейтинг');
+
+    this.loading = true;
     this.restoreFilterTemplate();
     this.getCompanyList();
     this.getCategoryList();
@@ -110,6 +114,7 @@ export class RatingV2Component implements OnInit {
     this.results = [];
     this.loading = true;
     this.results = this.originResultList;
+    this.results.forEach(value => value.status = false);
     console.log('resutls: ', this.results);
     this.sortingCategoriesByUserAndSection();
   }
@@ -122,7 +127,9 @@ export class RatingV2Component implements OnInit {
 
   getResultList(): void {
     this._serviceCommon.getResultList('ratings').then(res => {
+      const userIdList = [];
       this.results = res.map(result => {
+        userIdList.push({userId: result.userId, cityName: '', code: ''});
         return {
           id: result.id,
           isTest: result.isTest,
@@ -138,6 +145,14 @@ export class RatingV2Component implements OnInit {
           templateId: result.templateId,
           status: false
         };
+      });
+      this.uniqueUserIdList = userIdList.filter((thing, i, arr) => {
+        return arr.indexOf(arr.find(t => t.userId === thing.userId)) === i;
+      });
+      this._serviceCommon.getUserCities(this.uniqueUserIdList)
+        .then(sub => {
+          this.uniqueUserIdList = sub;
+          console.log(sub);
       });
       this.originResultList = this.results;
       this.sortingCategoriesByUserAndSection();
@@ -245,8 +260,6 @@ export class RatingV2Component implements OnInit {
       }
 
     }
-    console.log('im here3: cate', this.categories);
-    console.log('im here3: loading', this.loading);
 
     this.loading = false;
   }
