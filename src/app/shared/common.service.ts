@@ -26,49 +26,39 @@ export class CommonService {
   }
 
   async getUserCities(userIdList: any[]): Promise<any> {
-    let userIdString = '';
-    let cityCodes = [];
-    let cityNames = [];
-    userIdList.map(user => {
-      userIdString = userIdString + '"' + user.userId + '",';
-    });
-    userIdString = userIdString.substring(0, userIdString.length - 1);
-    cityCodes = (await this.getUserCityCodes(userIdString)).map(res => {
-      for (let i = 0; i < userIdList.length; i++) {
-        if(userIdList[i].userId === res.userId){
-          userIdList[i].code = res.city;
+    const userIdString = this.getStrFromList(userIdList, 'userId');
+    const userCityCodeMapper = await this.fireSQL.query(`SELECT __name__ as id, city FROM user WHERE __name__ IN (${userIdString})`);
+    const strCityCodes = this.getStrFromList(userCityCodeMapper, 'city');
+    const cityNames = (await this.fireSQL.query(`SELECT name,code FROM city WHERE code IN (${strCityCodes})`));
+    console.log('userCityCodeMapper: ', userCityCodeMapper);
+    console.log('strCityCodes:', strCityCodes);
+    console.log('cityNames:', cityNames);
+    userIdList.forEach(user => {
+      userCityCodeMapper.forEach(map => {
+        if (user.userId === (map.id)) {
+          user.code = map.city;
+          console.log('found user.code: ', user.code);
         }
+      });
+      console.log('user.code: ', user.code);
+      if (user.code !== '' && user.code) {
+        const code = cityNames.find(value => value.code === user.code)['code'];
+        user.cityName = (code != null && code !== '' ) ? code : '-';
       }
-      return res.city;
     });
-    console.log('userIdlist: ',userIdList);
-    console.log('cityCodes: ',cityCodes);
-
-    (await this.getCityListByCodes(cityCodes)).map(res => {
-      userIdList.filter(value => value.code === res.code).forEach(sub => sub['cityName'] = res.name);
-    });
-
+    console.log('userIdList:', userIdList);
     return userIdList;
   }
 
-  getCityListByCodes(codes): Promise<DocumentData[]> {
-    let codeString = '';
-    codes.map(code => {
-      codeString = codeString + '"' + code + '",';
+  getStrFromList(list: any [], fromCode: string ): string {
+    let ret = '';
+    list.map(temp => {
+      ret = ret + '"' + temp[fromCode] + '",';
     });
-    codeString = codeString.substring(0, codeString.length - 1);
-    console.log(codeString);
-    if(codeString.length < 1){
-      codeString = '"-1"';
-    }
-    console.log(`SELECT code,name FROM city WHERE code IN (${codeString})`);
-    return this.fireSQL.query(`SELECT code,name FROM city WHERE code IN (${codeString})`);
+    ret = ret.substring(0, ret.length - 1);
+    return ret;
   }
 
-  getUserCityCodes(userIdList: string): Promise<DocumentData[]> {
-    console.log('awaited: ',userIdList);
-    return this.fireSQL.query(`SELECT city FROM user WHERE userId IN (${userIdList})`, {includeId: 'userId'});
-  }
   async searchExamTemplate(searchText: string): Promise<DocumentData[]> {
     console.log('searchText: ', searchText);
     // company, section, category, --city
@@ -153,6 +143,14 @@ export class CommonService {
     templateIdString = templateIdString.substring(0, templateIdString.length - 1);
     query += haveWhere ? ' AND ' : ' WHERE ';
     query += templateIdList.length > 0 ? ` templateId IN (${templateIdString})` : ` templateId IN ('-1')`;
+    // if (filterTemplate.cityCode && filterTemplate.cityCode !== '') {
+    //   if (templateIdList.length > 0 ) {
+    //     query += ` AND `;
+    //   } else {
+    //     query += ` OR `;
+    //   }
+    //   query += `city = '${filterTemplate.cityCode}'`;
+    // }
     console.log('query:', query);
     return this.fireSQL.query(query);
   }

@@ -29,6 +29,8 @@ export class RatingV2Component implements OnInit {
   categoryList: any[] = [];
   companyList: any[] = [];
   uniqueUserIdList: any[] = [];
+  userCityMap: any = {};
+  cityList: any = {};
 
   constructor(private service: QuestionService,
               private _serviceCommon: CommonService,
@@ -40,6 +42,7 @@ export class RatingV2Component implements OnInit {
 
     this.loading = true;
     this.restoreFilterTemplate();
+    this.getCityList();
     this.getCompanyList();
     this.getCategoryList();
     this.getResultList();
@@ -49,8 +52,12 @@ export class RatingV2Component implements OnInit {
     this.loading = true;
     this._serviceCommon.filterRatingList(this.filterTemplate, 'ratings').then(res => {
       this.loading = false;
-      this.results = res.map(result => {
-        return {
+      this.results = [];
+      console.log('1');
+      console.log('res: ', res);
+      res.map(result => {
+        console.log('2');
+        const obj = {
           id: result.id,
           isTest: result.isTest,
           correct: result.correct,
@@ -65,11 +72,21 @@ export class RatingV2Component implements OnInit {
           templateId: result.templateId,
           status: false
         };
+        console.log('3');
+        if (this.filterTemplate.cityName && this.filterTemplate.cityName !== '') {
+          console.log('this.filterTemplate.cityName:', this.filterTemplate.cityName);
+          const val = this.userCityMap[obj.userId];
+          console.log('val ', val );
+          if (val !== null && val && val !== undefined && val === this.filterTemplate.cityName) {
+            this.results.push(obj);
+          }
+        }
       });
       this.isFiltering = false;
       this.showFilterResult = true;
       this.disableReset = false;
       this.loading = false;
+      this.restoreFilterTemplate();
       this.sortingCategoriesByUserAndSection();
       console.log('results:', this.results);
     });
@@ -80,6 +97,7 @@ export class RatingV2Component implements OnInit {
     this.filterTemplate = new Object();
     this.filterTemplate['companyId'] = '';
     this.filterTemplate['categoryId'] = '';
+    this.filterTemplate['cityName'] = '';
   }
 
   search(): void {
@@ -125,6 +143,12 @@ export class RatingV2Component implements OnInit {
     this.restoreFilterTemplate();
   }
 
+  getCityList(): void {
+    this._serviceCommon.getCityList().then(res=> {
+      this.cityList = res;
+    });
+  }
+
   getResultList(): void {
     this._serviceCommon.getResultList('ratings').then(res => {
       const userIdList = [];
@@ -151,12 +175,20 @@ export class RatingV2Component implements OnInit {
       });
       this._serviceCommon.getUserCities(this.uniqueUserIdList)
         .then(sub => {
-          this.uniqueUserIdList = sub;
-          console.log(sub);
+          this.userCityMap = this.arrayToMap(sub);
+          console.log(this.userCityMap);
       });
       this.originResultList = this.results;
       this.sortingCategoriesByUserAndSection();
     });
+  }
+
+  arrayToMap(list: any []) {
+    const obj = {};
+    list.forEach(value => {
+      obj[value.userId] = value.cityName;
+    });
+    return obj;
   }
 
   sortingCategoriesByUserAndSection() {

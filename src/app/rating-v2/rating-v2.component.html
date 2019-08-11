@@ -1,5 +1,13 @@
 <div *ngIf="isFiltering">
   <mat-form-field class="example-full-width">
+    <mat-select placeholder="Город" [(ngModel)]="filterTemplate.cityName">
+      <!--<mat-option value="''">Все</mat-option>-->
+      <mat-option *ngFor="let city of cityList" [value]="city.name">
+        {{city.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field class="example-full-width">
     <mat-select placeholder="Компания" [(ngModel)]="filterTemplate.companyId">
       <!--<mat-option value="''">Все</mat-option>-->
       <mat-option *ngFor="let company of companyList" [value]="company.id">
@@ -43,6 +51,10 @@
     <mat-card class="example-card">
       <mat-card-header>
         <mat-card-subtitle (click)="show(i)">
+          <span *ngIf="userCityMap[cat.userId]">
+            <i>{{userCityMap[cat.userId]}}</i>
+            <br>
+          </span>
           <h4 style="color: #107ECC;cursor: pointer;">
             <div fxLayout="column" fxLayoutAlign="start start" fxFlex="80">
               <b style="float: left">{{cat.username}}/{{cat.name}}</b>
