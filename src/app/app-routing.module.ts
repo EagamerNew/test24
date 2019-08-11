@@ -31,6 +31,7 @@ import {StudyCenterComponent} from "./study-center/study-center.component";
 import {ConditionTermsComponent} from "./condition-terms/condition-terms.component";
 import {PreliminaryStartComponent} from './preliminary-start/preliminary-start.component';
 import {RatingV2Component} from "./rating-v2/rating-v2.component";
+import {StaffListComponent} from './staff/staff-list/staff-list.component';
 
 const routes: Routes = [
   {path: '', component: MenuComponent},
@@ -61,6 +62,7 @@ const routes: Routes = [
   {path: 'exam-setting/:id', component: ExamSettingComponent},
   {path: 'speciality', component: SpecialityComponent},
   {path: 'staff', component: StaffComponent},
+  {path: 'staff-list', component: StaffListComponent},
   {path: 'create-password', component: CreatePasswordComponent},
   {path: 'result', component: ResultComponent},
   {path: 'study-center', component: StudyCenterComponent},

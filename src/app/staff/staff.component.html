@@ -6,7 +6,7 @@
   </mat-select>
 </mat-form-field>
 <mat-form-field class="example-full-width">
-  <mat-select placeholder="Филиал" >
+  <mat-select placeholder="Филиал" [(ngModel)]="tempVal.subsidiary">
     <mat-option *ngFor="let subsidiary of subsidiaryList" [value]="subsidiary.id">
       {{subsidiary.name}}
     </mat-option>

@@ -56,6 +56,7 @@ import {StudyCenterComponent} from "./study-center/study-center.component";
 import {ConditionTermsComponent} from "./condition-terms/condition-terms.component";
 import {PreliminaryStartComponent} from './preliminary-start/preliminary-start.component';
 import { RatingV2Component } from './rating-v2/rating-v2.component';
+import {StaffListComponent} from './staff/staff-list/staff-list.component';
 
 @NgModule({
   declarations: [
@@ -92,7 +93,8 @@ import { RatingV2Component } from './rating-v2/rating-v2.component';
     StudyCenterComponent,
     PreliminaryStartComponent,
     ConditionTermsComponent,
-    RatingV2Component
+    RatingV2Component,
+    StaffListComponent
   ],
   imports: [
     BrowserModule,

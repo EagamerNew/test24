@@ -25,6 +25,10 @@ export class CommonService {
     this.fireSQL = new FireSQL(this.fireDB);
   }
 
+  getCompanyStaffMembers(){
+    this.fireSQL.query(``)
+  }
+
   async getUserCities(userIdList: any[]): Promise<any> {
     const userIdString = this.getStrFromList(userIdList, 'userId');
     const userCityCodeMapper = await this.fireSQL.query(`SELECT __name__ as id, city FROM user WHERE __name__ IN (${userIdString})`);
@@ -301,8 +305,8 @@ export class CommonService {
     return this.fireSQL.query(query);
   }
 
-  setCompanyIdForUser(docId, companyId) {
-    return this.firestore.collection('user').doc(docId).update({companyId: companyId, role: 'staff'});
+  setCompanyIdForUser(docId, companyId, subsidiaryId) {
+    return this.firestore.collection('user').doc(docId).update({companyId: companyId, subsidiaryId: subsidiaryId, role: 'staff'});
   }
 
   getUserByIdn(idn) {

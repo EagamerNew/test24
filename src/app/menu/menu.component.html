@@ -64,6 +64,9 @@
       <button mat-button class="cust-button"*ngIf="this.cookie.get('userId') &&  checkToAccess('company-list')" [routerLink]="['company-list']"><!--staffRL, question-templatePL -->
         Компании
       </button>
+      <button mat-button class="cust-button"*ngIf="this.cookie.get('userId') &&  checkToAccess('staff-list')" [routerLink]="['staff-list']"><!--staffRL, question-templatePL -->
+        Сотрудники
+      </button>
       <button mat-button class="cust-button" *ngIf="this.cookie.get('userId') &&  checkToAccess('subsidiary')" [routerLink]="['subsidiary']"><!--staffRL, question-templatePL -->
         Список филиалов
       </button>
