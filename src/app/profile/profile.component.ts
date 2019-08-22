@@ -3,6 +3,7 @@ import {User} from "../shared/model/user";
 import {CookieService} from "ngx-cookie-service";
 import {CommonService} from "../shared/common.service";
 import {MatSnackBar} from "@angular/material";
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -18,20 +19,32 @@ export class ProfileComponent implements OnInit {
     {code: 'taraz', name: "Тараз"}];
 
   docUserId: string;
+  isDefault: boolean = true;
   newPassword;
 
   examHistory: any[]= [];
   constructor(private cookieService: CookieService,
               private commonService: CommonService,
+              private route: ActivatedRoute,
+              private router: Router,
               private snackBar: MatSnackBar) {
   }
 
   ngOnInit() {
-    this.cookieService.set('title', 'Мой профиль');
-    if (this.docUserId = this.cookieService.get('userId')) {
-      this.getUserByDocId();
-      this.getExamHistory();
-    }
+    this.route.params.subscribe(params => {
+      this.docUserId = params['id'];
+      if(this.docUserId){
+        this.cookieService.set('title', 'Профиль');
+        this.isDefault = false;
+        this.getUserByDocId();
+      }else{
+        this.cookieService.set('title', 'Мой профиль');
+        if (this.docUserId = this.cookieService.get('userId')) {
+          this.getUserByDocId();
+          this.getExamHistory();
+        }
+      }
+    });
   }
 
   getExamHistory(){
@@ -101,6 +114,17 @@ export class ProfileComponent implements OnInit {
     }
   }
 
+
+  showMessage(message: string): void {
+    this.snackBar.open(message, '', {duration: 1500});
+  }
+
+  deleteUserByUserDocId(userDocId): void {
+    this.commonService.deleteUserByUserDocId(userDocId).then(res => {
+      this.showMessage('Пользователь успешно удален');
+      this.router.navigateByUrl('')
+    });
+  }
   getUserByDocId() {
     this.commonService.getUserByDocId(this.docUserId).then(res => {
       console.log('res: ', res);

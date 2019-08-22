@@ -25,8 +25,19 @@ export class CommonService {
     this.fireSQL = new FireSQL(this.fireDB);
   }
 
-  getCompanyStaffMembers(){
-    this.fireSQL.query(``)
+  getCompanyStaffMembers(companyId: string) {
+    if(this.cookieService.get('role') === 'admin'){
+      return this.firestore.collection('user', ref => ref
+        .where('companyId','==' ,companyId)
+        .where('role','==' ,'staff')
+      ).snapshotChanges();
+    }else{
+      return this.firestore.collection('user', ref => ref
+        .where('companyId','==' ,companyId)
+        .where('role','==' ,'staff')
+        .where('managerId','==' ,this.cookieService.get('userId'))
+      ).snapshotChanges();
+    }
   }
 
   async getUserCities(userIdList: any[]): Promise<any> {
@@ -47,14 +58,14 @@ export class CommonService {
       console.log('user.code: ', user.code);
       if (user.code !== '' && user.code) {
         const code = cityNames.find(value => value.code === user.code)['code'];
-        user.cityName = (code != null && code !== '' ) ? code : '-';
+        user.cityName = (code != null && code !== '') ? code : '-';
       }
     });
     console.log('userIdList:', userIdList);
     return userIdList;
   }
 
-  getStrFromList(list: any [], fromCode: string ): string {
+  getStrFromList(list: any [], fromCode: string): string {
     let ret = '';
     list.map(temp => {
       ret = ret + '"' + temp[fromCode] + '",';
@@ -306,7 +317,7 @@ export class CommonService {
   }
 
   setCompanyIdForUser(docId, companyId, subsidiaryId) {
-    return this.firestore.collection('user').doc(docId).update({companyId: companyId, subsidiaryId: subsidiaryId, role: 'staff'});
+    return this.firestore.collection('user').doc(docId).update({managerId: this.cookieService.get('userId'), companyId: companyId, subsidiaryId: subsidiaryId, role: 'staff'});
   }
 
   getUserByIdn(idn) {

@@ -44,6 +44,7 @@ const routes: Routes = [
   {path: 'test/:id/:examId', component: TestComponent},
   {path: 'login-phone', component: PhoneLoginComponent},
   {path: 'profile', component: ProfileComponent},
+  {path: 'profile/:id', component: ProfileComponent},
   {path: 'question-moderation', component: QuestionModerationComponent},
   {path: 'demo', component: DemoComponent},
   {path: 'demo-list', component: ListComponent},

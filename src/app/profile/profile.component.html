@@ -1,5 +1,5 @@
 <div *ngIf="user">
-  <mat-expansion-panel style="margin-bottom:20px;" *ngIf="examHistory.length > 0">
+  <mat-expansion-panel style="margin-bottom:20px;" *ngIf="examHistory.length > 0 && isDefault">
     <mat-expansion-panel-header>
       <mat-panel-title>Мои результаты </mat-panel-title>
       <mat-panel-description>
@@ -85,10 +85,14 @@
   <mat-form-field class="example-full-width">
     <input matInput placeholder="Номер телефона" disabled [(ngModel)]="user.phoneNumber">
   </mat-form-field>
+  <div *ngIf="isDefault">
+    <mat-form-field class="example-full-width">
+      <input matInput placeholder="Пароль" [(ngModel)]="newPassword">
+    </mat-form-field>
+    <button mat-flat-button class="example-full-width" (click)="setNewPassword()">Сохранить новый пароль</button>
+  </div>
 
-  <mat-form-field class="example-full-width">
-    <input matInput placeholder="Пароль" [(ngModel)]="newPassword">
-  </mat-form-field>
-  <button mat-flat-button class="example-full-width" (click)="setNewPassword()">Сохранить новый пароль</button>
+    <button mat-button class="example-full-width" (click)="deleteUserByUserDocId(user.id)"  *ngIf="cookieService.get('role') === 'admin' && !isDefault" class="mat-warn">Удалить пользователя</button>
+
 
 </div>

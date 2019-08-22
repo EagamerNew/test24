@@ -1,0 +1,21 @@
+.cust-block{
+  border: 1px solid grey;
+  margin-top: 5%;
+}
+.cust-block > .inner-text >p {
+  line-height: 3px;
+}
+.inner-text{
+  margin: 0 3%;
+  color:grey;
+}
+
+.example-full-width {
+  width: 100%;
+}
+.act-block{
+  border: 1px solid #107ECC;
+}
+.act-text{
+  color: #107ECC!important;
+}

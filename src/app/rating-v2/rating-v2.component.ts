@@ -111,6 +111,9 @@ export class RatingV2Component implements OnInit {
           this.results.push(value);
         }
       });
+      this.disableReset = false;
+
+      this.sortingCategoriesByUserAndSection();
     }
   }
 

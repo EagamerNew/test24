@@ -82,5 +82,5 @@
 
   <button mat-button (click)="updateUserByUserDocId(user)" class="mat-primary">Сохранить</button>
 
-  <button mat-button (click)="deleteUserByUserDocId(user.id)" class="mat-warn">Удалить</button>
+  <button mat-button (click)="deleteUserByUserDocId(user.id)"  *ngIf="cookie.get('role') === 'admin'" class="mat-warn">Удалить</button>
 </mat-expansion-panel>

@@ -49,7 +49,7 @@
         </p>
         <p class="mat-caption hell">{{getFormattedDate(data.examination.date)}}</p>
         <p class="mat-caption hell">{{data.examination.startTime}}</p>
-        <p class="mat-caption hell">{{data.cityName.name}}</p>
+        <p class="mat-caption hell" *ngIf="data.cityName">{{data.cityName.name}}</p>
         <p class="mat-caption hell">{{data.examination.address}}</p>
       </mat-card-content>
       <mat-card-actions>

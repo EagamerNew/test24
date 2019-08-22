@@ -1,3 +1,46 @@
-<p>
-  staff-list works!
-</p>
+<div>
+  <mat-form-field class="example-full-width">
+    <input type="text" matInput placeholder="Поиск..."
+           autocomplete="off" [(ngModel)]="searchText" (keyup)="search()">
+    <mat-hint>По ФИО и компании</mat-hint>
+  </mat-form-field>
+
+  <div *ngFor="let staff of staffList; let i = index;">
+    <div class="cust-block" [ngClass]="{'act-block': staff.id === activeId}">
+      <div class="inner-text">
+        <p>{{staff.companyName}}</p>
+        <p>{{staff.subsidiaryName}}</p>
+        <p>{{staff.subsidiaryAddress}}</p>
+        <p [ngClass]="{'act-text': staff.id === activeId}" style="cursor: pointer;" (click)="activate(staff.managerId, staff.id)">
+          {{i+1}}. {{staff.lastname + ' ' + staff.firstname}} +7{{staff.phoneNumber}}
+        </p>
+        <p [ngClass]="{'act-text': staff.id === activeId}">{{getRuRoleName(staff.role)}}</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="!staffList || staffList.length === 0">
+  <br>
+  <i>Данные не найдены</i>
+</div>
+<!--<div>
+    <div class="cust-block">
+      <div class="inner-text">
+        <p>Test 24</p>
+        <p>Филиал Достык</p>
+        <p>Алматы, пр. Достык 52</p>
+        <p>1. Асылбек Жанат +7 701 797 87 58</p>
+        <p>Директор</p>
+      </div>
+    </div>
+
+    <div class="cust-block">
+      <div class="inner-text">
+        <p>Test 24</p>
+        <p>Филиал Абай</p>
+        <p>Алматы, пр. Абай 52</p>
+        <p>2. Исламова Анель +7 777 989 87 87</p>
+        <p>Автор</p>
+      </div>
+    </div>
+  </div>-->

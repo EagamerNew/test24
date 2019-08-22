@@ -34,8 +34,11 @@
 <div *ngIf="!isFiltering">
   <mat-form-field class="example-full-width" style="margin-bottom:15px;">
     <input type="text" matInput placeholder="Поиск..."
-           autocomplete="off" [(ngModel)]="searchText" (keyup)="search()">
+           autocomplete="off" [(ngModel)]="searchText" >
     <mat-hint>По ФИО</mat-hint>
+    <button mat-icon-button matSuffix matTooltip="Поиск" (click)="search()">
+      <mat-icon>search</mat-icon>
+    </button>
     <button mat-icon-button matSuffix matTooltip="Показать фильтр" (click)="showFilter()">
       <mat-icon>filter_list</mat-icon>
     </button>
