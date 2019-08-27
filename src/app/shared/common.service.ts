@@ -575,6 +575,22 @@ export class CommonService {
     });
   }
 
+  updateUserByDocIdWithoutPassword(userDocId: string, user){
+    return this.firestore.collection('user').doc(userDocId).update({
+      idn: user.idn,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      birthdate: user.birthdate,
+      gender: user.gender,
+      status: user.status,
+      city: user.city,
+      phoneNumber: user.phoneNumber,
+      role: user.role,
+      privilegeList: user.privilegeList,
+    });
+
+  }
+
   deleteUserByUserDocId(userDocId) {
     return this.firestore.collection('user').doc(userDocId).delete();
   }

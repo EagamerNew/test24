@@ -80,7 +80,7 @@ export class UserComponent implements OnInit {
     }
     // to remove duplicated elements
     user.privilegeList = user.privilegeList.filter((el, i, a) => i === a.indexOf(el));
-    this.commonService.updateUserByDocId(user.id, user).then(res => {
+    this.commonService.updateUserByDocIdWithoutPassword(user.id, user).then(res => {
       this.openSnackBar('Пользователь успешно обновлен', '');
       this.getUserList();
     });

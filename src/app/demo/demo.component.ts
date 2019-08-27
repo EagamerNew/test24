@@ -90,11 +90,11 @@ export class DemoComponent implements OnInit {
     this.sectionId = event.value;
     console.log('sectionId: ', event.value);
 
-    let query = `SELECT __name__ as docId FROM question WHERE section = "${event.value}" AND status='accepted' `;
+    let query = `SELECT __name__ as docId FROM question WHERE section = "${event.value}" AND status='accepted' AND company  ='${this.companyId}' `;
     if (this.isExamTemplate) {
       query = query + ` AND isExamQuestion = true`;
     } else{
-      query = query + ` AND (isTestQuestion = true OR isExam)`;
+      query = query + ` AND (isTestQuestion = true OR isExamQuestion = false)`;
     }
 
     console.log(query);
