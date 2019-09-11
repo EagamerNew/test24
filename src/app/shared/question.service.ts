@@ -51,8 +51,12 @@ export class QuestionService {
     const companyId = template.companyId;
     const isExamTemplate = template.isExamTemplate;
 
-    let query = `SELECT __name__ as docId FROM question WHERE section = '${sectionId}' AND status='accepted' 
-      AND isExamQuestion = ` + isExamTemplate;
+    let query = `SELECT __name__ as docId FROM question WHERE section = '${sectionId}' AND status='accepted' `;
+    if (isExamTemplate){
+      query += ` AND isExamQuestion =` + true
+    }else{
+      query += ` AND isTestQuestion =` + true
+    }
     query += ` AND company='${companyId}'`;
 
     console.log('query: ', query);

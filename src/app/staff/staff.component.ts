@@ -17,6 +17,8 @@ export class StaffComponent implements OnInit {
 
   companyList: any [] = [];
   subsidiaryList: any [] = [];
+  companyId: string = '';
+  role: string = '';
 
   tempVal: any = {
     company: {},
@@ -26,14 +28,20 @@ export class StaffComponent implements OnInit {
 
   ngOnInit() {
     this.cookieService.set('title', 'Сотрудники');
+    this.companyId = this.cookieService.get('companyId');
+    this.role = this.cookieService.get('role');
+
+    if (this.companyId) {
+      this.getSubsidiaryList(this.companyId);
+    }
     this.getCompanyList();
   }
 
 
-  getSubsidiaryList() {
+  getSubsidiaryList(companyId: string) {
     console.log('-------------', this.tempVal.company);
 
-    this.commonService.getSubsidiaryListByCompanyId(this.tempVal.company.id).then(res => {
+    this.commonService.getSubsidiaryListByCompanyId(companyId).then(res => {
       console.log(res);
       this.subsidiaryList = res.map(result => {
         return {

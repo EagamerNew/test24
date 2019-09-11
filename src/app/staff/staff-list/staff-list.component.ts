@@ -45,22 +45,7 @@ export class StaffListComponent implements OnInit {
       this.showMessage('Вы не пренадлежите к какой-либо компании. Список не доступен.');
     } else {
       this.loadList();
-      // this.getCompanyStaffMembers();
     }
-  }
-
-  getCompanyStaffMembers() {
-    this.commonService.getCompanyStaffMembers(this.companyId).subscribe(res => {
-      this.staffList = res.map(sub => {
-        const staff = {
-          id: sub.payload.doc.id,
-          companyName: this.getCompanyNameById(sub.payload.doc.data()['companyId']),
-          ...sub.payload.doc.data()
-
-        };
-        return staff;
-      });
-    });
   }
 
   async loadList() {
@@ -85,7 +70,6 @@ export class StaffListComponent implements OnInit {
   }
 
   getCityNameByCode(code: string): string {
-    let cityName = '';
     for (let i = 0; i < this.cityList.length; i++) {
       if (this.cityList[i].code === code) {
         return this.cityList[i].name;
@@ -156,7 +140,7 @@ export class StaffListComponent implements OnInit {
     }
   }
 
-  activate(managerId: string, userId: string) {
+  activate(managerId: string, userId: string): void {
     this.activeId = userId;
     if(this.userId === managerId || this.role === 'admin'){
       this.router.navigateByUrl('/profile/' + userId);

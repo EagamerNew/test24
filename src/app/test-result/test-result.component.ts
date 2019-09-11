@@ -46,8 +46,9 @@ export class TestResultComponent implements OnInit {
       );
     }
     // For find percent of correct answer
-    const all: number = parseInt(this.data.correct) + parseInt(this.data.mistake);
-    this.percent =  ((this.data.correct * 100) / (all)).toFixed();
+    // const all: number = parseInt(this.data.correct) + parseInt(this.data.mistake);
+    // this.percent =  ((this.data.correct * 100) / (all)).toFixed();
+    this.percent = ((parseInt(this.data.score )* 100) / parseInt(this.data.scoreMust)).toFixed();
   }
   public captureScreen()
   {

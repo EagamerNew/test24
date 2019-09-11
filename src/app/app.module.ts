@@ -57,6 +57,7 @@ import {ConditionTermsComponent} from "./condition-terms/condition-terms.compone
 import {PreliminaryStartComponent} from './preliminary-start/preliminary-start.component';
 import { RatingV2Component } from './rating-v2/rating-v2.component';
 import {StaffListComponent} from './staff/staff-list/staff-list.component';
+import {AuthGuard} from "./shared/auth.guard";
 
 @NgModule({
   declarations: [
@@ -114,7 +115,8 @@ import {StaffListComponent} from './staff/staff-list/staff-list.component';
     CacheService,
     DatePipe,
     CategoryService, {provide: FirestoreSettingsToken, useValue: {}}, CommonService,
-    {provide: LocationStrategy, useClass: HashLocationStrategy}
+    {provide: LocationStrategy, useClass: HashLocationStrategy},
+    AuthGuard
   ],
   bootstrap: [AppComponent]
 })

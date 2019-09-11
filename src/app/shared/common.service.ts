@@ -321,7 +321,7 @@ export class CommonService {
   }
 
   getUserByIdn(idn) {
-    return this.fireSQL.query(`SELECT __name__ as id, companyId from user WHERE idn = '${idn}' AND (role = 'staff' OR  role = 'author')`);
+    return this.fireSQL.query(`SELECT __name__ as id, companyId from user WHERE idn = '${idn}' AND (role = 'staff' OR  role = 'author' OR role = 'user')`);
   }
 
   archiveExam(examId: string) {
@@ -719,8 +719,7 @@ export class CommonService {
   }
 
   getCompanyList() {
-    return this.fireSQL.query(`SELECT __name__ as
-                                      id,
+    return this.fireSQL.query(`SELECT __name__ as id,
                                       bin,
                                       subsidiary,
                                       name,

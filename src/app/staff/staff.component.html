@@ -1,5 +1,7 @@
 <mat-form-field class="example-full-width">
-  <mat-select placeholder="Компания" [(ngModel)]="tempVal.company" (selectionChange)="getSubsidiaryList()">
+  <mat-select placeholder="Компания" [(ngModel)]="tempVal.company"
+              (selectionChange)="getSubsidiaryList(tempVal.company.id)"
+              [disabled]="companyId && role === 'admin'">
     <mat-option *ngFor="let company of companyList" [value]="company">
       {{company.name}}
     </mat-option>
