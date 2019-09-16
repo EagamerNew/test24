@@ -56,17 +56,19 @@ export class ResultComponent implements OnInit {
     // }
   }
 
-  calculatePercent(correct, mistake) {
-    const all: number = parseInt(correct) + parseInt(mistake);
-    return ((correct * 100) / (all)).toFixed();
+  calculatePercent(data): string {
+    if(data.scoreMust){
+      const result = ((data.score * 100) / (data.scoreMust)).toFixed();
+      // console.log('score:', data.score, ', scoreMust:', data.scoreMust, ', result:', result);
+      return result;
+    }
+    return '';
   }
 
   getExamHistory() {
     this.commonService.getExamHistoryList().then(res => {
-      console.log('result : ', res);
       this.results = res.map(mapper => {
         if (mapper.examinatorUserId) {
-          console.log('mapper success: ', mapper.companyName)
           this.examUserIds.push(mapper.examinatorUserId);
         }
         if (mapper.date) {
@@ -76,7 +78,6 @@ export class ResultComponent implements OnInit {
         return mapper;
       });
       this.resultsOrigin = this.results;
-      console.log('userIds: ', this.examUserIds);
       this.getExaminatorUsernameById();
     });
   }
@@ -132,7 +133,6 @@ export class ResultComponent implements OnInit {
 
   getExaminatorUsernameById() {
     this.commonService.getUserFioByIds(this.examUserIds).then(res => {
-      console.log('users found: ', this.users);
       this.users = res;
     });
   }

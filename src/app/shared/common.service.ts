@@ -25,10 +25,10 @@ export class CommonService {
     this.fireSQL = new FireSQL(this.fireDB);
   }
 
-  getCompanyStaffMembers(companyId: string) {
-    if(this.cookieService.get('role') === 'admin'){
+  getCompanyStaffMembers(companyId: string, role: string) {
+    console.log('role:', role);
+    if(role === 'admin'){
       return this.firestore.collection('user', ref => ref
-        .where('companyId','==' ,companyId)
         .where('role','==' ,'staff')
       ).snapshotChanges();
     }else{
@@ -339,6 +339,7 @@ export class CommonService {
                                       category,
                                       title,
                                       score,
+                                      scoreMust,
                                       mistake,
                                       correct,
                                       section,
@@ -889,9 +890,9 @@ export class CommonService {
       temp = temp + '"' + str + '",';
     }
     temp = temp.substring(0, temp.length - 1);
-    console.log('temp to search: ', temp);
+    // console.log('temp to search: ', temp);
     const query = `SELECT __name__ as id,firstname, lastname FROM user WHERE __name__ IN (${temp})`;
-    console.log('query: ', query);
+    // console.log('query: ', query);
     return this.fireSQL.query(query);
   }
 

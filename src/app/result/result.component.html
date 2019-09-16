@@ -36,7 +36,7 @@
           <span *ngIf="actionCode === 'db'">{{data.username}}</span>
           <span *ngIf="actionCode === 'cache'">Ваш результат</span>
           <br>
-          {{calculatePercent(data.correct, data.mistake)}}%
+          {{calculatePercent(data)}}%
         </h2>
         <p class="mat-caption cust-grey" >{{data.category}}</p>
         <p class="mat-caption cust-grey">{{data.section}}</p>

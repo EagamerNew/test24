@@ -41,7 +41,7 @@ export class StaffListComponent implements OnInit {
     console.log(this.userId);
     console.log(this.role);
 
-    if (!this.companyId) {
+    if (!this.companyId && this.role !== 'admin') {
       this.showMessage('Вы не пренадлежите к какой-либо компании. Список не доступен.');
     } else {
       this.loadList();
@@ -52,7 +52,7 @@ export class StaffListComponent implements OnInit {
     this.companyList = await this.commonService.getCompanyList();
     this.subsidiaryList = await this.commonService.getSubsidiaryList();
     this.cityList = await this.commonService.getCityList();
-    let resolvedList = await this.commonService.getCompanyStaffMembers(this.companyId);
+    let resolvedList = await this.commonService.getCompanyStaffMembers(this.companyId, this.role);
     resolvedList.subscribe(res=>{
       this.staffList = res.map(sub => {
         const staff = {
