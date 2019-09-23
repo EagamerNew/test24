@@ -641,6 +641,10 @@ export class CommonService {
     return this.firestore.doc('user/' + docId).update({'password': password});
   }
 
+  updateRoleAndCompanyId(docId: string, role: string, companyId: string){
+    return this.firestore.doc('user/' + docId).update({'role': role, 'companyId': companyId});
+  }
+
   checkPhoneAndPassword(phone, password) {
     return this.fireSQL.query(`SELECT __name__ as
                                       id,

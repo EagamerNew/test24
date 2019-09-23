@@ -119,9 +119,9 @@ export class ProfileComponent implements OnInit {
     this.snackBar.open(message, '', {duration: 1500});
   }
 
-  deleteUserByUserDocId(userDocId): void {
-    this.commonService.deleteUserByUserDocId(userDocId).then(res => {
-      this.showMessage('Пользователь успешно удален');
+  updateRoleAndCompanyId(userDocId): void {
+    this.commonService.updateRoleAndCompanyId(userDocId, 'user', '').then(res => {
+      this.showMessage('Сотрудник успешно удален');
       this.router.navigateByUrl('')
     });
   }
