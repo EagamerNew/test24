@@ -10,21 +10,20 @@ import {CookieService} from 'ngx-cookie-service';
 })
 export class StaffComponent implements OnInit {
 
-  constructor(public snackBar: MatSnackBar,
-              private commonService: CommonService,
-              private cookieService: CookieService,) {
-  }
-
   companyList: any [] = [];
   subsidiaryList: any [] = [];
   companyId: string = '';
   role: string = '';
-
   tempVal: any = {
     company: {},
     userIdn: '',
     subsidiary: ''
   };
+
+  constructor(public snackBar: MatSnackBar,
+              private commonService: CommonService,
+              private cookieService: CookieService,) {
+  }
 
   ngOnInit() {
     this.cookieService.set('title', 'Сотрудники');
@@ -32,8 +31,12 @@ export class StaffComponent implements OnInit {
     this.role = this.cookieService.get('role');
 
     if (this.companyId) {
+      this.tempVal.company = this.companyId;
       this.getSubsidiaryList(this.companyId);
+    } else {
+      this.openSnackBar('Вы не пренадлежите к какой-либо компании. Функция не доступна.', '');
     }
+    console.log((this.companyId && this.role !== 'admin'));
     this.getCompanyList();
   }
 
@@ -42,7 +45,7 @@ export class StaffComponent implements OnInit {
     console.log('-------------', this.tempVal.company);
 
     this.commonService.getSubsidiaryListByCompanyId(companyId).then(res => {
-      console.log(res);
+      console.log('subsidiarylist:', res);
       this.subsidiaryList = res.map(result => {
         return {
           id: result.id,
@@ -64,6 +67,15 @@ export class StaffComponent implements OnInit {
   getCompanyList() {
     this.commonService.getActiveCompanyList().then(res => {
       this.companyList = res;
+      if (this.companyId && this.role !== 'admin') {
+        for (let i = 0; i < res.length; i++) {
+          if (res[i].id === this.companyId) {
+            this.companyList = [res[i]];
+            break;
+          }
+        }
+      }
+      console.log('companyList:', this.companyList);
     });
   }
 
