@@ -1,6 +1,6 @@
 <mat-form-field class="example-full-width">
   <mat-select placeholder="Компания" [(ngModel)]="tempVal.company"
-              (selectionChange)="getSubsidiaryList(tempVal.company.id)"
+              (selectionChange)="getSubsidiaryList(tempVal.company)"
 >
     <mat-option *ngFor="let company of companyList" [value]="company.id">
       {{company.name}}

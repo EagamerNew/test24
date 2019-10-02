@@ -86,7 +86,8 @@ export class StaffComponent implements OnInit {
         if (user.companyId) {
           this.openSnackBar('Пользователь уже состоит в компании', '');
         } else {
-          this.commonService.setCompanyIdForUser(user.id, this.tempVal.company.id, this.tempVal.subsidiary).then(res => {
+          console.log(user.id + ':', this.tempVal);
+          this.commonService.setCompanyIdForUser(user.id, this.tempVal.company, this.tempVal.subsidiary).then(res => {
             this.openSnackBar('Пользователь добавлен в компанию', '');
             this.tempVal.userIdn = '';
           });
