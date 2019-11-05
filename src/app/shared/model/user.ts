@@ -7,4 +7,15 @@ export class User {
   gender:string;
   city:string;
   phoneNumber:string;
+  password: string;
+  companyId: string;
+  subsidiaryId: string;
+  role: string;
+  privilegeList: string[];
+  participants: Participant[];
+  status: string;
+}
+export class Participant {
+  managerId: string;
+  companyId: string;
 }

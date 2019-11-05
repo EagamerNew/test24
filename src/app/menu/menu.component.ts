@@ -79,7 +79,7 @@ export class MenuComponent implements OnInit {
           }
           break;
         case 'question-category':
-          if ( this.userPrivilegeList.includes('category')) {
+          if (this.userPrivilegeList.includes('category')) {
             result = true;
           }
           break;

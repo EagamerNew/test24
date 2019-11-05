@@ -58,6 +58,7 @@ import {PreliminaryStartComponent} from './preliminary-start/preliminary-start.c
 import { RatingV2Component } from './rating-v2/rating-v2.component';
 import {StaffListComponent} from './staff/staff-list/staff-list.component';
 import {AuthGuard} from "./shared/auth.guard";
+import {StudentAddComponent} from "./student/student-add/student-add.component";
 
 @NgModule({
   declarations: [
@@ -95,7 +96,8 @@ import {AuthGuard} from "./shared/auth.guard";
     PreliminaryStartComponent,
     ConditionTermsComponent,
     RatingV2Component,
-    StaffListComponent
+    StaffListComponent,
+    StudentAddComponent
   ],
   imports: [
     BrowserModule,

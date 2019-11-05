@@ -32,6 +32,7 @@ import {ConditionTermsComponent} from "./condition-terms/condition-terms.compone
 import {PreliminaryStartComponent} from './preliminary-start/preliminary-start.component';
 import {RatingV2Component} from "./rating-v2/rating-v2.component";
 import {StaffListComponent} from './staff/staff-list/staff-list.component';
+import {StudentAddComponent} from "./student/student-add/student-add.component";
 
 const routes: Routes = [
   {path: '', component: MenuComponent},
@@ -68,7 +69,8 @@ const routes: Routes = [
   {path: 'result', component: ResultComponent},
   {path: 'study-center', component: StudyCenterComponent},
   {path: 'preliminary-start/:code/:id', component: PreliminaryStartComponent},
-  {path: 'condition-terms', component: ConditionTermsComponent}
+  {path: 'condition-terms', component: ConditionTermsComponent},
+  {path: 'student/add', component: StudentAddComponent}
 ];
 
 @NgModule({
