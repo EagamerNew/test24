@@ -323,6 +323,9 @@ export class CommonService {
   getUserByIdn(idn) {
     return this.fireSQL.query(`SELECT __name__ as id, companyId from user WHERE idn = '${idn}' AND (role = 'staff' OR  role = 'author' OR role = 'user')`);
   }
+  getUserByUserIdn(idn) {
+    return this.fireSQL.query(`SELECT __name__ as id, idn, lastname, firstname, gender, city, birthdate, phoneNumber  from user WHERE idn = '${idn}' AND (role = 'staff' OR  role = 'author' OR role = 'user')`);
+  }
 
   archiveExam(examId: string) {
     return this.firestore.collection('examination').doc(examId).update({status: 'archived'});
