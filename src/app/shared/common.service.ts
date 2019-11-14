@@ -324,7 +324,7 @@ export class CommonService {
     return this.fireSQL.query(`SELECT __name__ as id, companyId from user WHERE idn = '${idn}' AND (role = 'staff' OR  role = 'author' OR role = 'user')`);
   }
   getUserByUserIdn(idn) {
-    return this.fireSQL.query(`SELECT __name__ as id, idn, lastname, firstname, gender, city, birthdate, phoneNumber  from user WHERE idn = '${idn}' AND (role = 'staff' OR  role = 'author' OR role = 'user')`);
+    return this.fireSQL.query(`SELECT __name__ as id, idn, lastname, firstname, gender, city, birthdate, status, role, privilegeList, userId, companyIds, phoneNumber  from user WHERE idn = '${idn}' AND (role = 'staff' OR  role = 'author' OR role = 'user')`);
   }
 
   archiveExam(examId: string) {
@@ -585,6 +585,8 @@ export class CommonService {
       firstname: user.firstname,
       lastname: user.lastname,
       birthdate: user.birthdate,
+      userId: user.userId,
+      companyIds: user.companyIds,
       gender: user.gender,
       status: user.status,
       city: user.city,

@@ -22,12 +22,16 @@ export class StudentAddComponent implements OnInit {
     userId: '',
     status: 'created',
     role: 'user',
-    privilegeList: []
+    privilegeList: [],
+    companyIds: []
   };
   gender = GENDER;
   statusList = USER_STATUS;
   cities = CITIES;
+  companyId = '';
   isSearchingByIdn = true;
+  isUserExist = false;
+
   constructor(private router: ActivatedRoute,
               public snackBar: MatSnackBar,
               private commonService: CommonService,
@@ -37,10 +41,7 @@ export class StudentAddComponent implements OnInit {
   ngOnInit(): void {
     this.cookieService.set('title', 'Добавление студента');
   }
-  back() {
-    this.user = {};
-    this.isSearchingByIdn = true;
-  }
+
 
   searchStudentByIdn() {
     this.commonService.getUserByUserIdn(this.user.idn).then(res => {
@@ -49,9 +50,83 @@ export class StudentAddComponent implements OnInit {
         console.log(res);
         console.log(res[0]);
         this.isSearchingByIdn = false;
+        this.isUserExist = true;
       } else {
         this.isSearchingByIdn = false;
+        this.isUserExist = false;
       }
     });
+  }
+
+  saveStudent() {
+    this.addCompanyId(this.user);
+    console.log(this.user);
+    if (this.isUserExist) {
+      this.commonService.updateUserByDocIdWithoutPassword(this.user.id, this.user).then(res => {
+        this.user = {
+          idn: '',
+          lastname: '',
+          firstname: '',
+          gender: '',
+          birthdate: new Date(),
+          phoneNumber: '',
+          city: '',
+          userId: '',
+          status: 'created',
+          role: 'user',
+          privilegeList: [],
+          companyIds: []
+        };
+        this.openSnackBar('Пользователь успешно обновлен', '');
+        this.back();
+      });
+    } else {
+      this.commonService.saveUser(this.user).then(res => {
+        this.user = {
+          idn: '',
+          lastname: '',
+          firstname: '',
+          gender: '',
+          birthdate: new Date(),
+          phoneNumber: '',
+          city: '',
+          userId: '',
+          status: 'created',
+          role: 'user',
+          privilegeList: [],
+          companyIds: []
+        };
+        this.openSnackBar('Пользователь создан', '');
+        this.back();
+      });
+    }
+  }
+
+  back() {
+    this.user = {};
+    this.isSearchingByIdn = true;
+    this.isUserExist = false;
+  }
+
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 2000,
+    });
+  }
+
+  addCompanyId(user: any) {
+    if (user.companyIds === null || user.companyIds === undefined) {
+      user.companyIds = [];
+    }
+    if (this.cookieService.get('companyId')) {
+      this.companyId = this.cookieService.get('companyId');
+      if (user.companyIds.indexOf(this.companyId) !== -1) {
+        this.openSnackBar('Студент уже существует!', '');
+      } else {
+        user.companyIds.push(this.companyId);
+      }
+    } else {
+      this.openSnackBar('Вы не состоите в компании!', '');
+    }
   }
 }
