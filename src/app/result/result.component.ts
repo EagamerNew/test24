@@ -18,7 +18,7 @@ export class ResultComponent implements OnInit {
   }
 
   // data: any;
-  results: any;
+  results: any = [];
   resultsOrigin: any;
   actionCode: string = 'cache' // cache, db, notfound
   examUserIds: string[] = [];
@@ -57,7 +57,7 @@ export class ResultComponent implements OnInit {
   }
 
   calculatePercent(data): string {
-    if(data.scoreMust){
+    if (data.scoreMust) {
       const result = ((data.score * 100) / (data.scoreMust)).toFixed();
       // console.log('score:', data.score, ', scoreMust:', data.scoreMust, ', result:', result);
       return result;
@@ -67,7 +67,23 @@ export class ResultComponent implements OnInit {
 
   getExamHistory() {
     this.commonService.getExamHistoryList().then(res => {
-      this.results = res.map(mapper => {
+      const result = res.sort((a, b) => {
+        const day1 = a.date.split('-')[0];
+        const month1 = a.date.split('-')[1];
+        const year1 = a.date.split('-')[2];
+        const hour1 = a.time.split(':')[0];
+        const min1 = a.time.split(':')[1];
+
+        const day2 = b.date.split('-')[0];
+        const month2 = b.date.split('-')[1];
+        const year2 = b.date.split('-')[2];
+        const hour2 = b.time.split(':')[0];
+        const min2 = b.time.split(':')[1];
+
+        return year1 - year2 || month1 - month2 || day1 - day2 || hour1 - hour2 || min1 - min2;
+      }).reverse();
+
+      this.results = result.map(mapper => {
         if (mapper.examinatorUserId) {
           this.examUserIds.push(mapper.examinatorUserId);
         }
@@ -77,6 +93,7 @@ export class ResultComponent implements OnInit {
         }
         return mapper;
       });
+      console.log('results length:', this.results.length);
       this.resultsOrigin = this.results;
       this.getExaminatorUsernameById();
     });
@@ -109,7 +126,7 @@ export class ResultComponent implements OnInit {
         return 'июнь';
         break;
       case 7:
-          return 'июль';
+        return 'июль';
         break;
       case 8:
         return 'авг';
@@ -128,7 +145,6 @@ export class ResultComponent implements OnInit {
         break;
     }
   }
-
 
 
   getExaminatorUsernameById() {
@@ -179,15 +195,15 @@ export class ResultComponent implements OnInit {
     }
   }
 
-  calculateRealDate(dateIn){
+  calculateRealDate(dateIn) {
     const date = dateIn.split('-');
     return date[0] + ' ' + this.monthInRus(parseInt(date[1])) + ' ' + date[2];
   }
 
-  calculateRealTime(timeIn){
-    const time:string[] = timeIn.split(':');
-    if(timeIn.length === 4){
-      time[1]  = '0' + time[1];
+  calculateRealTime(timeIn) {
+    const time: string[] = timeIn.split(':');
+    if (timeIn.length === 4) {
+      time[1] = '0' + time[1];
     }
     return time.join(':');
   }
