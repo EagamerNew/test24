@@ -130,6 +130,11 @@ export class MenuComponent implements OnInit {
             result = true;
           }
           break;
+        case 'student-add':
+          if (this.userRole === 'staff' && this.cookie.check('companyId')) {
+            result = true;
+          }
+          break;
       }
     }
 
