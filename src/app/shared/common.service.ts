@@ -327,6 +327,10 @@ export class CommonService {
     return this.fireSQL.query(`SELECT __name__ as id, idn, lastname, firstname, gender, city, birthdate, status, role, privilegeList, userId, companyIds, phoneNumber  from user WHERE idn = '${idn}' AND (role = 'staff' OR  role = 'author' OR role = 'user')`);
   }
 
+  getStudentByUserIdn(idn) {
+    return this.fireSQL.query(`SELECT __name__ as id, idn, lastname, firstname, gender, city, birthdate, status, role, privilegeList, userId, companyIds, phoneNumber  from user WHERE idn = '${idn}' AND (role = 'student')`);
+  }
+
   archiveExam(examId: string) {
     return this.firestore.collection('examination').doc(examId).update({status: 'archived'});
   }

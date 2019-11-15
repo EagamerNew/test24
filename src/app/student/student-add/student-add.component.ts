@@ -21,7 +21,7 @@ export class StudentAddComponent implements OnInit {
     city: '',
     userId: '',
     status: 'created',
-    role: 'user',
+    role: 'student',
     privilegeList: [],
     companyIds: []
   };
@@ -44,7 +44,7 @@ export class StudentAddComponent implements OnInit {
 
 
   searchStudentByIdn() {
-    this.commonService.getUserByUserIdn(this.user.idn).then(res => {
+    this.commonService.getStudentByUserIdn(this.user.idn).then(res => {
       if (res && res.length > 0) {
         this.user = res[0];
         console.log(res);
@@ -61,45 +61,52 @@ export class StudentAddComponent implements OnInit {
   saveStudent() {
     this.addCompanyId(this.user);
     console.log(this.user);
-    if (this.isUserExist) {
-      this.commonService.updateUserByDocIdWithoutPassword(this.user.id, this.user).then(res => {
-        this.user = {
-          idn: '',
-          lastname: '',
-          firstname: '',
-          gender: '',
-          birthdate: new Date(),
-          phoneNumber: '',
-          city: '',
-          userId: '',
-          status: 'created',
-          role: 'user',
-          privilegeList: [],
-          companyIds: []
-        };
-        this.openSnackBar('Пользователь успешно обновлен', '');
-        this.back();
-      });
-    } else {
-      this.commonService.saveUser(this.user).then(res => {
-        this.user = {
-          idn: '',
-          lastname: '',
-          firstname: '',
-          gender: '',
-          birthdate: new Date(),
-          phoneNumber: '',
-          city: '',
-          userId: '',
-          status: 'created',
-          role: 'user',
-          privilegeList: [],
-          companyIds: []
-        };
-        this.openSnackBar('Пользователь создан', '');
-        this.back();
-      });
-    }
+    this.commonService.getUserByIdn(this.user.idn).then(res => {
+      if (res && res.length > 0 && !(res[0].role === 'student')) {
+        this.openSnackBar('Пользователь уже существует', '');
+      } else {
+        if (this.isUserExist) {
+          this.commonService.updateUserByDocIdWithoutPassword(this.user.id, this.user).then(res => {
+            this.user = {
+              idn: '',
+              lastname: '',
+              firstname: '',
+              gender: '',
+              birthdate: new Date(),
+              phoneNumber: '',
+              city: '',
+              userId: '',
+              status: 'created',
+              role: 'student',
+              privilegeList: [],
+              companyIds: []
+            };
+            this.openSnackBar('Пользователь успешно обновлен', '');
+            this.back();
+          });
+        } else {
+          this.commonService.saveUser(this.user).then(res => {
+            this.user = {
+              idn: '',
+              lastname: '',
+              firstname: '',
+              gender: '',
+              birthdate: new Date(),
+              phoneNumber: '',
+              city: '',
+              userId: '',
+              status: 'created',
+              role: 'student',
+              privilegeList: [],
+              companyIds: []
+            };
+            this.openSnackBar('Пользователь создан', '');
+            this.back();
+          });
+        }
+      }
+    });
+
   }
 
   back() {
