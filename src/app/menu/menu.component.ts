@@ -125,6 +125,11 @@ export class MenuComponent implements OnInit {
             result = true;
           }
           break;
+        case 'exam':
+          if (this.userRole === 'staff' && this.cookie.check('companyId')) {
+            result = true;
+          }
+          break;
         case 'staff':
           if (this.userRole === 'staff' && this.cookie.check('companyId')) {
             result = true;
