@@ -126,7 +126,22 @@ export class MenuComponent implements OnInit {
           }
           break;
         case 'staff':
-          if (this.userPrivilegeList.includes('staff')) {
+          if (this.userRole === 'staff' && this.cookie.check('companyId')) {
+            result = true;
+          }
+          break;
+        case 'users':
+          if (this.userRole === 'staff' && this.cookie.check('companyId')) {
+            result = true;
+          }
+          break;
+        case 'subsidiary':
+          if (this.userRole === 'staff' && this.cookie.check('companyId')) {
+            result = true;
+          }
+          break;
+        case 'staff-list':
+          if (this.userRole === 'staff' && this.cookie.check('companyId')) {
             result = true;
           }
           break;
