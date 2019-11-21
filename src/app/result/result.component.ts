@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {CacheService} from "../shared/cache.service";
-import {CommonService} from "../shared/common.service";
-import {CookieService} from "ngx-cookie-service";
+import {CacheService} from '../shared/cache.service';
+import {CommonService} from '../shared/common.service';
+import {CookieService} from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-result',
@@ -20,40 +20,31 @@ export class ResultComponent implements OnInit {
   // data: any;
   results: any = [];
   resultsOrigin: any;
-  actionCode: string = 'cache' // cache, db, notfound
+  actionCode: string = 'cache'; // cache, db, notfound
   examUserIds: string[] = [];
   users: any = [];
+  company: any;
 
   ngOnInit(): void {
-    this.cookieService.set('title', 'Результаты');
-    if (this.cookieService.get('userId')) {
-      this.actionCode = 'db';
-      this.getExamHistory();
 
-    } else {
-      this.results = this.cacheService.get('results');
-      if (this.results && this.results.length > 0) {
-        this.actionCode = 'cache';
-      } else {
-        this.actionCode = 'notfound';
-      }
-    }
-    console.log('actionCode: ', this.actionCode)
-    console.log('results: ', this.cacheService.get('results'));
-    // this.data = {
-    //   isTest: true,
-    //   correct: 18,
-    //   mistake: 2,
-    //   score: 8.0,
-    //   category: 'Категория',
-    //   section: 'Раздел',
-    //   title: 'Название',
-    //   userDocId: 'User ID',
-    //   templateId: '',
-    //   username: 'Username',
-    //   companyName: 'Компания',
-    //   percent: '25',
-    // }
+    this.commonService.getUserByDocId(this.cookieService.get('userId')).then(res => {
+      this.commonService.getCompanyById(res[0].companyId).then(res2 => {
+        this.company = res2[0];
+        this.cookieService.set('title', 'Результаты');
+        if (this.cookieService.get('userId')) {
+          this.actionCode = 'db';
+          this.getExamHistory();
+
+        } else {
+          this.results = this.cacheService.get('results');
+          if (this.results && this.results.length > 0) {
+            this.actionCode = 'cache';
+          } else {
+            this.actionCode = 'notfound';
+          }
+        }
+      });
+    });
   }
 
   calculatePercent(data): string {
@@ -83,7 +74,7 @@ export class ResultComponent implements OnInit {
         return year1 - year2 || month1 - month2 || day1 - day2 || hour1 - hour2 || min1 - min2;
       }).reverse();
 
-      this.results = result.map(mapper => {
+      result.map(mapper => {
         if (mapper.examinatorUserId) {
           this.examUserIds.push(mapper.examinatorUserId);
         }
@@ -91,10 +82,10 @@ export class ResultComponent implements OnInit {
           const date = mapper.date.split('-');
           mapper['realDate'] = date[0] + ' ' + this.monthInRus(parseInt(date[1])) + ' ' + date[2];
         }
-        return mapper;
+        if (mapper.companyName === this.company.name) {
+          this.results.push(mapper);
+        }
       });
-      console.log('results length:', this.results.length);
-      this.resultsOrigin = this.results;
       this.getExaminatorUsernameById();
     });
   }
@@ -179,7 +170,7 @@ export class ResultComponent implements OnInit {
         if (res) {
           return res[0].name;
         } else {
-          return 'Компания не найдено'
+          return 'Компания не найдено';
         }
       }
     );

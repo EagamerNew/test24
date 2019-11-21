@@ -31,6 +31,7 @@ export class RatingV2Component implements OnInit {
   uniqueUserIdList: any[] = [];
   userCityMap: any = {};
   cityList: any = {};
+  company: any;
 
   constructor(private service: QuestionService,
               private _serviceCommon: CommonService,
@@ -39,7 +40,6 @@ export class RatingV2Component implements OnInit {
 
   ngOnInit(): void {
     this.cookieService.set('title', 'Рейтинг');
-
     this.loading = true;
     this.restoreFilterTemplate();
     this.getCityList();
@@ -53,10 +53,7 @@ export class RatingV2Component implements OnInit {
     this._serviceCommon.filterRatingList(this.filterTemplate, 'ratings').then(res => {
       this.loading = false;
       this.results = [];
-      console.log('1');
-      console.log('res: ', res);
       res.map(result => {
-        console.log('2');
         const obj = {
           id: result.id,
           isTest: result.isTest,
@@ -72,11 +69,8 @@ export class RatingV2Component implements OnInit {
           templateId: result.templateId,
           status: false
         };
-        console.log('3');
         if (this.filterTemplate.cityName && this.filterTemplate.cityName !== '') {
-          console.log('this.filterTemplate.cityName:', this.filterTemplate.cityName);
           const val = this.userCityMap[obj.userId];
-          console.log('val ', val );
           if (val !== null && val && val !== undefined && val === this.filterTemplate.cityName) {
             this.results.push(obj);
           }
@@ -88,7 +82,6 @@ export class RatingV2Component implements OnInit {
       this.loading = false;
       this.restoreFilterTemplate();
       this.sortingCategoriesByUserAndSection();
-      console.log('results:', this.results);
     });
   }
 
@@ -104,7 +97,6 @@ export class RatingV2Component implements OnInit {
     if (this.searchText === '' || this.searchText === null || this.searchText.length === 0) {
       this.results = this.originResultList;
     } else {
-      console.log(this.searchText);
       this.results = [];
       this.originResultList.forEach(value => {
         if (value.username.toLowerCase().includes(this.searchText.toLowerCase())) {
@@ -136,7 +128,7 @@ export class RatingV2Component implements OnInit {
     this.loading = true;
     this.results = this.originResultList;
     this.results.forEach(value => value.status = false);
-    console.log('resutls: ', this.results);
+
     this.sortingCategoriesByUserAndSection();
   }
 
@@ -147,43 +139,55 @@ export class RatingV2Component implements OnInit {
   }
 
   getCityList(): void {
-    this._serviceCommon.getCityList().then(res=> {
+    this._serviceCommon.getCityList().then(res => {
       this.cityList = res;
     });
   }
 
   getResultList(): void {
-    this._serviceCommon.getResultList('ratings').then(res => {
-      const userIdList = [];
-      this.results = res.map(result => {
-        userIdList.push({userId: result.userId, cityName: '', code: ''});
-        return {
-          id: result.id,
-          isTest: result.isTest,
-          correct: result.correct,
-          mistake: result.mistake,
-          scoreMust: parseInt(result.scoreMust),
-          score: parseInt(result.score),
-          category: result.category,
-          section: result.section,
-          title: result.title,
-          userId: result.userId,
-          username: result.username,
-          templateId: result.templateId,
-          status: false
-        };
+    this._serviceCommon.getUserByDocId(this.cookieService.get('userId')).then(user => {
+      this._serviceCommon.getCompanyById(user[0].companyId).then(res2 => {
+        this.company = res2[0];
+        this._serviceCommon.getResultList('ratings').then(res => {
+          console.log('res2', res);
+
+          const userIdList = [];
+          res.map(result => {
+            userIdList.push({userId: result.userId, cityName: '', code: ''});
+            console.log(this.company + '' + result.companyName);
+            if (this.company && this.company === result.companyName) {
+              this.results.push({
+                id: result.id,
+                isTest: result.isTest,
+                correct: result.correct,
+                mistake: result.mistake,
+                scoreMust: parseInt(result.scoreMust),
+                score: parseInt(result.score),
+                category: result.category,
+                section: result.section,
+                title: result.title,
+                userId: result.userId,
+                username: result.username,
+                templateId: result.templateId,
+                status: false
+              });
+            }
+          });
+          console.log(this.results);
+
+          this.uniqueUserIdList = userIdList.filter((thing, i, arr) => {
+            return arr.indexOf(arr.find(t => t.userId === thing.userId)) === i;
+          });
+          this._serviceCommon.getUserCities(this.uniqueUserIdList)
+            .then(sub => {
+              this.userCityMap = this.arrayToMap(sub);
+            });
+          this.originResultList = this.results;
+          this.sortingCategoriesByUserAndSection();
+        });
       });
-      this.uniqueUserIdList = userIdList.filter((thing, i, arr) => {
-        return arr.indexOf(arr.find(t => t.userId === thing.userId)) === i;
-      });
-      this._serviceCommon.getUserCities(this.uniqueUserIdList)
-        .then(sub => {
-          this.userCityMap = this.arrayToMap(sub);
-          console.log(this.userCityMap);
-      });
-      this.originResultList = this.results;
-      this.sortingCategoriesByUserAndSection();
     });
+
   }
 
   arrayToMap(list: any []) {
@@ -196,7 +200,6 @@ export class RatingV2Component implements OnInit {
 
   sortingCategoriesByUserAndSection() {
     this.categories = [];
-    console.log('im here: ', this.results);
     for (let i = 0; i < this.results.length; i++) {
       if (this.results[i].status === true) {
         continue;
@@ -245,7 +248,6 @@ export class RatingV2Component implements OnInit {
   }
 
   getRatings() {
-    console.log('im here2');
 
     for (let i = 0; i < this.categories.length; i++) {
       for (let j = 0; j < this.categories[i].sections.length; j++) {

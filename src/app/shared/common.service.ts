@@ -541,7 +541,8 @@ export class CommonService {
                         title,
                         userId,
                         username,
-                        templateId
+                        templateId,
+                        companyName
                  FROM result `;
     // FROM result WHERE templateId IN ('F08wusvGDxh4HcWFb2Wm')`;
     if (cased && cased === 'ratings') {
