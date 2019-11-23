@@ -554,7 +554,7 @@ export class CommonService {
     return this.firestore.collection('result').add(result);
   }
 
-  getResultList(companyNames,cased?: string) {
+  getResultList(cased?: string) {
     let query = `SELECT __name__ as
                         id,
                         isTest,
@@ -569,7 +569,7 @@ export class CommonService {
                         username,
                         templateId,
                         companyName
-                 FROM result where companyName = '${companyNames}'`;
+                 FROM result`;
     // FROM result WHERE templateId IN ('F08wusvGDxh4HcWFb2Wm')`;
     if (cased && cased === 'ratings') {
       if (this.cookieService.get('role') !== 'admin') {
@@ -821,10 +821,27 @@ export class CommonService {
                                       phoneNumber,
                                       password,
                                       status,
+                                      companyIds,
                                       companyId
                                FROM user`);
   }
-
+  getUserStudents(company) {
+    return this.fireSQL.query(`SELECT __name__ as
+                                      id,
+                                      idn,
+                                      role,
+                                      privilegeList,
+                                      lastname,
+                                      firstname,
+                                      birthdate,
+                                      gender,
+                                      city,
+                                      phoneNumber,
+                                      password,
+                                      status,
+                                      companyId
+                               FROM user where role='student'`);
+  }
   getUserByPhone(phone: string) {
     return this.fireSQL.query(`SELECT __name__ as
                                       id,

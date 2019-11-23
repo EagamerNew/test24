@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {QuestionService} from '../shared/question.service';
 import {CommonService} from '../shared/common.service';
 import {CookieService} from 'ngx-cookie-service';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-rating-v2',
@@ -32,10 +33,16 @@ export class RatingV2Component implements OnInit {
   userCityMap: any = {};
   cityList: any = {};
   company: any;
+  index: any;
 
   constructor(private service: QuestionService,
               private _serviceCommon: CommonService,
+              private route: ActivatedRoute,
               private cookieService: CookieService) {
+    this.route.params.subscribe(res => {
+      this.index = parseInt(res['index']);
+
+    });
   }
 
   ngOnInit(): void {
@@ -147,44 +154,72 @@ export class RatingV2Component implements OnInit {
   getResultList(): void {
     this._serviceCommon.getUserByDocId(this.cookieService.get('userId')).then(user => {
       this._serviceCommon.getCompanyById(user[0].companyId).then(res2 => {
-        this.company = res2[0];
-        console.log('--------', this.company.name);
-
-        this._serviceCommon.getResultList(this.company.name, 'ratings').then(res => {
-          console.log(res)
-          const userIdList = [];
-          res.map(result => {
-            userIdList.push({userId: result.userId, cityName: '', code: ''});
-            console.log(this.company + '' + result.companyName);
-            if (this.company && this.company.name === result.companyName) {
-              this.results.push({
-                id: result.id,
-                isTest: result.isTest,
-                correct: result.correct,
-                mistake: result.mistake,
-                scoreMust: parseInt(result.scoreMust),
-                score: parseInt(result.score),
-                category: result.category,
-                section: result.section,
-                title: result.title,
-                userId: result.userId,
-                username: result.username,
-                templateId: result.templateId,
-                status: false
+          this.company = res2[0];
+          if (this.index !== 0) {
+            this._serviceCommon.getExamHistoryListQuery(this.company.name).then(res => {
+              const userIdList = [];
+              res.map(result => {
+                userIdList.push({userId: result.userId, cityName: '', code: ''});
+                this.results.push({
+                  id: result.id,
+                  isTest: result.isTest,
+                  correct: result.correct,
+                  mistake: result.mistake,
+                  scoreMust: parseInt(result.scoreMust),
+                  score: parseInt(result.score),
+                  category: result.category,
+                  section: result.section,
+                  title: result.title,
+                  userId: result.userId,
+                  username: result.username,
+                  templateId: result.templateId,
+                  status: false
+                });
+                this.uniqueUserIdList = userIdList.filter((thing, i, arr) => {
+                  return arr.indexOf(arr.find(t => t.userId === thing.userId)) === i;
+                });
+                this._serviceCommon.getUserCities(this.uniqueUserIdList)
+                  .then(sub => {
+                    this.userCityMap = this.arrayToMap(sub);
+                  });
+                this.originResultList = this.results;
+                this.sortingCategoriesByUserAndSection();
               });
-            }
-          });
-          this.uniqueUserIdList = userIdList.filter((thing, i, arr) => {
-            return arr.indexOf(arr.find(t => t.userId === thing.userId)) === i;
-          });
-          this._serviceCommon.getUserCities(this.uniqueUserIdList)
-            .then(sub => {
-              this.userCityMap = this.arrayToMap(sub);
             });
-          this.originResultList = this.results;
-          this.sortingCategoriesByUserAndSection();
-        });
-      });
+          } else {
+            this._serviceCommon.getResultList().then(res => {
+              const userIdList = [];
+              res.map(result => {
+                userIdList.push({userId: result.userId, cityName: '', code: ''});
+                this.results.push({
+                  id: result.id,
+                  isTest: result.isTest,
+                  correct: result.correct,
+                  mistake: result.mistake,
+                  scoreMust: parseInt(result.scoreMust),
+                  score: parseInt(result.score),
+                  category: result.category,
+                  section: result.section,
+                  title: result.title,
+                  userId: result.userId,
+                  username: result.username,
+                  templateId: result.templateId,
+                  status: false
+                });
+                this.uniqueUserIdList = userIdList.filter((thing, i, arr) => {
+                  return arr.indexOf(arr.find(t => t.userId === thing.userId)) === i;
+                });
+                this._serviceCommon.getUserCities(this.uniqueUserIdList)
+                  .then(sub => {
+                    this.userCityMap = this.arrayToMap(sub);
+                  });
+                this.originResultList = this.results;
+                this.sortingCategoriesByUserAndSection();
+              });
+            });
+          }
+        }
+      );
     });
 
   }

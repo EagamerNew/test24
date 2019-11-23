@@ -1,0 +1,58 @@
+<mat-form-field class="example-full-width">
+  <input type="text" matInput placeholder="Поиск..."
+         autocomplete="off" [(ngModel)]="searchText" (keyup)="search()">
+  <mat-hint>По ФИО или ИИН</mat-hint>
+</mat-form-field>
+<mat-expansion-panel *ngFor="let user of userList">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      {{user.lastname}} {{user.firstname}}
+    </mat-panel-title>
+    <!--This will be user role-->
+    <!--<mat-panel-description>-->
+    <!--{{user.description}}-->
+    <!--</mat-panel-description>-->
+  </mat-expansion-panel-header>
+
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="ИИН" [(ngModel)]="user.idn" maxlength="12" minlength="12" disabled>
+    <mat-hint align="end">{{user.idn.length}} / 12</mat-hint>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="Имя" [(ngModel)]="user.firstname" disabled  maxlength="20" minlength="1">
+    <mat-hint align="end">{{user.idn.length}} / 20</mat-hint>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="Фамилия" [(ngModel)]="user.lastname" disabled maxlength="20" minlength="1">
+    <mat-hint align="end">{{user.idn.length}} / 20</mat-hint>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <mat-select placeholder="Пол" [(ngModel)]="user.gender" disabled>
+      <mat-option *ngFor="let genderList of genderList" [value]="genderList.code">
+        {{genderList.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <mat-select placeholder="Город" [(ngModel)]="user.city" disabled>
+      <mat-option *ngFor="let city of cityList" [value]="city.code">
+        {{city.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <input type="date" matInput placeholder="Дата рождения" disabled [(ngModel)]="user.birthdate">
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <span matPrefix disabled>+7 &nbsp;</span>
+    <input matInput placeholder="Номер телефона" [(ngModel)]="user.phoneNumber" disabled>
+    <mat-hint align="end">{{user.idn.length}} / 10</mat-hint>
+  </mat-form-field>
+
+</mat-expansion-panel>

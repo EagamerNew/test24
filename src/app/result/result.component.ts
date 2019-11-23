@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {CacheService} from '../shared/cache.service';
 import {CommonService} from '../shared/common.service';
 import {CookieService} from 'ngx-cookie-service';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-result',
@@ -11,11 +12,17 @@ import {CookieService} from 'ngx-cookie-service';
 export class ResultComponent implements OnInit {
   searchText = '';
   disableReset = true;
+  index: any;
 
   constructor(private cacheService: CacheService,
               private cookieService: CookieService,
+              private route: ActivatedRoute,
               private commonService: CommonService) {
+    this.route.params.subscribe(res => {
+      this.index = parseInt(res['index']);
+    });
   }
+
 
   // data: any;
   results: any = [];
@@ -57,36 +64,72 @@ export class ResultComponent implements OnInit {
   }
 
   getExamHistory() {
-    this.commonService.getExamHistoryListQuery(this.company.name).then(res => {
-    // this.commonService.getExamHigetExamHistoryListQuerygetExamHistoryListQuerystoryList().then(res => {
-      const result = res.sort((a, b) => {
-        const day1 = a.date.split('-')[0];
-        const month1 = a.date.split('-')[1];
-        const year1 = a.date.split('-')[2];
-        const hour1 = a.time.split(':')[0];
-        const min1 = a.time.split(':')[1];
+    if (this.index !== 0) {
+      console.log('-------------')
+      this.commonService.getExamHistoryListQuery(this.company.name).then(res => {
+        const result = res.sort((a, b) => {
+          const day1 = a.date.split('-')[0];
+          const month1 = a.date.split('-')[1];
+          const year1 = a.date.split('-')[2];
+          const hour1 = a.time.split(':')[0];
+          const min1 = a.time.split(':')[1];
 
-        const day2 = b.date.split('-')[0];
-        const month2 = b.date.split('-')[1];
-        const year2 = b.date.split('-')[2];
-        const hour2 = b.time.split(':')[0];
-        const min2 = b.time.split(':')[1];
+          const day2 = b.date.split('-')[0];
+          const month2 = b.date.split('-')[1];
+          const year2 = b.date.split('-')[2];
+          const hour2 = b.time.split(':')[0];
+          const min2 = b.time.split(':')[1];
 
-        return year1 - year2 || month1 - month2 || day1 - day2 || hour1 - hour2 || min1 - min2;
-      }).reverse();
+          return year1 - year2 || month1 - month2 || day1 - day2 || hour1 - hour2 || min1 - min2;
+        }).reverse();
 
-      result.map(mapper => {
-        if (mapper.examinatorUserId) {
-          this.examUserIds.push(mapper.examinatorUserId);
-        }
-        if (mapper.date) {
-          const date = mapper.date.split('-');
-          mapper['realDate'] = date[0] + ' ' + this.monthInRus(parseInt(date[1])) + ' ' + date[2];
-        }
-        this.results.push(mapper);
+        result.map(mapper => {
+          if (mapper.examinatorUserId) {
+            this.examUserIds.push(mapper.examinatorUserId);
+          }
+          if (mapper.date) {
+            const date = mapper.date.split('-');
+            mapper['realDate'] = date[0] + ' ' + this.monthInRus(parseInt(date[1])) + ' ' + date[2];
+          }
+          this.results.push(mapper);
+        });
+        this.getExaminatorUsernameById();
       });
-      this.getExaminatorUsernameById();
-    });
+    } else {
+      console.log('-------------+++++++++')
+
+      this.commonService.getExamHistoryList().then(res => {
+        const result = res.sort((a, b) => {
+          const day1 = a.date.split('-')[0];
+          const month1 = a.date.split('-')[1];
+          const year1 = a.date.split('-')[2];
+          const hour1 = a.time.split(':')[0];
+          const min1 = a.time.split(':')[1];
+
+          const day2 = b.date.split('-')[0];
+          const month2 = b.date.split('-')[1];
+          const year2 = b.date.split('-')[2];
+          const hour2 = b.time.split(':')[0];
+          const min2 = b.time.split(':')[1];
+
+          return year1 - year2 || month1 - month2 || day1 - day2 || hour1 - hour2 || min1 - min2;
+        }).reverse();
+
+        result.map(mapper => {
+          if (mapper.examinatorUserId) {
+            this.examUserIds.push(mapper.examinatorUserId);
+          }
+          if (mapper.date) {
+            const date = mapper.date.split('-');
+            mapper['realDate'] = date[0] + ' ' + this.monthInRus(parseInt(date[1])) + ' ' + date[2];
+          }
+          this.results.push(mapper);
+        });
+        this.getExaminatorUsernameById();
+      });
+    }
+    // this.commonService.getExamHigetExamHistoryListQuerygetExamHistoryListQuerystoryList().then(res => {
+
   }
 
   handleSearchString() {

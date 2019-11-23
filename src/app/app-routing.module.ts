@@ -32,6 +32,7 @@ import {PreliminaryStartComponent} from './preliminary-start/preliminary-start.c
 import {RatingV2Component} from './rating-v2/rating-v2.component';
 import {StaffListComponent} from './staff/staff-list/staff-list.component';
 import {StudentAddComponent} from './student/student-add/student-add.component';
+import {StudentListCompanyComponent} from './student-list-company/student-list-company.component';
 
 const routes: Routes = [
   {path: '', component: MenuComponent},
@@ -57,7 +58,8 @@ const routes: Routes = [
   {path: 'subsidiary', component: SubsidiaryComponent},
   {path: 'subsidiary/:id', component: SubsidiaryComponent},
   {path: 'users', component: UserComponent},
-  {path: 'ratings', component: RatingV2Component},
+  {path: 'student', component: StudentListCompanyComponent},
+  {path: 'ratings/:index', component: RatingV2Component},
   {path: 'exam', component: ExaminationComponent},
   {path: 'exam-list', component: ExamListComponent},
   {path: 'exam-setting/:id', component: ExamSettingComponent},
@@ -65,7 +67,7 @@ const routes: Routes = [
   {path: 'staff', component: StaffComponent},
   {path: 'staff-list', component: StaffListComponent},
   {path: 'create-password', component: CreatePasswordComponent},
-  {path: 'result', component: ResultComponent},
+  {path: 'result/:index', component: ResultComponent},
   {path: 'study-center', component: StudyCenterComponent},
   {path: 'preliminary-start/:code/:id', component: PreliminaryStartComponent},
   {path: 'condition-terms', component: ConditionTermsComponent},

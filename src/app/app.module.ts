@@ -15,7 +15,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AngularFireModule} from '@angular/fire';
 import {AngularFirestoreModule} from '@angular/fire/firestore';
 import {environment} from '../environments/environment';
-import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import {HashLocationStrategy, LocationStrategy} from '@angular/common';
 import {CategoryService} from './shared/category.service';
 import {QuestionService} from './shared/question.service';
 import {SectionService} from './shared/section.service';
@@ -49,16 +49,17 @@ import {ExamSettingComponent} from './examination/exam-setting/exam-setting.comp
 import {SpecialityComponent} from './speciality/speciality.component';
 import {StaffComponent} from './staff/staff.component';
 import {CreatePasswordComponent} from './create-password/create-password.component';
-import {ResultComponent} from "./result/result.component";
-import {CacheService} from "./shared/cache.service";
+import {ResultComponent} from './result/result.component';
+import {CacheService} from './shared/cache.service';
 import {DatePipe} from '@angular/common';
-import {StudyCenterComponent} from "./study-center/study-center.component";
-import {ConditionTermsComponent} from "./condition-terms/condition-terms.component";
+import {StudyCenterComponent} from './study-center/study-center.component';
+import {ConditionTermsComponent} from './condition-terms/condition-terms.component';
 import {PreliminaryStartComponent} from './preliminary-start/preliminary-start.component';
-import { RatingV2Component } from './rating-v2/rating-v2.component';
+import {RatingV2Component} from './rating-v2/rating-v2.component';
 import {StaffListComponent} from './staff/staff-list/staff-list.component';
-import {AuthGuard} from "./shared/auth.guard";
-import {StudentAddComponent} from "./student/student-add/student-add.component";
+import {AuthGuard} from './shared/auth.guard';
+import {StudentAddComponent} from './student/student-add/student-add.component';
+import {StudentListCompanyComponent} from './student-list-company/student-list-company.component';
 
 @NgModule({
   declarations: [
@@ -97,7 +98,8 @@ import {StudentAddComponent} from "./student/student-add/student-add.component";
     ConditionTermsComponent,
     RatingV2Component,
     StaffListComponent,
-    StudentAddComponent
+    StudentAddComponent,
+    StudentListCompanyComponent
   ],
   imports: [
     BrowserModule,
