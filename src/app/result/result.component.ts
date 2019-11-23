@@ -57,7 +57,8 @@ export class ResultComponent implements OnInit {
   }
 
   getExamHistory() {
-    this.commonService.getExamHistoryList().then(res => {
+    this.commonService.getExamHistoryListQuery(this.company.name).then(res => {
+    // this.commonService.getExamHigetExamHistoryListQuerygetExamHistoryListQuerystoryList().then(res => {
       const result = res.sort((a, b) => {
         const day1 = a.date.split('-')[0];
         const month1 = a.date.split('-')[1];
@@ -82,9 +83,7 @@ export class ResultComponent implements OnInit {
           const date = mapper.date.split('-');
           mapper['realDate'] = date[0] + ' ' + this.monthInRus(parseInt(date[1])) + ' ' + date[2];
         }
-        if (mapper.companyName === this.company.name) {
-          this.results.push(mapper);
-        }
+        this.results.push(mapper);
       });
       this.getExaminatorUsernameById();
     });

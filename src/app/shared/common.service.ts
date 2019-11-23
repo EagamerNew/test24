@@ -27,15 +27,15 @@ export class CommonService {
 
   getCompanyStaffMembers(companyId: string, role: string) {
     console.log('role:', role);
-    if(role === 'admin'){
+    if (role === 'admin') {
       return this.firestore.collection('user', ref => ref
-        .where('role','==' ,'staff')
+        .where('role', '==', 'staff')
       ).snapshotChanges();
-    }else{
+    } else {
       return this.firestore.collection('user', ref => ref
-        .where('companyId','==' ,companyId)
-        .where('role','==' ,'staff')
-        .where('managerId','==' ,this.cookieService.get('userId'))
+        .where('companyId', '==', companyId)
+        .where('role', '==', 'staff')
+        .where('managerId', '==', this.cookieService.get('userId'))
       ).snapshotChanges();
     }
   }
@@ -317,12 +317,18 @@ export class CommonService {
   }
 
   setCompanyIdForUser(docId, companyId, subsidiaryId) {
-    return this.firestore.collection('user').doc(docId).update({managerId: this.cookieService.get('userId'), companyId: companyId, subsidiaryId: subsidiaryId, role: 'staff'});
+    return this.firestore.collection('user').doc(docId).update({
+      managerId: this.cookieService.get('userId'),
+      companyId: companyId,
+      subsidiaryId: subsidiaryId,
+      role: 'staff'
+    });
   }
 
   getUserByIdn(idn) {
     return this.fireSQL.query(`SELECT __name__ as id, companyId from user WHERE idn = '${idn}' AND (role = 'staff' OR  role = 'author' OR role = 'user')`);
   }
+
   getUserByUserIdn(idn) {
     return this.fireSQL.query(`SELECT __name__ as id, idn, lastname, firstname, gender, city, birthdate, status, role, privilegeList, userId, companyIds, phoneNumber  from user WHERE idn = '${idn}' AND (role = 'staff' OR  role = 'author' OR role = 'user')`);
   }
@@ -359,6 +365,26 @@ export class CommonService {
                                FROM result
                                WHERE status='done'
                                ORDER BY date DESC, time DESC `);
+  }
+
+  getExamHistoryListQuery(companyNames) {
+    return this.fireSQL.query(`SELECT __name__ as
+                                      id,
+                                      category,
+                                      title,
+                                      score,
+                                      scoreMust,
+                                      mistake,
+                                      correct,
+                                      section,
+                                      isTest,
+                                      time,
+                                      date,
+                                      examinatorUserId,
+                                      companyName,
+                                      username
+                               FROM result res
+                               WHERE res.status='done' and res.companyName = '${companyNames}'`);
   }
 
   deleteSpeciality(id: string) {
@@ -528,7 +554,7 @@ export class CommonService {
     return this.firestore.collection('result').add(result);
   }
 
-  getResultList(cased?: string) {
+  getResultList(companyNames,cased?: string) {
     let query = `SELECT __name__ as
                         id,
                         isTest,
@@ -543,7 +569,32 @@ export class CommonService {
                         username,
                         templateId,
                         companyName
-                 FROM result `;
+                 FROM result where companyName = '${companyNames}'`;
+    // FROM result WHERE templateId IN ('F08wusvGDxh4HcWFb2Wm')`;
+    if (cased && cased === 'ratings') {
+      if (this.cookieService.get('role') !== 'admin') {
+        query += ` WHERE userId = '${this.cookieService.get('userId')}'`;
+      }
+    }
+    return this.fireSQL.query(query);
+  }
+
+  getResultListQuery(companyNames: string, cased?: string) {
+    let query = `SELECT __name__ as
+                        id,
+                        isTest,
+                        correct,
+                        mistake,
+                        scoreMust,
+                        score,
+                        category,
+                        section,
+                        title,
+                        userId,
+                        username,
+                        templateId,
+                        companyName
+                 FROM result where companyName = ` + companyNames;
     // FROM result WHERE templateId IN ('F08wusvGDxh4HcWFb2Wm')`;
     if (cased && cased === 'ratings') {
       if (this.cookieService.get('role') !== 'admin') {
@@ -584,7 +635,7 @@ export class CommonService {
     });
   }
 
-  updateUserByDocIdWithoutPassword(userDocId: string, user){
+  updateUserByDocIdWithoutPassword(userDocId: string, user) {
     return this.firestore.collection('user').doc(userDocId).update({
       idn: user.idn,
       firstname: user.firstname,
@@ -651,7 +702,7 @@ export class CommonService {
     return this.firestore.doc('user/' + docId).update({'password': password});
   }
 
-  updateRoleAndCompanyId(docId: string, role: string, companyId: string){
+  updateRoleAndCompanyId(docId: string, role: string, companyId: string) {
     return this.firestore.doc('user/' + docId).update({'role': role, 'companyId': companyId});
   }
 

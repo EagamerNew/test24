@@ -148,14 +148,15 @@ export class RatingV2Component implements OnInit {
     this._serviceCommon.getUserByDocId(this.cookieService.get('userId')).then(user => {
       this._serviceCommon.getCompanyById(user[0].companyId).then(res2 => {
         this.company = res2[0];
-        this._serviceCommon.getResultList('ratings').then(res => {
-          console.log('res2', res);
+        console.log('--------', this.company.name);
 
+        this._serviceCommon.getResultList(this.company.name, 'ratings').then(res => {
+          console.log(res)
           const userIdList = [];
           res.map(result => {
             userIdList.push({userId: result.userId, cityName: '', code: ''});
             console.log(this.company + '' + result.companyName);
-            if (this.company && this.company === result.companyName) {
+            if (this.company && this.company.name === result.companyName) {
               this.results.push({
                 id: result.id,
                 isTest: result.isTest,
@@ -173,8 +174,6 @@ export class RatingV2Component implements OnInit {
               });
             }
           });
-          console.log(this.results);
-
           this.uniqueUserIdList = userIdList.filter((thing, i, arr) => {
             return arr.indexOf(arr.find(t => t.userId === thing.userId)) === i;
           });
