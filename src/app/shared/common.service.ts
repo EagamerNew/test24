@@ -641,7 +641,7 @@ export class CommonService {
       firstname: user.firstname,
       lastname: user.lastname,
       birthdate: user.birthdate,
-      userId: user.userId,
+      // userId: user.userId,
       companyIds: user.companyIds,
       gender: user.gender,
       status: user.status,

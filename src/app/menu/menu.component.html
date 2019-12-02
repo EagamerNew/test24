@@ -43,16 +43,16 @@
       <button mat-button class="cust-button" *ngIf="this.cookie.get('userId')"  [routerLink]="['ratings/0']">
         Рейтинг
       </button>
-      <button mat-button class="cust-button" *ngIf="this.cookie.get('userId')"  [routerLink]="['ratings/1']">
+      <button mat-button class="cust-button" *ngIf="this.cookie.get('userId') && checkToAccess('company-student')"  [routerLink]="['ratings/1']">
         Рейтинг моих студентов
       </button>
       <button mat-button class="cust-button" [routerLink]="['result/0']"><!--staffRL, question-templatePL -->
         Результаты
       </button>
-      <button mat-button class="cust-button" [routerLink]="['result/1']"><!--staffRL, question-templatePL -->
+      <button mat-button class="cust-button" *ngIf="this.cookie.get('userId') && checkToAccess('company-student')" [routerLink]="['result/1']"><!--staffRL, question-templatePL -->
         Результаты моих студентов
       </button>
-      <button mat-button class="cust-button" [routerLink]="['student']"><!--staffRL, question-templatePL -->
+      <button mat-button class="cust-button"  *ngIf="this.cookie.get('userId') && checkToAccess('company-student')" [routerLink]="['student']"><!--staffRL, question-templatePL -->
         Мои студенты
       </button>
       <button mat-button class="cust-button" *ngIf="checkToAccess('demo-list')" [routerLink]="['demo-list']"><!--staffRL, question-templatePL -->

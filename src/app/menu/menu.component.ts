@@ -155,6 +155,10 @@ export class MenuComponent implements OnInit {
             result = true;
           }
           break;
+        case 'company-student':
+          if(this.userRole === 'staff' && this.cookie.check('companyId')){
+            result = true;
+          }
       }
     }
 
