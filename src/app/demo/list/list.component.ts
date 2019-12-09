@@ -37,8 +37,10 @@ export class ListComponent implements OnInit {
   disableReset: boolean = true;
   resultList = [];
   filterTemplate: any = new Object();
+  companyId: any;
 
   ngOnInit() {
+    this.companyId = this.cookieService.get('companyId');
     this.cookieService.set('title', 'Тесты');
     this.loading = true;
     this.getActiveTemplateList();
@@ -74,7 +76,7 @@ export class ListComponent implements OnInit {
   }
 
   getActiveTemplateList() {
-    this.service.getActiveTemplateList().then(res => {
+    this.service.getActiveTemplateList(this.companyId).then(res => {
       console.log(res);
       let templateIdList = [];
       this.templateList = res.map(mres => {

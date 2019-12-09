@@ -17,7 +17,7 @@
       Создать сотрудника
     </button>
     <button mat-button  class="cust-button"*ngIf="this.cookie.get('userId') && checkToAccess('student-add')"  [routerLink]="['student/add']">
-      Создать студента
+      Добавить студента
     </button>
     <button mat-button  class="cust-button"*ngIf="this.cookie.get('userId') &&  checkToAccess('new-company')" [routerLink]="['new-company']"><!--staffRL, question-templatePL -->
       Добавить компанию

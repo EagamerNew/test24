@@ -825,6 +825,24 @@ export class CommonService {
                                       companyId
                                FROM user`);
   }
+  getUserListByCompany(id) {
+    return this.fireSQL.query(`SELECT __name__ as
+                                      id,
+                                      idn,
+                                      role,
+                                      privilegeList,
+                                      lastname,
+                                      firstname,
+                                      birthdate,
+                                      gender,
+                                      city,
+                                      phoneNumber,
+                                      password,
+                                      status,
+                                      companyIds,
+                                      companyId
+                               FROM user where companyId=${id}`);
+  }
   getUserStudents(company) {
     return this.fireSQL.query(`SELECT __name__ as
                                       id,
@@ -936,7 +954,7 @@ export class CommonService {
     };
   }
 
-  getActiveTemplateList() {
+  getActiveTemplateList(companyId) {
     return this.fireSQL.query(`SELECT __name__ as
                                       id,
                                       name,
@@ -948,6 +966,7 @@ export class CommonService {
                                FROM template
                                WHERE status ='active' AND isExamTemplate = false`)
       .then(res => {
+        console.log(res);
         return res;
       });
   }

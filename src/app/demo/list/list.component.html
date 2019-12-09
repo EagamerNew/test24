@@ -78,7 +78,7 @@
       </mat-card-content>
       <div fxLayout="row" fxLayoutAlign="space-between center">
         <span style="float: left">{{getCountForTemplateResult(template.id)}}</span>
-        <span style="float: left"><button *ngIf="cookieService.get('role') === 'admin'"
+        <span style="float: left"><button *ngIf="template.companyId === companyId"
                                           (click)="deleteTemplateById(template.id)"
                                           mat-button>Удалить шаблон</button></span>
         <!--        <span style="float: right"><button [routerLink]="'/test/' + template.id" mat-button>Сдать тест</button></span>-->

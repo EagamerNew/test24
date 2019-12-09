@@ -21,6 +21,7 @@ export class UserComponent implements OnInit {
   privilegeTitle = 'Select all';
   privilegeOption = 'all';
   searchText = '';
+  companyId: any;
 
   constructor(public snackBar: MatSnackBar,
               public commonService: CommonService,
@@ -29,7 +30,9 @@ export class UserComponent implements OnInit {
 
   ngOnInit(): void {
     this.cookie.set('title', 'Пользователи');
+    this.companyId = this.cookie.get('companyId');
     this.getUserList();
+
   }
 
   selectAll(userId) {
@@ -57,7 +60,7 @@ export class UserComponent implements OnInit {
   }
 
   getUserList(): void {
-    this.commonService.getUserList().then(res => {
+    this.commonService.getUserListByCompany(this.companyId).then(res => {
       this.userList = res;
       this.allUserList = res;
     });
