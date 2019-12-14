@@ -60,7 +60,8 @@ export class UserComponent implements OnInit {
   }
 
   getUserList(): void {
-    this.commonService.getUserListByCompany(this.companyId).then(res => {
+    // this.commonService.getUserListByCompany(this.companyId).then(res => {
+    this.commonService.getUserList().then(res => {
       this.userList = res;
       this.allUserList = res;
     });

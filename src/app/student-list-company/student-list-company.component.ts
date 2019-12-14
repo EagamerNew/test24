@@ -21,6 +21,7 @@ export class StudentListCompanyComponent implements OnInit {
   privilegeTitle = 'Select all';
   privilegeOption = 'all';
   searchText = '';
+  companyId: any;
 
   constructor(public snackBar: MatSnackBar,
               public commonService: CommonService,
@@ -29,6 +30,8 @@ export class StudentListCompanyComponent implements OnInit {
 
   ngOnInit(): void {
     this.cookie.set('title', 'Мои студенты');
+    this.companyId = this.cookie.get('companyId');
+
     this.getUserList();
   }
 
@@ -36,7 +39,7 @@ export class StudentListCompanyComponent implements OnInit {
     let list = [];
     this.commonService.getUserByDocId(this.cookie.get('userId')).then(ress => {
       // this.commonService.getUserStudents(ress[0].companyId).then(res => {
-      this.commonService.getUserList().then(res => {
+      this.commonService.getStudentList().then(res => {
         // res.map(mapper => {
         //   console.log();
         //   if (mapper && mapper.companyIds && mapper.companyIds.indexOf(ress[0].companyId)) {
@@ -45,9 +48,9 @@ export class StudentListCompanyComponent implements OnInit {
         //   }
         // });
         for (let i = 0; i < res.length; i++) {
-          if (res[i] && res[i].companyIds && res[i].companyIds.indexOf(ress[0].companyId)) {
+          console.log(res[i]);
+          if (res[i] && res[i].companyIds && res[i].companyIds.indexOf(this.companyId) !== -1) {
             list.push(res[i]);
-            console.log(res[i])
           }
         }
         this.userList = list;

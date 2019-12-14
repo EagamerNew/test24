@@ -825,6 +825,26 @@ export class CommonService {
                                       companyId
                                FROM user`);
   }
+
+  getStudentList() {
+    return this.fireSQL.query(`SELECT __name__ as
+                                      id,
+                                      idn,
+                                      role,
+                                      privilegeList,
+                                      lastname,
+                                      firstname,
+                                      birthdate,
+                                      gender,
+                                      city,
+                                      phoneNumber,
+                                      password,
+                                      status,
+                                      companyIds,
+                                      companyId
+                               FROM user where role='student'`);
+  }
+
   getUserListByCompany(id) {
     return this.fireSQL.query(`SELECT __name__ as
                                       id,
@@ -843,6 +863,7 @@ export class CommonService {
                                       companyId
                                FROM user where companyId=${id}`);
   }
+
   getUserStudents(company) {
     return this.fireSQL.query(`SELECT __name__ as
                                       id,
@@ -860,6 +881,7 @@ export class CommonService {
                                       companyId
                                FROM user where role='student'`);
   }
+
   getUserByPhone(phone: string) {
     return this.fireSQL.query(`SELECT __name__ as
                                       id,
