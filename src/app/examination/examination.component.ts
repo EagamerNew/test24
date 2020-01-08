@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {QuestionCategory} from "../question/category/question-category.model";
 import {QuestionSection} from "../question/section/question-section.model";
 import {FireSQL} from "firesql";
@@ -22,7 +22,7 @@ export class ExaminationComponent implements OnInit {
     address: "",
     categoryId: "",
     sectionId: "",
-    date:new Date(),
+    date: new Date(),
     status: 'active'
   };
   fireSQL;
@@ -37,7 +37,8 @@ export class ExaminationComponent implements OnInit {
   constructor(public snackBar: MatSnackBar,
               private router: Router,
               private commonService: CommonService,
-              private cookieService: CookieService) { }
+              private cookieService: CookieService) {
+  }
 
   ngOnInit(): void {
     this.cookieService.set('title', 'Экзамены');
@@ -57,25 +58,35 @@ export class ExaminationComponent implements OnInit {
     })
   }
 
-  getCompanyList(){
-    this.commonService.getCompanyList().then(res=>{
-      this.companyList = res;
-    });
+  getCompanyList() {
+    if (this.cookieService.get("role") === "admin") {
+      this.commonService.getCompanyList().then(res => {
+        this.companyList = res;
+      });
+    } else {
+      this.commonService.getCompanyById(this.cookieService.get("companyId")).then(res => {
+        this.companyList = res;
+      });
+    }
+    console.log('companyId:',this.cookieService.get("companyId"));
+    console.log('this.companyList:',this.companyList);
   }
-  getExamTemplateList(){
-    this.commonService.getExamTemplateList().then(res=>{
+
+  getExamTemplateList() {
+    this.commonService.getExamTemplateList().then(res => {
       this.examTemplateList = res;
     });
   }
-  getExaminatorList(){
-    this.commonService.getExamTemplateListByCompany(this.exam.companyId).then(res=>{
+
+  getExaminatorList() {
+    this.commonService.getExamTemplateListByCompany(this.exam.companyId).then(res => {
       this.examTemplateList = res;
-    console.log(res,'222222222222222')
+      console.log(res, '222222222222222')
     });
 
-    this.commonService.getExaminatorList(this.exam.companyId).subscribe(res=>{
-      console.log('examinatorList:',res);
-      if(res.length > 0){
+    this.commonService.getExaminatorList(this.exam.companyId).subscribe(res => {
+      console.log('examinatorList:', res);
+      if (res.length > 0) {
         this.examinatorList = [];
         res.map(value => {
           this.examinatorList.push(
@@ -86,7 +97,7 @@ export class ExaminationComponent implements OnInit {
             }
           );
         });
-      }else{
+      } else {
         this.openSnackBar('В данной компании отсутствуют экзаменаторы');
       }
 
@@ -99,8 +110,8 @@ export class ExaminationComponent implements OnInit {
     });
   }
 
-  getCityList(){
-    this.commonService.getCityList().then(res=>{
+  getCityList() {
+    this.commonService.getCityList().then(res => {
       this.cityList = res;
     })
   }
@@ -120,8 +131,8 @@ export class ExaminationComponent implements OnInit {
   }
 
   save() {
-    this.commonService.saveExam(this.exam).then(res=>{
-      this.snackBar.open('Экзамен успешно создан','',{duration: 1000});
+    this.commonService.saveExam(this.exam).then(res => {
+      this.snackBar.open('Экзамен успешно создан', '', {duration: 1000});
       this.router.navigateByUrl('');
     });
   }

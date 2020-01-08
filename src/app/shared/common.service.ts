@@ -334,7 +334,7 @@ export class CommonService {
   }
 
   getStudentByUserIdn(idn) {
-    return this.fireSQL.query(`SELECT __name__ as id, idn, lastname, firstname, gender, city, birthdate, status, role, privilegeList, userId, companyIds, phoneNumber  from user WHERE idn = '${idn}' AND (role = 'student')`);
+    return this.fireSQL.query(`SELECT __name__ as id, idn, lastname, firstname, gender, city, birthdate, status, role, privilegeList, userId, companyIds, phoneNumber  from user WHERE idn = '${idn}' AND (role = 'student' OR role = 'user')`);
   }
 
   archiveExam(examId: string) {
@@ -727,8 +727,7 @@ export class CommonService {
 
   getExaminatorList(companyId: string) {
     return this.firestore.collection('user', ref =>
-      ref.where('privilegeList', 'array-contains', 'examination')
-        .where('role', '==', 'staff')
+      ref.where('role', '==', 'staff')
         .where('companyId', '==', companyId))
       .snapshotChanges();
     // return this.fireSQL.query(`SELECT __name__ as id, firstname, lastname FROM user WHERE role = 'staff'
