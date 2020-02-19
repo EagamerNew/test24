@@ -74,54 +74,29 @@ export class MenuComponent implements OnInit {
     } else {
       switch (item) {
         case 'question':
-          if (this.userRole === 'staff' || this.userRole === 'author' || this.userPrivilegeList.includes('question')) {
-            result = true;
-          }
-          break;
-        case 'question-category':
-          if (this.userPrivilegeList.includes('category')) {
-            result = true;
-          }
-          break;
-        case 'question-speciality':
-          if (this.userPrivilegeList.includes('speciality')) {
-            result = true;
-          }
-          break;
-        case 'question-section':
-          if (this.userPrivilegeList.includes('section')) {
-            result = true;
-          }
-          break;
-        case 'question-moderation':
-          if (this.userPrivilegeList.includes('question-moderation')) {
+          if (this.userRole === 'staff' || this.userRole === 'author') {
             result = true;
           }
           break;
         case 'questions-list-section':
-          if (this.userRole === 'staff' || this.userRole === 'author' || this.userPrivilegeList.includes('question')) {
+          if (this.userRole === 'staff' || this.userRole === 'author') {
             result = true;
           }
           break;
 
         case 'demo':
-          if (this.userRole === 'staff' || this.userPrivilegeList.includes('question-template')) {
+          if (this.userRole === 'staff') {
             result = true;
 
           }
           break;
         case 'demo-list':
-          if (this.userRole === 'staff' || this.userRole === 'user' || this.userRole === 'anonymous' || this.userPrivilegeList.includes('question-template')) {
+          if (this.userRole === 'staff' || this.userRole === 'user' || this.userRole === 'anonymous') {
             result = true;
           }
           break;
         case 'exam-list':
-          if (this.userRole === 'user' || this.userRole === 'anonymous' || this.userRole === 'staff' || this.userRole === 'author' || this.userPrivilegeList.includes('exam-list')) {
-            result = true;
-          }
-          break;
-        case 'registration':
-          if (this.userRole === 'staff' || this.userPrivilegeList.includes('users')) {
+          if (this.userRole === 'user' || this.userRole === 'anonymous' || this.userRole === 'staff' || this.userRole === 'author') {
             result = true;
           }
           break;
@@ -131,11 +106,6 @@ export class MenuComponent implements OnInit {
           }
           break;
         case 'staff':
-          if (this.userRole === 'staff' && this.cookie.check('companyId')) {
-            result = true;
-          }
-          break;
-        case 'users':
           if (this.userRole === 'staff' && this.cookie.check('companyId')) {
             result = true;
           }

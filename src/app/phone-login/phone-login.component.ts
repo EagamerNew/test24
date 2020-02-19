@@ -110,7 +110,7 @@ export class PhoneLoginComponent implements OnInit {
         this.commonService.getUserByPhone(this.phoneString).then(res => {
           if (res && res[0]) {
             let expiredDate = new Date();
-            expiredDate.setHours(expiredDate.getHours() + 1);
+            expiredDate.setHours(expiredDate.getHours() + 3);
             console.log("EXPIRES: ", expiredDate);
 
             let reUser: any = res[0];
