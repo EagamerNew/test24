@@ -1,16 +1,17 @@
 <div *ngIf="user">
   <mat-expansion-panel style="margin-bottom:20px;" *ngIf="examHistory.length > 0 && isDefault">
     <mat-expansion-panel-header>
-      <mat-panel-title>Мои результаты </mat-panel-title>
+      <mat-panel-title>Мои результаты</mat-panel-title>
       <mat-panel-description>
         <!--{{question.description}}-->
       </mat-panel-description>
     </mat-expansion-panel-header>
-    <div *ngFor="let data of examHistory; trackBy: trackByFn; let i = index;" >
+    <div *ngFor="let data of sortedArray; trackBy: trackByFn; let i = index;">
 
       <div style="margin-top: 25px">
         <div fxFlex="row" fxLayoutAlign="space-between center">
-          <div *ngIf="data.time && data.realDate" class="cust-grey" style="text-align: left">{{data.time}} {{data.realDate}}</div>
+          <div *ngIf="data.time && data.realDate" class="cust-grey"
+               style="text-align: left">{{data.time}} {{data.realDate}}</div>
         </div>
       </div>
       <mat-card class="example-card"
@@ -32,9 +33,9 @@
           <h2>
             <span>Ваш результат</span>
             <br>
-            {{calculatePercent(data.correct, data.mistake)}}%
+            {{calculatePercent(data.score, data.scoreMust)}}%
           </h2>
-          <p class="mat-caption cust-grey" >{{data.category}}</p>
+          <p class="mat-caption cust-grey">{{data.category}}</p>
           <p class="mat-caption cust-grey">{{data.section}}</p>
         </mat-card-content>
         <div style="margin-bottom:36px;">
@@ -92,7 +93,10 @@
     <button mat-flat-button class="example-full-width" (click)="setNewPassword()">Сохранить новый пароль</button>
   </div>
 
-    <button mat-button class="example-full-width" (click)="updateRoleAndCompanyId(user.id)"  *ngIf="(cookieService.get('role') === 'admin' || cookieService.get('role') === 'staff') && !isDefault" class="mat-warn">Удалить сотрудника</button>
+  <button mat-button class="example-full-width" (click)="updateRoleAndCompanyId(user.id)"
+          *ngIf="(cookieService.get('role') === 'admin' || cookieService.get('role') === 'staff') && !isDefault"
+          class="mat-warn">Удалить сотрудника
+  </button>
 
 
 </div>
