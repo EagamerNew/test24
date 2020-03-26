@@ -60,6 +60,7 @@ import {StaffListComponent} from './staff/staff-list/staff-list.component';
 import {AuthGuard} from './shared/auth.guard';
 import {StudentAddComponent} from './student/student-add/student-add.component';
 import {StudentListCompanyComponent} from './student-list-company/student-list-company.component';
+import {DateSortPipe} from "./shared/pipe/date-sort.pipe";
 
 @NgModule({
   declarations: [
@@ -99,7 +100,8 @@ import {StudentListCompanyComponent} from './student-list-company/student-list-c
     RatingV2Component,
     StaffListComponent,
     StudentAddComponent,
-    StudentListCompanyComponent
+    StudentListCompanyComponent,
+    DateSortPipe
   ],
   imports: [
     BrowserModule,
@@ -120,7 +122,8 @@ import {StudentListCompanyComponent} from './student-list-company/student-list-c
     DatePipe,
     CategoryService, {provide: FirestoreSettingsToken, useValue: {}}, CommonService,
     {provide: LocationStrategy, useClass: HashLocationStrategy},
-    AuthGuard
+    AuthGuard,
+    DateSortPipe
   ],
   bootstrap: [AppComponent]
 })

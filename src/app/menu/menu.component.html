@@ -55,7 +55,7 @@
       <button mat-button class="cust-button"  *ngIf="this.cookie.get('userId') && checkToAccess('company-student')" [routerLink]="['student']"><!--staffRL, question-templatePL -->
         Мои студенты
       </button>
-      <button mat-button class="cust-button" *ngIf="checkToAccess('demo-list')" [routerLink]="['demo-list']"><!--staffRL, question-templatePL -->
+      <button mat-button class="cust-button" [routerLink]="['demo-list']"><!--staffRL, question-templatePL -->
         Тесты
       </button>
       <button mat-button class="cust-button" *ngIf="checkToAccess('exam-list')"  [routerLink]="['exam-list']">

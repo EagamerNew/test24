@@ -342,8 +342,9 @@ export class CommonService {
   }
 
   getExamHistoryByUserId(userId: string) {
-    return this.fireSQL.query(`SELECT __name__ as id, category,title,score,scoreMust,mistake,correct,section,isTest,time,date,examinatorUserId, companyName FROM result
-      WHERE status='done' AND userId='${userId}' ORDER BY date, time`);
+    return this.fireSQL.query(`SELECT __name__ as id, category,title,score,scoreMust,mistake,correct,
+        section,isTest,time,date,examinatorUserId, companyName FROM result
+      WHERE status='done' AND userId='${userId}'`);
   }
 
   getExamHistoryList() {

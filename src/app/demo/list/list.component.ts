@@ -38,9 +38,11 @@ export class ListComponent implements OnInit {
   resultList = [];
   filterTemplate: any = new Object();
   companyId: any;
+  role: string = 'anonymous';
 
   ngOnInit() {
     this.companyId = this.cookieService.get('companyId');
+    this.role = this.cookieService.get('role');
     this.cookieService.set('title', 'Тесты');
     this.loading = true;
     this.getActiveTemplateList();

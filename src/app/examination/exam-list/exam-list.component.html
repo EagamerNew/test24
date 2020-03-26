@@ -56,9 +56,12 @@
     <div *ngFor="let exam of examList; trackBy: trackByFn;let i = index;" style="padding-top: 10px;">
       <mat-card class="example-card" style="border:1px solid black;">
         <div>
-        <span style="float: left" ><span class="custom-text" *ngIf="shortTemplateList">{{getTemplateNameById(exam.templateId)}}</span>
+        <span style="float: left">
+          <span class="custom-text"
+                *ngIf="shortTemplateList">{{getTemplateNameById(exam.templateId)}}
+          </span>
           <br>
-          <span >{{getCompanyNameById(exam.companyId)}}</span>
+          <span>{{getCompanyNameById(exam.companyId)}}</span>
         </span>
           <span *ngIf="userRole === 'admin' || (exam.examinatorUserId === userId && userRole === 'staff')"
                 style="float: right;cursor:pointer;" matTooltip="Архивировать"
@@ -68,11 +71,11 @@
         </div>
         <br>
         <mat-card-content style="text-align: center; padding: 30px 0;">
-          <p class="mat-caption custom-text"  style="font-size: 1.2em">
+          <p class="mat-caption custom-text" style="font-size: 1.2em">
             {{getNameFromCategory(exam.categoryId)}}
           </p>
           <p class="mat-caption custom-text" style="font-size: 1.2em">{{getNameFromSection(exam.sectionId)}}</p>
-          <p class="mat-caption custom-text" *ngIf="shortTemplateList"  style="font-size: 1.2em">
+          <p class="mat-caption custom-text" *ngIf="shortTemplateList" style="font-size: 1.2em">
             {{getTemplateQuestionLengthById(exam.templateId)}} вопросов
           </p>
           <p class="mat-caption hell">{{getFormattedDate(exam.date)}}</p>
