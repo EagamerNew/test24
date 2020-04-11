@@ -35,8 +35,8 @@ export class CommonService {
       return this.firestore.collection('user', ref => ref
         .where('companyId', '==', companyId)
         .where('role', '==', 'staff')
-        .where('managerId', '==', this.cookieService.get('userId'))
       ).snapshotChanges();
+      // .where('managerId', '==', this.cookieService.get('userId'))
     }
   }
 

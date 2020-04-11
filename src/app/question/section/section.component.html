@@ -15,7 +15,11 @@
   <br>
   <mat-list>
     <mat-list-item *ngFor="let section of sections">
-      <h3 matLine> {{section.name}} </h3>
+      <h3 matLine>
+        {{section.name}}
+        <br>
+        <span class="mat-small">{{getExistingCategoryNameById(section.categoryId)}}</span>
+      </h3>
       <button mat-icon-button color="primary" (click)="edit(section)">
         <mat-icon>edit</mat-icon>
       </button>

@@ -131,5 +131,8 @@
       }
     }
   },
-  "defaultProject": "my-latest-web-app"
+  "defaultProject": "my-latest-web-app",
+  "cli": {
+    "analytics": "5eb39e07-06d8-4594-b814-408133d45e89"
+  }
 }

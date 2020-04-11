@@ -1,5 +1,5 @@
 <mat-form-field class="example-full-width">
-  <mat-select matInput placeholder="Компания" [(ngModel)]="subsidiary.companyId">
+  <mat-select matInput placeholder="Компания" [(ngModel)]="subsidiary.companyId" [disabled]="role !== 'admin'">
     <mat-option *ngFor="let company of companyList" [value]="company.id">
       {{company.name}}
     </mat-option>

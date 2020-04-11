@@ -17,6 +17,9 @@ export class SubsidiaryComponent implements OnInit {
 
   tempCompanyId: string;
   companyList: any[];
+
+  role: string = 'user';
+
   constructor(private _service: CommonService,
               private route: ActivatedRoute,
               private cookieService: CookieService) {
@@ -25,11 +28,15 @@ export class SubsidiaryComponent implements OnInit {
 
   ngOnInit() {
     this.cookieService.set('title', 'Филиалы');
-    if(this.route.snapshot.params['id']){
+    this.role = this.cookieService.get('role');
+    if (this.route.snapshot.params['id']) {
       this.subsidiary.companyId = this.route.snapshot.params['id'];
     }
+    if (this.role !== 'admin'){
+      this.subsidiary.companyId = this.cookieService.get('companyId');
+    }
     this.getSubsidiaryList();
-    this.getCityList()
+    this.getCityList();
     this.getCompanyList();
   }
 

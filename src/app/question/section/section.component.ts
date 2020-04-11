@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { QuestionSection } from './question-section.model';
-import { QuestionCategory } from '../category/question-category.model';
-import { MatSnackBar } from '@angular/material';
-import { AngularFirestore } from "@angular/fire/firestore";
+import {Component, OnInit} from '@angular/core';
+import {FormGroup, FormControl, Validators} from '@angular/forms';
+import {QuestionSection} from './question-section.model';
+import {QuestionCategory} from '../category/question-category.model';
+import {MatSnackBar} from '@angular/material';
+import {AngularFirestore} from "@angular/fire/firestore";
 
-import { CategoryService } from "../../shared/category.service";
-import { SectionService } from "../../shared/section.service";
+import {CategoryService} from "../../shared/category.service";
+import {SectionService} from "../../shared/section.service";
+import {forEach} from "@angular/router/src/utils/collection";
 
 @Component({
   selector: 'app-section',
@@ -23,13 +24,14 @@ export class SectionComponent implements OnInit {
   btnTitle = "Добавить";
 
 
-  constructor(public snackBar: MatSnackBar, private serviceCategory: CategoryService, private serviceSection: SectionService, private firestore: AngularFirestore) { }
+  constructor(public snackBar: MatSnackBar, private serviceCategory: CategoryService, private serviceSection: SectionService, private firestore: AngularFirestore) {
+  }
 
   ngOnInit() {
     this.questionSectionForm = new FormGroup({
       id: new FormControl(''),
-      name: new FormControl('', { validators: [Validators.required] }),
-      categoryId: new FormControl('', { validators: [Validators.required] })
+      name: new FormControl('', {validators: [Validators.required]}),
+      categoryId: new FormControl('', {validators: [Validators.required]})
     });
 
     this.getSections();
@@ -44,7 +46,7 @@ export class SectionComponent implements OnInit {
           this.sections.push(new QuestionSection(item.payload.doc.id, item.payload.doc.get('name'), item.payload.doc.get('categoryId')))
         })
       }
-    )   
+    )
     // this.serviceSection.getSections().subscribe(
     //   list => {
     //     this.sections = list.map(item => {
@@ -54,7 +56,7 @@ export class SectionComponent implements OnInit {
     //       }
     //     })
     //   }
-    // ) 
+    // )
   }
 
   getCategories() {
@@ -65,7 +67,7 @@ export class SectionComponent implements OnInit {
           this.categories.push(new QuestionCategory(item.payload.doc.id, item.payload.doc.get('name')))
         })
       }
-    ) 
+    )
     // this.serviceCategory.getCotegories().subscribe(
     //   list => {
     //     this.categories = list.map(item => {
@@ -101,6 +103,16 @@ export class SectionComponent implements OnInit {
     }
   }
 
+  getExistingCategoryNameById(categoryId): string {
+    let name = "";
+    this.categories.forEach(value => {
+      if (categoryId === value.id) {
+        name = value.name;
+      }
+    });
+    return name;
+  }
+
   edit(section: QuestionSection) {
     this.btnTitle = "Сохранить";
     this.questionSectionForm.patchValue(section);
@@ -109,7 +121,7 @@ export class SectionComponent implements OnInit {
 
   delete(section: QuestionSection) {
     // delete by id from DB
-    this.firestore.doc('section/'+section.id).delete()
+    this.firestore.doc('section/' + section.id).delete()
     this.getSections();
     this.openSnackBar('Раздел успешно удалён!', '');
   }
