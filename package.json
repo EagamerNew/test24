@@ -33,7 +33,7 @@
     "luxon": "^1.23.0",
     "ngx-cookie-service": "^2.4.0",
     "ngx-material-timepicker": "^3.3.1",
-    "node-sass": "^4.13.1",
+    "node-sass": "^7.0.0",
     "rxfire": "^3.12.0",
     "rxjs": "^6.5.5",
     "tslib": "^1.11.1",
